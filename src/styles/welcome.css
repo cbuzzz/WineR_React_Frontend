@@ -1,0 +1,79 @@
+/* Estilos generales */
+body {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #a43d4e;
+    /* Color de fondo principal */
+    color: #ffffff;
+    text-align: center;
+}
+
+/* Contenedor principal */
+.welcome-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+/* Título */
+.welcome-container h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+
+/* Logo */
+.logo {
+    width: 250px;
+    height: 250px;
+    margin-bottom: 20px;
+    margin-top: 20px
+}
+
+/* Texto descriptivo */
+.welcome-container p {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+}
+
+/* Opciones */
+.options {
+    display: flex;
+    gap: 20px;
+}
+
+/* Botones de opciones */
+.option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #ffffff;
+    color: #a43d4e;
+    border-radius: 15px;
+    width: 150px;
+    height: 150px;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.option:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Iconos */
+.option img {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 0.1px;
+}
+
+/* Texto dentro de las opciones */
+.option p {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
