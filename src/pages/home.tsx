@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../styles/home.css';
 import topPlansBackground from '../assets/top-plans-background.jpg';
 import expImg from '../assets/exp.jpg';
@@ -23,6 +24,7 @@ interface Experience {
 }
 
 const Home: React.FC = () => {
+    const navigate = useNavigate();
     const [experiences, setExperiences] = useState<Experience[]>([]);
 
     useEffect(() => {
@@ -63,14 +65,6 @@ const Home: React.FC = () => {
 
     return (
         <div className="home-container">
-            {/* Barra de Navegación */}
-            <nav className="navigation-bar">
-                <img src={wineRLogo} alt="WineR Logo" className="nav-logo" />
-                <button className="nav-button">Learn</button>
-                <button className="nav-button active">Home</button>
-                <button className="nav-button">Bookings</button>
-                <button className="nav-button">Profile</button>
-            </nav>
 
             {/* Sección de Top Plans */}
             <div

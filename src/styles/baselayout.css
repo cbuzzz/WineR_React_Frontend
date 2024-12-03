@@ -1,0 +1,64 @@
+/* Contenedor principal */
+.base-layout {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Barra de Navegación */
+.navbar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 70px; /* Altura fija */
+    padding: 0 30px;
+    background-color: #a43d4e;
+    border-radius: 10px;
+    margin-bottom: 0; /* Elimina márgenes adicionales */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+/* Estilo del logo */
+.nav-logo {
+    width: 50px;
+    height: 50px;
+    position: absolute; /* Se posiciona independientemente del flujo normal */
+    left: 50px; /* Alinea a la izquierda */
+    top: 50%;
+    transform: translateY(-50%); /* Centra verticalmente */
+}
+
+/* Enlaces de navegación */
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 30px; /* Espacio adicional entre enlaces */
+}
+
+.nav-links a {
+    text-decoration: none;
+    font-size: 1.2rem; /* Aumenta el tamaño de fuente */
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #fff;
+    padding: 5px 10px;
+    transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: #ffc1c1;
+}
+
+.nav-links a.active {
+    border-bottom: 2px solid #ffc1c1;
+    padding-bottom: 5px;
+}
+
+/* Contenido principal */
+.content {
+    flex-grow: 1;
+    padding: 20px;
+    overflow-y: auto;
+}
