@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Asegúrate de tener React Router configurado
 import '../styles/home.css';
 import topPlansBackground from '../assets/top-plans-background.jpg';
 import expImg from '../assets/exp.jpg';
@@ -23,6 +24,7 @@ interface Experience {
 }
 
 const Home: React.FC = () => {
+    const navigate = useNavigate(); // Hook para navegación
     const [experiences, setExperiences] = useState<Experience[]>([]);
 
     useEffect(() => {
@@ -61,9 +63,12 @@ const Home: React.FC = () => {
         setExperiences(dummyData);
     }, []);
 
+    const handleCardClick = (id: string) => {
+        navigate(`/experience/${id}`); // Redirige al usuario a la página de detalles
+    };
+
     return (
         <div className="home-container">
-            {/* Barra de Navegación */}
             <nav className="navigation-bar">
                 <img src={wineRLogo} alt="WineR Logo" className="nav-logo" />
                 <button className="nav-button">Learn</button>
@@ -72,7 +77,6 @@ const Home: React.FC = () => {
                 <button className="nav-button">Profile</button>
             </nav>
 
-            {/* Sección de Top Plans */}
             <div
                 className="top-plans"
                 style={{ backgroundImage: `url(${topPlansBackground})` }}
@@ -85,15 +89,18 @@ const Home: React.FC = () => {
                 </div>
             </div>
 
-            {/* Botón de Filtros */}
             <div className="filters-container">
                 <button className="filter-btn">Filter</button>
             </div>
 
-            {/* Lista de Experiencias */}
             <div className="experience-list">
-                {experiences.map((experience, index) => (
-                    <div className="experience-card" key={index}>
+                {experiences.map((experience) => (
+                    <div
+                        className="experience-card"
+                        key={experience.id}
+                        onClick={() => handleCardClick(experience.id)} // Hace la card clickeable
+                        style={{ cursor: 'pointer' }}
+                    >
                         <img
                             src={expImg}
                             alt={experience.name}
@@ -104,7 +111,7 @@ const Home: React.FC = () => {
                                 <img
                                     src={wineIcon}
                                     alt="Wine bottle"
-                                    style={{ width: "20px", height: "auto" }}
+                                    style={{ width: '20px', height: 'auto' }}
                                     className="icon-wine"
                                 />
                                 {experience.name}
@@ -113,7 +120,7 @@ const Home: React.FC = () => {
                                 <img
                                     src={ubiIcon}
                                     alt="Location"
-                                    style={{ width: "15px", height: "auto" }}
+                                    style={{ width: '15px', height: 'auto' }}
                                     className="icon-ubi"
                                 />
                                 {experience.location} {experience.price}
@@ -125,7 +132,7 @@ const Home: React.FC = () => {
                                 <img
                                     src={starIcon}
                                     alt="Rating"
-                                    style={{ width: "15px", height: "auto" }}
+                                    style={{ width: '15px', height: 'auto' }}
                                     className="icon-star"
                                 />
                                 {experience.rating}
@@ -135,7 +142,7 @@ const Home: React.FC = () => {
                                     <img
                                         src={tasteIcon}
                                         alt="Wine Tastings"
-                                        style={{ width: "20px", height: "auto" }}
+                                        style={{ width: '20px', height: 'auto' }}
                                         className="icon-taste"
                                     />
                                     <span>Wine tastings</span>
@@ -144,7 +151,7 @@ const Home: React.FC = () => {
                                     <img
                                         src={restaurantIcon}
                                         alt="Restaurant"
-                                        style={{ width: "20px", height: "auto" }}
+                                        style={{ width: '20px', height: 'auto' }}
                                         className="icon-restaurant"
                                     />
                                     <span>Restaurant</span>
@@ -153,7 +160,7 @@ const Home: React.FC = () => {
                                     <img
                                         src={parkingIcon}
                                         alt="Parking"
-                                        style={{ width: "20px", height: "auto" }}
+                                        style={{ width: '20px', height: 'auto' }}
                                         className="icon-parking"
                                     />
                                     <span>Parking</span>
@@ -162,7 +169,7 @@ const Home: React.FC = () => {
                                     <img
                                         src={uvaIcon}
                                         alt="Vineyard Tours"
-                                        style={{ width: "20px", height: "auto" }}
+                                        style={{ width: '20px', height: 'auto' }}
                                         className="icon-uva"
                                     />
                                     <span>Vineyard tours</span>
@@ -172,7 +179,6 @@ const Home: React.FC = () => {
                     </div>
                 ))}
             </div>
-
         </div>
     );
 };

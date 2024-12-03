@@ -1,0 +1,82 @@
+.experience-details {
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
+    color: #333;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.header button {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: #900;
+}
+
+.images-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.images-gallery img {
+    width: 100%;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.details h2 {
+    color: #900;
+    margin-bottom: 10px;
+}
+
+.amenities {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.amenity {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.amenity span {
+    font-size: 1.5rem;
+}
+
+.map {
+    margin: 20px 0;
+    text-align: center;
+}
+
+.map img {
+    max-width: 100%;
+    border-radius: 8px;
+}
+
+.book-now {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    background-color: #900;
+    color: #fff;
+    text-align: center;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
