@@ -1,88 +1,76 @@
-import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { bookExperience } from '../services/api';
+import React from 'react';
+import '../styles/booking.css'; // Archivo CSS para estilos
+
+// Interfaz para las experiencias
+interface Experience {
+    id: string;
+    title: string;
+    location: string;
+    date: string;
+    time: string;
+    guests: string;
+    activities: string[];
+    image: string;
+}
+
+// Componente de tarjeta individual para experiencias
+const ExperienceCard: React.FC<{ experience: Experience }> = ({ experience }) => {
+    return (
+        <div className="experience-card">
+            <img src={experience.image} alt={experience.title} className="experience-image" />
+            <div className="experience-info">
+                <h3>{experience.title}</h3>
+                <p className="experience-location">{experience.location}</p>
+                <p className="experience-date">
+                    {experience.date} - {experience.time}
+                </p>
+                <p className="experience-guests">{experience.guests}</p>
+                <p className="experience-activities">{experience.activities.join(', ')}</p>
+                <button className="share-button">Take me there!</button>
+            </div>
+        </div>
+    );
+};
 
 const Booking: React.FC = () => {
-    const { id } = useParams<{ id: string }>();
-    const [bookingData, setBookingData] = useState({
-        date: '',
-        time: '',
-        guests: 1,
-        comments: '',
-    });
-
-    // Manejar cambios en inputs y textarea
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        const { name, value } = e.target;
-        setBookingData((prevData) => ({
-            ...prevData,
-            [name]: value,
-        }));
-    };
-
-    // Manejar cambios en select
-    const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        const { name, value } = e.target;
-        setBookingData((prevData) => ({
-            ...prevData,
-            [name]: value,
-        }));
-    };
-
-    const handleBooking = async () => {
-        try {
-            const response = await bookExperience(id || '', bookingData);
-            console.log('Booking successful:', response.data);
-            alert('Booking confirmed!');
-        } catch (error) {
-            console.error('Error booking experience:', error);
-        }
-    };
+    // Datos simulados que en el futuro vendrán desde el backend
+    const experiences: Experience[] = [
+        {
+            id: '1',
+            title: 'Scala Dei',
+            location: 'Tarragona',
+            date: 'Dec 11',
+            time: '10:00 AM',
+            guests: '2 Adults',
+            activities: ['Wine Tasting'],
+            image: '/images/scala-dei.jpg',
+        },
+        {
+            id: '2',
+            title: 'Alvaro Palacios',
+            location: 'Tarragona',
+            date: 'Jan 4',
+            time: '3:00 PM',
+            guests: '2 Adults',
+            activities: ['Vineyard Tour', 'Wine Tasting'],
+            image: '/images/alvaro-palacios.jpg',
+        },
+    ];
 
     return (
-        <div>
-            <h1>Booking</h1>
-            <label>
-                Select Date:
-                <input
-                    type="date"
-                    name="date"
-                    value={bookingData.date}
-                    onChange={handleInputChange}
-                />
-            </label>
-            <label>
-                Select Time:
-                <select
-                    name="time"
-                    value={bookingData.time}
-                    onChange={handleSelectChange}
-                >
-                    <option value="">Select a time</option>
-                    <option value="10:00 AM">10:00 AM</option>
-                    <option value="12:00 PM">12:00 PM</option>
-                    <option value="3:00 PM">3:00 PM</option>
-                </select>
-            </label>
-            <label>
-                Number of Guests:
-                <input
-                    type="number"
-                    name="guests"
-                    value={bookingData.guests}
-                    onChange={handleInputChange}
-                    min={1}
-                />
-            </label>
-            <label>
-                Comments:
-                <textarea
-                    name="comments"
-                    value={bookingData.comments}
-                    onChange={handleInputChange}
-                />
-            </label>
-            <button onClick={handleBooking}>Confirm Booking</button>
+        <div className="booking-container">
+            <header className="booking-header">
+                <h1>Upcoming Bookings</h1>
+                <div className="booking-actions">
+                    <input type="text" placeholder="Search..." className="search-bar1" />
+                    <button className="filter-button">Filters</button>
+                </div>
+            </header>
+            <div className="experience-list">
+                {experiences.map((experience) => (
+                    <ExperienceCard key={experience.id} experience={experience} />
+                ))}
+            </div>
         </div>
     );
 };

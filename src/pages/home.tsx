@@ -59,6 +59,16 @@ const Home: React.FC = () => {
                 rating: 4.3,
                 imageUrl: '/assets/celler-barbara-fores.jpg',
             },
+            {
+                id: '4',
+                name: 'Celler Bárbara Forés',
+                location: 'Terra Alta',
+                price: '€€€',
+                description: 'Uncover the artistry of winemaking through intimate tastings in our lush vineyards. Cheers to the essence of tradition and innovation in every sip. ',
+                availability: 'Available',
+                rating: 4.3,
+                imageUrl: '/assets/celler-barbara-fores.jpg',
+            },
         ];
         setExperiences(dummyData);
     }, []);

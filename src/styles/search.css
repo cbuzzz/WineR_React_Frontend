@@ -3,60 +3,70 @@
     width: 100%;
     max-width: 1400px;
     margin: 0 auto;
-    height: calc(100vh - 70px); /* Asegura la consistencia */
-    padding: 20px; /* Agrega padding igual que en home.css */
-    display: block; /* Evita usar flex aquí, a menos que sea necesario */
-    background-color: #000;
-    overflow-y: auto; /* Asegura que no crezca fuera de pantalla */
+    height: calc(100vh - 70px);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    background-color: #a43d4e;
 }
 
-/* Search header */
+/* Cabecera */
 .search-header {
-    width: 80%;
-    margin-top: 20px;
-    text-align: center;
-    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
 }
 
-.search-header h1 {
-    font-size: 32px;
+.search-title {
+    font-size: 28px;
     font-weight: bold;
+    color: #ddd;
+    margin-bottom: 10px;
 }
 
-.search-bar {
-    margin: 20px 0;
+.search-actions {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 600px;
 }
 
 .search-bar input {
-    width: 95%;
+    width: calc(100% - 1px);
     padding: 10px 20px;
     border-radius: 25px;
-    border: none;
-    font-size: 18px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    border: 1px solid #ddd;
+    font-size: 16px;
+    margin-right: 10px;
 }
 
 .filter-btn {
-    background-color: #e5a4b4;
+    background-color: #a2282f;
     color: white;
     border: none;
     padding: 10px 20px;
-    border-radius: 20px;
-    cursor: pointer;
+    border-radius: 25px;
     font-weight: bold;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: background-color 0.3s;
 }
 
-/* Map container */
+.filter-btn:hover {
+    background-color: #891d28;
+}
+
+/* Contenedor del mapa */
 .map-container {
-    width: 80%;
+    width: 100%;
+    height: 100%;
     flex-grow: 1;
-    margin-top: 20px;
-    background-color: #f8f5f5;
+    background-color: #eaeaea;
     border-radius: 20px;
     position: relative;
     overflow: hidden;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    margin-top: 20px;
 }
 
 .mock-map {
@@ -67,16 +77,140 @@
     justify-content: center;
     align-items: center;
     color: #666;
-    font-size: 24px;
-    font-weight: bold;
+    font-size: 18px;
 }
 
 .map-pin {
     position: absolute;
-    width: 20px;
-    height: 20px;
-    background-color: red;
+    width: 15px;
+    height: 15px;
+    background-color: #d0021b;
+    border: 2px solid white;
     border-radius: 50%;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    transform: translate(-50%, -50%);
     cursor: pointer;
+}
+
+/* Pop-up de filtros */
+.filters-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.filters-popup .filters-body {
+    background-color: white;
+    padding: 20px;
+    width: 90%;
+    max-width: 1200px;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Cabecera */
+.filters-popup .filters-header {
+    background-color: #a2282f;
+    color: white;
+    padding: 15px;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.filters-popup .filters-header h2 {
+    margin: 0;
+    font-size: 20px;
+}
+
+.filters-popup .close-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+/* Contenido principal del pop-up */
+.filters-popup .filters-content {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    /* Tres columnas para aprovechar el ancho */
+    gap: 20px;
+}
+
+/* Secciones de filtros */
+.filter-section {
+    padding: 10px;
+    background-color: #f8f8f8;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.filter-section label {
+    display: flex;
+    /* Usamos flexbox para alinear el checkbox y el texto */
+    align-items: center;
+    /* Alineamos verticalmente */
+    justify-content: space-between;
+    gap: 10px;
+    /* Espaciado entre el checkbox y el texto */
+    margin-bottom: 10px;
+    font-size: 14px;
+    color: #333;
+}
+
+.filter-section input[type="checkbox"] {
+    margin: 0;
+    /* Eliminamos cualquier margen por defecto */
+}
+
+.filter-section h3 {
+    margin: 0 0 10px;
+    font-size: 18px;
+    color: #a2282f;
+    /* Color visible y legible */
+}
+
+/* Pie del pop-up */
+.filters-footer {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px;
+    background-color: #f8f8f8;
+    border-top: 1px solid #ddd;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
+
+.filters-footer .clear-btn,
+.filters-footer .apply-btn {
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.filters-footer .clear-btn {
+    background-color: white;
+    color: #a2282f;
+    border: 1px solid #a2282f;
+}
+
+.filters-footer .apply-btn {
+    background-color: #a2282f;
+    color: white;
+    border: none;
 }

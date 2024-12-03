@@ -15,7 +15,7 @@ const BaseLayout: React.FC<BaseLayoutProps> = ({ children }) => {
                 <div className="nav-links">
                     <NavLink to="/home" className={({ isActive }) => isActive ? 'active' : ''}>HOME</NavLink>
                     <NavLink to="/search" className={({ isActive }) => isActive ? 'active' : ''}>SEARCH</NavLink>
-                    <NavLink to="/bookings" className={({ isActive }) => isActive ? 'active' : ''}>BOOKINGS</NavLink>
+                    <NavLink to="/booking" className={({ isActive }) => isActive ? 'active' : ''}>BOOKINGS</NavLink>
                     <NavLink to="/profile" className={({ isActive }) => isActive ? 'active' : ''}>PROFILE</NavLink>
                 </div>
             </nav>
