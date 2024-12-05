@@ -11,66 +11,29 @@ import tasteIcon from '../assets/taste.png';
 import restaurantIcon from '../assets/restaurant.png';
 import parkingIcon from '../assets/parking.png';
 import uvaIcon from '../assets/uva.png';
-
-interface Experience {
-    id: string;
-    name: string;
-    location: string;
-    price: string;
-    description: string;
-    availability: string;
-    rating: number;
-    imageUrl: string;
-}
+import experienceService from '../services/experienceService';
+import { Experience } from '../models/experienceModel';
 
 const Home: React.FC = () => {
     const navigate = useNavigate();
     const [experiences, setExperiences] = useState<Experience[]>([]);
+    const [error, setError] = useState('');
 
     useEffect(() => {
-        const dummyData: Experience[] = [
-            {
-                id: '1',
-                name: 'Clos Mogador',
-                location: 'Priorat',
-                price: '€€€€€',
-                description: 'A fusion of tradition and innovation embedded in our wines.',
-                availability: 'Only 2 Spots Left',
-                rating: 4.8,
-                imageUrl: '/assets/clos-mogador.jpg',
-            },
-            {
-                id: '2',
-                name: 'Mas Oller',
-                location: 'Empordà',
-                price: '€€€€',
-                description: 'Experience the essence of our boutique winery through personalized tastings, guided tours around the vineyards, and exclusive events in l’empordà.',
-                availability: 'Available',
-                rating: 4.5,
-                imageUrl: '/assets/mas-oller.jpg',
-            },
-            {
-                id: '3',
-                name: 'Celler Bárbara Forés',
-                location: 'Terra Alta',
-                price: '€€€',
-                description: 'Uncover the artistry of winemaking through intimate tastings in our lush vineyards. Cheers to the essence of tradition and innovation in every sip. ',
-                availability: 'Available',
-                rating: 4.3,
-                imageUrl: '/assets/celler-barbara-fores.jpg',
-            },
-            {
-                id: '4',
-                name: 'Celler Bárbara Forés',
-                location: 'Terra Alta',
-                price: '€€€',
-                description: 'Uncover the artistry of winemaking through intimate tastings in our lush vineyards. Cheers to the essence of tradition and innovation in every sip. ',
-                availability: 'Available',
-                rating: 4.3,
-                imageUrl: '/assets/celler-barbara-fores.jpg',
-            },
-        ];
-        setExperiences(dummyData);
+        const fetchExperiences = async () => {
+            try {
+                const data = await experienceService.getAllExperiences();
+                setExperiences(data);
+            } catch (err) {
+                if (err instanceof Error) {
+                    setError(err.message);
+                } else {
+                    setError('An unexpected error occurred');
+                }
+            }
+        };
+
+        fetchExperiences();
     }, []);
 
     const handleCardClick = (id: string) => {
@@ -79,18 +42,19 @@ const Home: React.FC = () => {
 
     return (
         <div className="home-container">
-
             <div
                 className="top-plans"
                 style={{ backgroundImage: `url(${topPlansBackground})` }}
             >
                 <div className="top-plans-content">
-                    <h1>Hello, Alex</h1>
-                    <h2>Top Plans for You</h2>
-                    <p>Based on your quiz results</p>
+                    <h1>Welcome</h1>
+                    <h2>WineLover</h2>
+                    <p>Discover Unique Experiences</p>
                     <button className="see-more-btn">See more</button>
                 </div>
             </div>
+
+            {error && <div className="error-message">{error}</div>}
 
             <div className="filters-container">
                 <button className="filter-btn">Filter</button>
@@ -100,13 +64,13 @@ const Home: React.FC = () => {
                 {experiences.map((experience) => (
                     <div
                         className="experience-card"
-                        key={experience.id}
-                        onClick={() => handleCardClick(experience.id)} // Hace la card clickeable
+                        key={experience._id}
+                        onClick={() => handleCardClick(experience._id || '')} // Hace la card clickeable
                         style={{ cursor: 'pointer' }}
                     >
                         <img
                             src={expImg}
-                            alt={experience.name}
+                            alt={experience.title}
                             className="experience-image"
                         />
                         <div className="experience-info">
@@ -117,7 +81,7 @@ const Home: React.FC = () => {
                                     style={{ width: '20px', height: 'auto' }}
                                     className="icon-wine"
                                 />
-                                {experience.name}
+                                {experience.title}
                             </div>
                             <div className="experience-location">
                                 <img
