@@ -3,12 +3,11 @@ export type User = {
     name: string;
     mail: string;
     password: string;
-    comment: string;
     tipo: 'admin' | 'wineLover' | 'wineMaker';
     habilitado: boolean;
 };
 
-export type PublicUserInfo = Pick<User, 'name' | 'comment'>;
+export type PublicUserInfo = Pick<User, 'name'>;
 
 export type PrivateUserInfo = Pick<User, 'username' | 'password'>;
 

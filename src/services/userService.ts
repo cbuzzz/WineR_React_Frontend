@@ -16,6 +16,20 @@ const login = async (username: string, password: string): Promise<{ user: User; 
     }
 };
 
+const signup = async (userData: Omit<User, '_id' | 'habilitado'>): Promise<User> => {
+    try {
+        const response = await axios.post(`${API_URL}/user/`, userData);
+        return response.data; // Newly created user
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            const errorMessage = error.response?.data?.message || 'Signup failed';
+            throw new Error(errorMessage);
+        }
+        throw new Error('An unexpected error occurred');
+    }
+};
+
 export default {
     login,
+    signup,
 };

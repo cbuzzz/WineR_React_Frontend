@@ -1,17 +1,20 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import winerLogo from '../assets/winerlogot.png';
+import userService from '../services/userService';
 import '../styles/login.css'; // Usaremos los mismos estilos que Login
 
 const SignUp: React.FC = () => {
     const [formData, setFormData] = useState({
-        Name: '',
+        name: '',
         username: '',
         email: '',
         password: '',
+        confirmPassword: '',
         agreeToTerms: false,
     });
-
+    const [error, setError] = useState('');
+    const [success, setSuccess] = useState('');
     const navigate = useNavigate();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -22,36 +25,63 @@ const SignUp: React.FC = () => {
         }));
     };
 
-    const handleSignUp = () => {
-        console.log('Signing up with:', formData);
+    const handleSignUp = async () => {
+        setError('');
+        setSuccess('');
+
+        if (!formData.agreeToTerms) {
+            setError('You must agree to the terms and conditions');
+            return;
+        }
+
+        if (formData.password !== formData.confirmPassword) {
+            setError('Passwords do not match');
+            return;
+        }
+
+        try {
+            await userService.signup({
+                name: formData.name,
+                username: formData.username,
+                mail: formData.email,
+                password: formData.password,
+                tipo: 'wineLover', // Default type
+            });
+            setSuccess('Account created successfully! Redirecting to login...');
+            setTimeout(() => navigate('/login'), 3000); // Redirect after success
+        } catch (err) {
+            if (err instanceof Error) {
+                setError(err.message);
+            } else {
+                setError('An unexpected error occurred');
+            }
+        }
     };
 
     return (
         <div className="login-container">
             <div className="login-card">
                 <div className="tabs">
-                    <span
-                        onClick={() => navigate('/login')}
-                    >
-                        Log in
-                    </span>
+                    <span onClick={() => navigate('/login')}>Log in</span>
                     <span className="active-tab">Sign up</span>
                 </div>
                 <div className="form">
-                    <label htmlFor="first-name">Name</label>
+                    {error && <div className="error-message">{error}</div>}
+                    {success && <div className="success-message">{success}</div>}
+                    <label htmlFor="name">Name</label>
                     <input
                         type="text"
-                        id="first-name"
-                        name="firstName"
+                        id="name"
+                        name="name"
                         placeholder="Enter your name"
-                        value={formData.Name}
+                        value={formData.name}
                         onChange={handleChange}
                     />
-                    <label htmlFor="last-name">Username</label>
+                    <label htmlFor="username">Username</label>
                     <input
                         type="text"
-                        id="last-name"
-                        name="lastName"
+                        id="username"
+                        name="username"
                         placeholder="Enter your username"
                         value={formData.username}
                         onChange={handleChange}
@@ -74,13 +104,13 @@ const SignUp: React.FC = () => {
                         value={formData.password}
                         onChange={handleChange}
                     />
-                    <label htmlFor="password">Confirm Password</label>
+                    <label htmlFor="confirmPassword">Confirm Password</label>
                     <input
-                        type="confirmpassword"
-                        id="confirmpassword"
-                        name="confirmpassword"
+                        type="password"
+                        id="confirmPassword"
+                        name="confirmPassword"
                         placeholder="Confirm your password"
-                        value={formData.password}
+                        value={formData.confirmPassword}
                         onChange={handleChange}
                     />
                     <div className="terms">
