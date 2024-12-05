@@ -1,17 +1,30 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import winerLogo from '../assets/winerlogot.png';
+import userService from '../services/userService';
 import '../styles/login.css';
 
 const Login: React.FC = () => {
-    const [email, setEmail] = useState('');
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
     const navigate = useNavigate();
 
     const handleLogin = async () => {
-        // Aquí deberías realizar la lógica de autenticación
-        console.log('Logging in with:', { email, password });
-        navigate('/home');
+        setError(''); // Clear any previous error
+        try {
+            const { user, token } = await userService.login(username, password);
+            localStorage.setItem('token', token);
+            console.log('Logged in successfully:', user);
+            navigate('/home');
+        } catch (err) {
+            if (err instanceof Error) {
+                console.error('Login error:', err.message);
+                setError(err.message); // Display specific error from the backend
+            } else {
+                setError('An unexpected error occurred');
+            }
+        }
     };
 
     return (
@@ -31,13 +44,14 @@ const Login: React.FC = () => {
                     </span>
                 </div>
                 <div className="form">
-                    <label htmlFor="email">Email</label>
+                    {error && <div className="error-message">{error}</div>}
+                    <label htmlFor="username">Username</label>
                     <input
-                        type="email"
-                        id="email"
-                        placeholder="Enter your email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        type="text"
+                        id="username"
+                        placeholder="Enter your username"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
                     />
                     <label htmlFor="password">Password</label>
                     <input
