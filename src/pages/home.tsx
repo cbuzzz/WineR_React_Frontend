@@ -3,14 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import '../styles/home.css';
 import topPlansBackground from '../assets/top-plans-background.jpg';
 import expImg from '../assets/exp.jpg';
-import wineRLogo from '../assets/winerlogo.png';
+// import wineRLogo from '../assets/winerlogo.png';
 import starIcon from '../assets/star.png';
 import wineIcon from '../assets/wine.png';
 import ubiIcon from '../assets/ubi.png';
-import tasteIcon from '../assets/taste.png';
-import restaurantIcon from '../assets/restaurant.png';
-import parkingIcon from '../assets/parking.png';
-import uvaIcon from '../assets/uva.png';
+// import tasteIcon from '../assets/taste.png';
+// import restaurantIcon from '../assets/restaurant.png';
+// import parkingIcon from '../assets/parking.png';
+// import uvaIcon from '../assets/uva.png';
 import dateIcon from '../assets/date.png';
 import experienceService from '../services/experienceService';
 import { Experience } from '../models/experienceModel';
@@ -114,7 +114,7 @@ const Home: React.FC = () => {
                                 />
                                 {experience.rating}
                             </div>
-                            <div className="experience-icons">
+                            {/* <div className="experience-icons">
                                 <div className="icon-item">
                                     <img
                                         src={tasteIcon}
@@ -151,7 +151,7 @@ const Home: React.FC = () => {
                                     />
                                     <span>Vineyard tours</span>
                                 </div>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 ))}

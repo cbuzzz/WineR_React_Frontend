@@ -41,14 +41,14 @@
     margin-bottom: 10px;
 }
 
-.amenities {
+.services {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
     margin: 20px 0;
 }
 
-.amenity {
+.service {
     display: flex;
     align-items: center;
     gap: 5px;
