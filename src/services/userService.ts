@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { User } from '../models/userModel';
 
-const API_URL = 'http://localhost:3000/api'; // Update with your backend URL
+const API_URL = 'http://localhost:5000/api'; // Update with your backend URL
 
 const login = async (username: string, password: string): Promise<{ user: User; token: string }> => {
     try {

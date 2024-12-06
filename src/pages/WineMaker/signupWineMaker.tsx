@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import winerLogo from '../assets/winerlogot.png';
-import userService from '../services/userService';
-import '../styles/login.css'; // Usaremos los mismos estilos que Login
+import winerLogo from '../../assets/winerlogot.png';
+import userService from '../../services/userService';
+import '../../styles/login.css'; // Usaremos los mismos estilos que Login
 
 const SignUp: React.FC = () => {
     const [formData, setFormData] = useState({
@@ -45,11 +45,11 @@ const SignUp: React.FC = () => {
                 username: formData.username,
                 mail: formData.email,
                 password: formData.password,
-                tipo: 'wineLover', // Default type
+                tipo: 'wineMaker', // Default type
                 experiences: [],
             });
             setSuccess('Account created successfully! Redirecting to login...');
-            setTimeout(() => navigate('/login'), 3000); // Redirect after success
+            setTimeout(() => navigate('/loginWineMaker'), 3000); // Redirect after success
         } catch (err) {
             if (err instanceof Error) {
                 setError(err.message);
@@ -63,7 +63,7 @@ const SignUp: React.FC = () => {
         <div className="login-container">
             <div className="login-card">
                 <div className="tabs">
-                    <span onClick={() => navigate('/login')}>Log in</span>
+                    <span onClick={() => navigate('/loginWineMaker')}>Log in</span>
                     <span className="active-tab">Sign up</span>
                 </div>
                 <div className="form">

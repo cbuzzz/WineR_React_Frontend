@@ -10,9 +10,9 @@ const Welcome: React.FC = () => {
 
     const handleChoice = (role: string) => {
         if (role === 'WineLover') {
-            navigate('/login'); // Navega a la página de login para WineLovers
+            navigate('/loginWineLover'); // Navega a la página de login para WineLovers
         } else if (role === 'WineMaker') {
-            navigate('/login'); // Puedes personalizar esta ruta para WineMakers
+            navigate('/loginWineMaker'); // Puedes personalizar esta ruta para WineMakers
         }
     };
 
