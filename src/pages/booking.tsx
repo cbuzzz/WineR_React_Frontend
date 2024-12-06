@@ -1,31 +1,20 @@
-import React from 'react';
-import '../styles/booking.css'; // Archivo CSS para estilos
+import React, { useEffect, useState } from 'react';
+import '../styles/booking.css';
+import { Experience } from '../models/experienceModel';
+import UserService from '../services/userService';
 
-// Interfaz para las experiencias
-interface Experience {
-    id: string;
-    title: string;
-    location: string;
-    date: string;
-    time: string;
-    guests: string;
-    activities: string[];
-    image: string;
-}
 
 // Componente de tarjeta individual para experiencias
 const ExperienceCard: React.FC<{ experience: Experience }> = ({ experience }) => {
     return (
         <div className="experience-card">
-            <img src={experience.image} alt={experience.title} className="experience-image" />
+            {/* <img src={`/images/${experience._id}.jpg`} alt={experience.title} className="experience-image" /> */}
             <div className="experience-info">
                 <h3>{experience.title}</h3>
                 <p className="experience-location">{experience.location}</p>
-                <p className="experience-date">
-                    {experience.date} - {experience.time}
-                </p>
-                <p className="experience-guests">{experience.guests}</p>
-                <p className="experience-activities">{experience.activities.join(', ')}</p>
+                <p className="experience-date">{experience.date}</p>
+                <p className="experience-description">{experience.description}</p>
+                <p className="experience-rating">Rating: {experience.rating} ★</p>
                 <button className="share-button">Take me there!</button>
             </div>
         </div>
@@ -33,29 +22,31 @@ const ExperienceCard: React.FC<{ experience: Experience }> = ({ experience }) =>
 };
 
 const Booking: React.FC = () => {
-    // Datos simulados que en el futuro vendrán desde el backend
-    const experiences: Experience[] = [
-        {
-            id: '1',
-            title: 'Scala Dei',
-            location: 'Tarragona',
-            date: 'Dec 11',
-            time: '10:00 AM',
-            guests: '2 Adults',
-            activities: ['Wine Tasting'],
-            image: '/images/scala-dei.jpg',
-        },
-        {
-            id: '2',
-            title: 'Alvaro Palacios',
-            location: 'Tarragona',
-            date: 'Jan 4',
-            time: '3:00 PM',
-            guests: '2 Adults',
-            activities: ['Vineyard Tour', 'Wine Tasting'],
-            image: '/images/alvaro-palacios.jpg',
-        },
-    ];
+    const [experiences, setExperiences] = useState<Experience[]>([]);
+    const [error, setError] = useState<string | null>(null);
+    const [loading, setLoading] = useState<boolean>(true);
+    useEffect(() => {
+        const fetchExperiences = async () => {
+            try {
+                const userExperiences = await UserService.fetchUserExperiences();
+                setExperiences(userExperiences);
+            } catch (err) {
+                setError('Failed to fetch experiences');
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchExperiences();
+    }, []);
+
+    if (loading) {
+        return <p>Loading...</p>;
+    }
+
+    if (error) {
+        return <p className="error-message">{error}</p>;
+    }
 
     return (
         <div className="booking-container">
@@ -68,7 +59,7 @@ const Booking: React.FC = () => {
             </header>
             <div className="experience-list">
                 {experiences.map((experience) => (
-                    <ExperienceCard key={experience.id} experience={experience} />
+                    <ExperienceCard key={experience._id} experience={experience} />
                 ))}
             </div>
         </div>

@@ -13,8 +13,7 @@ const Login: React.FC = () => {
     const handleLogin = async () => {
         setError(''); // Clear any previous error
         try {
-            const { user, token } = await userService.login(username, password);
-            localStorage.setItem('token', token);
+            const { user } = await userService.login(username, password);
             console.log('Logged in successfully:', user);
             navigate('/home');
         } catch (err) {
