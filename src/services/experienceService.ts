@@ -17,6 +17,20 @@ const getAllExperiences = async (): Promise<Experience[]> => {
     }
 };
 
+// Fetch a specific experience by ID
+const getExperienceById = async (id: string): Promise<Experience> => {
+    try {
+        const response = await axios.get<Experience>(`${API_URL}/${id}`);
+        return response.data;
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            throw new Error(error.response?.data?.message || 'Failed to fetch experience');
+        }
+        throw new Error('An unexpected error occurred');
+    }
+};
+
 export default {
     getAllExperiences,
+    getExperienceById,
 };
