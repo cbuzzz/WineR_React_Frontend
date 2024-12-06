@@ -8,9 +8,10 @@ import SignUpWL from './pages/WineLover/signupWineLover';
 import HomeWM from './pages/WineMaker/homeWineMaker';
 import LoginWM from './pages/WineMaker/loginWineMaker';
 import SignUpWM from './pages/WineMaker/signupWineMaker';
-import ExperienceDetails from './pages/experiencedetails';
-import Booking from './pages/booking';
-import Search from './pages/search';
+import ExperienceDetails from './pages/WineLover/experiencedetails';
+import Booking from './pages/WineLover/booking';
+import Search from './pages/WineLover/search';
+import CreateExperience from './pages/WineMaker/createExperience'; // Ruta para crear experiencia
 
 const App: React.FC = () => {
   return (
@@ -23,30 +24,19 @@ const App: React.FC = () => {
         <Route path="/loginWineMaker" element={<LoginWM />} />
         <Route path="/signupWineMaker" element={<SignUpWM />} />
 
-        {/* Rutas con BaseLayout */}
-        <Route
-          path="/*"
-          element={
-            <BaseLayout>
-              <Routes>
-                {/* Rutas específicas para WineLover */}
-                <Route path="/homeWineLover" element={<HomeWL />} />
+        {/* Rutas específicas para WineLover */}
+        <Route path="/homeWineLover" element={<HomeWL />} />
+        <Route path="/experience/:id" element={<ExperienceDetails />} />
+        <Route path="/search" element={<Search />} />
+        <Route path="/booking" element={<Booking />} />
 
-                {/* Rutas específicas para WineMaker */}
-                <Route path="/homeWineMaker" element={<HomeWM />} />
-
-                {/* Rutas generales dentro del BaseLayout */}
-                <Route path="/experience/:id" element={<ExperienceDetails />} />
-                <Route path="/search" element={<Search />} />
-                <Route path="/booking" element={<Booking />} />
-              </Routes>
-            </BaseLayout>
-          }
-        />
+        {/* Rutas específicas para WineMaker */}
+        <Route path="/homeWineMaker" element={<HomeWM />} />
+        <Route path="/createExperience" element={<CreateExperience />} /> {/* Ruta para crear experiencia */}
+        
       </Routes>
     </Router>
   );
 };
 
 export default App;
-

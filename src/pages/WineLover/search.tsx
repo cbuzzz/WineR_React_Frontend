@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import '../styles/search.css';
+import '../../styles/search.css';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
-import experienceService from '../services/experienceService';
-import { Experience } from '../models/experienceModel';
-import { getCoordinates } from '../utils/geocoding';
+import experienceService from '../../services/experienceService';
+import { Experience } from '../../models/experienceModel';
+import { getCoordinates } from '../../utils/geocoding';
 
 // Fix marker icon compatibility
 delete (L.Icon.Default.prototype as any)._getIconUrl;

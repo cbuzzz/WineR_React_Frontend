@@ -1,5 +1,5 @@
 import React from 'react';
-import '../styles/booking.css'; // Archivo CSS para estilos
+import '../../styles/booking.css'; // Archivo CSS para estilos
 
 // Interfaz para las experiencias
 interface Experience {

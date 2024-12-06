@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import '../styles/experiencedetails.css';
-import experienceService from '../services/experienceService';
-import { Experience } from '../models/experienceModel';
+import '../../styles/experiencedetails.css';
+import experienceService from '../../services/experienceService';
+import { Experience } from '../../models/experienceModel';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import { getCoordinates } from '../utils/geocoding'; // Import the geocoding utility
+import { getCoordinates } from '../../utils/geocoding'; // Import the geocoding utility
 
 // Fix Leaflet marker icon compatibility in React
 delete (L.Icon.Default.prototype as any)._getIconUrl;

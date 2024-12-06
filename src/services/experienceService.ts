@@ -30,7 +30,21 @@ const getExperienceById = async (id: string): Promise<Experience> => {
     }
 };
 
+const createExperience = async (experienceData: Omit<Experience, '_id' | 'rating' | 'reviews'>): Promise<Experience> => {
+    try {
+        const response = await axios.post(`${API_URL}/`, experienceData);
+        return response.data; // Experiencia recién creada
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            const errorMessage = error.response?.data?.message || 'Failed to create experience';
+            throw new Error(errorMessage);
+        }
+        throw new Error('An unexpected error occurred');
+    }
+};
+
 export default {
     getAllExperiences,
     getExperienceById,
+    createExperience,
 };
