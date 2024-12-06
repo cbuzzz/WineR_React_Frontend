@@ -57,9 +57,9 @@ const Home: React.FC = () => {
 
             {error && <div className="error-message">{error}</div>}
 
-            <div className="filters-container">
+            {/* <div className="filters-container">
                 <button className="filter-btn">Filter</button>
-            </div>
+            </div> */}
 
             <div className="experience-list">
                 {experiences.map((experience) => (

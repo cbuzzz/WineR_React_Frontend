@@ -1,21 +1,111 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../styles/search.css';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
+import L from 'leaflet';
+import experienceService from '../services/experienceService';
+import { Experience } from '../models/experienceModel';
+import { getCoordinates } from '../utils/geocoding';
+
+// Fix marker icon compatibility
+delete (L.Icon.Default.prototype as any)._getIconUrl;
+L.Icon.Default.mergeOptions({
+    iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.3/dist/images/marker-icon-2x.png',
+    iconUrl: 'https://unpkg.com/leaflet@1.9.3/dist/images/marker-icon.png',
+    shadowUrl: 'https://unpkg.com/leaflet@1.9.3/dist/images/marker-shadow.png',
+});
 
 const Search: React.FC = () => {
     const [showFilters, setShowFilters] = useState(false); // Estado para controlar el pop-up de filtros
+    const [experiences, setExperiences] = useState<(Experience & { coordinates?: [number, number] })[]>([]);
+    const [inputAddress, setInputAddress] = useState('');
+    const [error, setError] = useState<string | null>(null);
+    const [userCoordinates, setUserCoordinates] = useState<[number, number] | null>(null);
+    const [mapCenter, setMapCenter] = useState<[number, number]>([41.3874, 2.1686]); // Default to Barcelona
 
     const toggleFilters = () => {
         setShowFilters(!showFilters);
     };
 
+    useEffect(() => {
+        // Fetch user location
+        const fetchUserLocation = () => {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const coords: [number, number] = [position.coords.latitude, position.coords.longitude];
+                        setUserCoordinates(coords);
+                        setMapCenter(coords); // Center map on user's location
+                    },
+                    (err) => {
+                        console.error('Error fetching user location:', err);
+                        setUserCoordinates(null); // User location unavailable
+                    }
+                );
+            }
+        };
+
+        // Fetch experiences and geocode their locations
+        const fetchExperiencesWithCoordinates = async () => {
+            try {
+                const data = await experienceService.getAllExperiences();
+
+                // Geocode each experience location
+                const experiencesWithCoordinates = await Promise.all(
+                    data.map(async (experience) => {
+                        try {
+                            const coordinates = await getCoordinates(experience.location); // Use imported utility
+                            return { ...experience, coordinates };
+                        } catch (err) {
+                            console.error(`Failed to fetch coordinates for ${experience.location}:`, err);
+                            return { ...experience }; // Skip if coordinates not found
+                        }
+                    })
+                );
+
+                setExperiences(experiencesWithCoordinates);
+            } catch (err) {
+                setError(err instanceof Error ? err.message : 'An unexpected error occurred');
+            }
+        };
+
+        fetchUserLocation();
+        fetchExperiencesWithCoordinates();
+    }, []);
+
+    if (error) {
+        return <p className="error-message">{error}</p>;
+    }
+
+    const handleSearch = async () => {
+        try {
+            if (inputAddress) {
+                const coords = await getCoordinates(inputAddress); // Use imported utility
+                setMapCenter(coords);
+            }
+        } catch (err) {
+            setError('Failed to find location.');
+        }
+    };
+
+    if (!mapCenter) {
+        return <p>Loading map...</p>;
+    }
+
     return (
         <div className="search-container">
             {/* Cabecera */}
             <div className="search-header">
-                <h1 className="search-title">Search</h1>
+                <h1 className="search-title">Find experiences near you!</h1>
                 <div className="search-actions">
                     <div className="search-bar">
-                        <input type="text" placeholder="Where to?" />
+                        <input
+                            type="text"
+                            value={inputAddress}
+                            onChange={(e) => setInputAddress(e.target.value)}
+                            placeholder="Where to?"
+                        />
+                        <button onClick={handleSearch}>Search</button>
                     </div>
                     <button className="filter-btn" onClick={toggleFilters}>
                         Filters
@@ -25,13 +115,30 @@ const Search: React.FC = () => {
 
             {/* Contenedor del mapa */}
             <div className="map-container">
-                <div className="mock-map">
-                    {/* Simulación del mapa con pines */}
-                    <p>Map Placeholder</p>
-                    <div className="map-pin" style={{ top: '50%', left: '30%' }}></div>
-                    <div className="map-pin" style={{ top: '60%', left: '50%' }}></div>
-                    <div className="map-pin" style={{ top: '70%', left: '70%' }}></div>
-                </div>
+                <MapContainer center={mapCenter} zoom={13} style={{ height: '600px', width: '100%' }}>
+                    <TileLayer
+                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                        attribution="&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors"
+                    />
+                    {/* User Location Marker */}
+                    {userCoordinates && (
+                        <Marker position={userCoordinates}>
+                            <Popup>Your Location</Popup>
+                        </Marker>
+                    )}
+                    {/* Experience Markers */}
+                    {experiences.map(
+                        (exp, index) =>
+                            exp.coordinates && (
+                                <Marker key={index} position={exp.coordinates}>
+                                    <Popup>
+                                        <strong>{exp.title}</strong>
+                                        <p>{exp.location}</p>
+                                    </Popup>
+                                </Marker>
+                            )
+                    )}
+                </MapContainer>
             </div>
             {/* Pop-up de Filtros */}
             {showFilters && (
