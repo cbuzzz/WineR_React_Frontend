@@ -6,6 +6,7 @@ export interface User {
     password: string;
     tipo: 'admin' | 'wineLover' | 'wineMaker';
     habilitado: boolean;
+    experiences: string[];
 };
 
 export type PublicUserInfo = Pick<User, 'name'>;

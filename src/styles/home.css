@@ -3,7 +3,8 @@
     width: 100%;
     max-width: 1400px;
     margin: 0 auto;
-    height: calc(100vh - 70px); /* Consistente con search.css */
+    height: calc(100vh - 70px);
+    /* Consistente con search.css */
     padding: 20px;
     overflow-y: auto;
     font-family: 'Arial', sans-serif;
@@ -101,6 +102,16 @@
 
 /* Ubicación y precios */
 .experience-location {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 1rem;
+    color: #666;
+    font-weight: bold;
+}
+
+/* Ubicación y precios */
+.experience-date {
     display: flex;
     align-items: center;
     gap: 5px;

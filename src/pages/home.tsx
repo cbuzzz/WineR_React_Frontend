@@ -11,6 +11,7 @@ import tasteIcon from '../assets/taste.png';
 import restaurantIcon from '../assets/restaurant.png';
 import parkingIcon from '../assets/parking.png';
 import uvaIcon from '../assets/uva.png';
+import dateIcon from '../assets/date.png';
 import experienceService from '../services/experienceService';
 import { Experience } from '../models/experienceModel';
 
@@ -91,6 +92,15 @@ const Home: React.FC = () => {
                                     className="icon-ubi"
                                 />
                                 {experience.location} {experience.price}
+                            </div>
+                            <div className="experience-date">
+                                <img
+                                    src={dateIcon}
+                                    alt="Date"
+                                    style={{ width: '15px', height: 'auto' }}
+                                    className="date-ubi"
+                                />
+                                {experience.date}
                             </div>
                             <div className="experience-description">
                                 {experience.description}

@@ -46,6 +46,7 @@ const SignUp: React.FC = () => {
                 mail: formData.email,
                 password: formData.password,
                 tipo: 'wineLover', // Default type
+                experiences: [],
             });
             setSuccess('Account created successfully! Redirecting to login...');
             setTimeout(() => navigate('/login'), 3000); // Redirect after success
