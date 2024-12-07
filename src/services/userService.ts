@@ -1,8 +1,7 @@
 import axios from 'axios';
 import { User } from '../models/userModel';
-import { Experience } from '../models/experienceModel';
 
-const API_URL = 'http://localhost:5000/api'; // Actualiza con tu URL de backend
+const API_URL = 'http://localhost:3000/api'; // Actualiza con tu URL de backend
 
 // Método para logearse
 const login = async (username: string, password: string): Promise<{ user: User; token: string }> => {
@@ -31,10 +30,6 @@ const signup = async (userData: Omit<User, '_id' | 'habilitado'>): Promise<User>
         throw new Error('An unexpected error occurred');
     }
 };
-
-
-
-
 
 export default {
     login,

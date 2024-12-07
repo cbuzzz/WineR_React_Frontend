@@ -32,6 +32,12 @@ const Login: React.FC = () => {
 
             localStorage.setItem('token', token); // Guardar el token en localStorage
             console.log('Logged in successfully:', user);
+            if (user && user._id) {
+                localStorage.setItem('id', user._id.toString());
+                console.log('User ID saved to localStorage:', user._id.toString());
+            } else {
+                console.log('User ID not found or user object is invalid');
+            }
             navigate('/homeWineMaker'); // Redirigir al home de WineMaker
 
         } catch (err) {

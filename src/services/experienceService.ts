@@ -2,7 +2,7 @@
 import axios from 'axios';
 import { Experience } from '../models/experienceModel';
 
-const API_URL = 'http://localhost:5000/api/experiencias'; // Update this base URL if necessary
+const API_URL = 'http://localhost:3000/api/experiencias'; // Update this base URL if necessary
 
 // Fetch all experiences from the backend
 const getAllExperiences = async (): Promise<Experience[]> => {

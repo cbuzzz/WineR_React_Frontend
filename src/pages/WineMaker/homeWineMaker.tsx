@@ -14,6 +14,7 @@ import ubiIcon from '../../assets/ubi.png';
 import dateIcon from '../../assets/date.png';
 import experienceService from '../../services/experienceService';
 import { Experience } from '../../models/experienceModel';
+import NavWineMaker from '../../components/NavWineMaker'; // Asegúrate de que la ruta sea correcta
 
 const Home: React.FC = () => {
     const navigate = useNavigate();
@@ -43,23 +44,20 @@ const Home: React.FC = () => {
 
     return (
         <div className="home-container">
+            <NavWineMaker /> {/* Barra de navegación específica para WineMaker */}
             <div
                 className="top-plans"
                 style={{ backgroundImage: `url(${topPlansBackground})` }}
             >
                 <div className="top-plans-content">
                     <h1>Welcome</h1>
-                    <h2>WineLover</h2>
-                    <p>Discover Unique Experiences</p>
+                    <h2>WineMaker</h2>
+                    <p>Create Unique Experiences</p>
                     <button className="see-more-btn">See more</button>
                 </div>
             </div>
 
             {error && <div className="error-message">{error}</div>}
-
-            {/* <div className="filters-container">
-                <button className="filter-btn">Filter</button>
-            </div> */}
 
             <div className="experience-list">
                 {experiences.map((experience) => (
@@ -114,44 +112,6 @@ const Home: React.FC = () => {
                                 />
                                 {experience.rating}
                             </div>
-                            {/* <div className="experience-icons">
-                                <div className="icon-item">
-                                    <img
-                                        src={tasteIcon}
-                                        alt="Wine Tastings"
-                                        style={{ width: '20px', height: 'auto' }}
-                                        className="icon-taste"
-                                    />
-                                    <span>Wine tastings</span>
-                                </div>
-                                <div className="icon-item">
-                                    <img
-                                        src={restaurantIcon}
-                                        alt="Restaurant"
-                                        style={{ width: '20px', height: 'auto' }}
-                                        className="icon-restaurant"
-                                    />
-                                    <span>Restaurant</span>
-                                </div>
-                                <div className="icon-item">
-                                    <img
-                                        src={parkingIcon}
-                                        alt="Parking"
-                                        style={{ width: '20px', height: 'auto' }}
-                                        className="icon-parking"
-                                    />
-                                    <span>Parking</span>
-                                </div>
-                                <div className="icon-item">
-                                    <img
-                                        src={uvaIcon}
-                                        alt="Vineyard Tours"
-                                        style={{ width: '20px', height: 'auto' }}
-                                        className="icon-uva"
-                                    />
-                                    <span>Vineyard tours</span>
-                                </div>
-                            </div> */}
                         </div>
                     </div>
                 ))}

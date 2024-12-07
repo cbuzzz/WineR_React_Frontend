@@ -15,6 +15,6 @@ export interface Experience {
     contactmail: string,
     rating: number,
     reviews: string[],
-    date: string,
+    date: string,   
     services: Service[],
 }
