@@ -1,23 +1,26 @@
-# Stage 1: Use node:alpine image for development
-FROM node:alpine AS development
+# Use an official Node.js runtime as the base image
+FROM node:18-alpine
 
-# Declare environment variable to specify the environment
-ENV NODE_ENV=development
+# Create app directory
+WORKDIR /app
 
-# Set the working directory inside the container
-WORKDIR /react-app
+# Install app dependencies
+COPY package*.json ./
 
-# Copy only the package.json and package-lock.json (if available) to leverage Docker cache for dependencies installation
-COPY ./package*.json ./
-
-# Install project dependencies
+# Install app dependencies
 RUN npm install
 
-# Copy the rest of the application files into the container
+# Copy the rest of the app source
 COPY . .
 
-# Expose the port the app will run on (typically React development server runs on 3000, change to 3001 if needed)
-EXPOSE 3001
+# Build the React app
+RUN npm run build
 
-# Command to start the React development server
-CMD ["npm", "start"]
+# Install a simple web server to serve the app
+RUN npm install -g serve
+
+# Make port 3000 available to the world outside this container
+EXPOSE 3000
+
+# Serve the built React app
+CMD ["serve", "-s", "build", "-l", "3000"]
