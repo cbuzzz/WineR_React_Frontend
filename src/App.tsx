@@ -33,11 +33,10 @@ const App: React.FC = () => {
         <Route path="/booking" element={<Booking />} />
         <Route path="/profileWineLover" element={<ProfileWL />} />
 
-
         {/* Rutas específicas para WineMaker */}
         <Route path="/homeWineMaker" element={<HomeWM />} />
         <Route path="/createExperience" element={<CreateExperience />} /> {/* Ruta para crear experiencia */}
-        <Route path="/profileWineMaker" element={<ProfileWM />} />        
+        <Route path="/profileWineMaker" element={<ProfileWM />} />
       </Routes>
     </Router>
   );
