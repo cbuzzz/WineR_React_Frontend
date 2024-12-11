@@ -50,7 +50,7 @@ const signup = async (userData: Omit<User, '_id' | 'habilitado'>): Promise<User>
 // Fetch experiences for the logged-in user
 const fetchUserExperiences = async (): Promise<Experience[]> => {
     try {
-        const response = await axios.get(`${API_URL}/experiences`, getHeaders());
+        const response = await axios.get(`${API_URL}/experiences/all`, getHeaders());
         return response.data.experiences;
     } catch (error) {
         if (axios.isAxiosError(error)) {
