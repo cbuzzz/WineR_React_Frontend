@@ -4,7 +4,6 @@
     max-width: 1400px;
     margin: 0 auto;
     height: calc(100vh - 70px);
-    /* Consistente con search.css */
     padding: 20px;
     overflow-y: auto;
     font-family: 'Arial', sans-serif;
@@ -16,50 +15,24 @@
     background-position: center;
     color: #fff;
     text-align: center;
-    padding: 50px 20px;
+    padding: 60px 30px; /* Espacio más grande */
     border-radius: 10px;
     margin-bottom: 30px;
+    background-color: rgba(0, 0, 0, 0.5); /* Sombra sutil */
 }
 
-.see-more-btn {
-    background-color: #fff;
-    color: #a43d4e;
-    padding: 10px 20px;
-    border-radius: 5px;
-    border: none;
+.top-plans-content h1 {
+    font-size: 3rem; /* Título más grande */
     font-weight: bold;
-    cursor: pointer;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Sombra para mejorar legibilidad */
 }
 
-.see-more-btn:hover {
-    background-color: #892e3e;
-    color: #fff;
+.top-plans-content p {
+    font-size: 1.2rem;
+    margin-top: 10px;
 }
 
-/* Botón de filtros */
-.filters-container {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.filter-btn {
-    background-color: #fff;
-    color: #a43d4e;
-    padding: 10px 20px;
-    border-radius: 5px;
-    border: none;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-/* Lista de Experiencias */
-.experience-list {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-/* Estilos actualizados para las tarjetas de experiencia */
+/* Tarjetas de experiencia */
 .experience-card {
     display: flex;
     align-items: flex-start;
@@ -67,188 +40,100 @@
     background-color: #fff;
     border-radius: 15px;
     overflow: hidden;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Más sombra */
     padding: 20px;
     margin: 20px 0;
-    gap: 5px;
+    gap: 15px;
     border: 2px solid #a43d4e;
-    height: 475px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Transición suave */
 }
 
-/* Imagen principal de la bodega */
+/* Efecto hover */
+.experience-card:hover {
+    transform: translateY(-10px); /* Subir un poco al hacer hover */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); /* Sombra más pronunciada */
+}
+
+/* Imagen de experiencia */
 .experience-image {
-    flex: 0 0 25%;
+    flex: 0 0 30%; /* Más espacio para la imagen */
     border-radius: 10px;
-    height: 230px;
+    height: 250px;
     object-fit: cover;
+    transition: transform 0.3s ease; /* Transición para efecto hover */
 }
 
-/* Contenedor de información de la experiencia */
+.experience-image:hover {
+    transform: scale(1.05); /* Efecto de zoom */
+}
+
+/* Contenedor de la información de la experiencia */
 .experience-info {
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 15px; /* Espaciado más grande entre elementos */
 }
 
 /* Nombre de la experiencia */
 .experience-name {
-    font-size: 1.5rem;
+    font-size: 1.7rem; /* Título más grande */
     color: #a43d4e;
     font-weight: bold;
-    display: flex;
-    align-items: center;
-    gap: 10px;
 }
 
-/* Ubicación y precios */
-.experience-location {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    font-size: 1rem;
-    color: #666;
-    font-weight: bold;
-}
-
-/* Ubicación y precios */
-.experience-date {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    font-size: 1rem;
-    color: #666;
-    font-weight: bold;
-}
-
-/* Descripción */
+/* Descripción de la experiencia */
 .experience-description {
-    font-size: 1rem;
+    font-size: 1.1rem;
     color: #555;
     line-height: 1.6;
     margin-top: 10px;
 }
 
-/* Rating de la experiencia */
+/* Rating y ubicación */
+.experience-location,
+.experience-date {
+    font-size: 1.1rem;
+    color: #666;
+    font-weight: bold;
+}
+
 .experience-rating {
-    display: flex;
-    align-items: center;
     font-size: 1.2rem;
     color: #a43d4e;
     font-weight: bold;
-    gap: 5px;
-    margin-top: 5px;
-}
-
-/* Iconos con servicios */
-.experience-icons {
     display: flex;
-    gap: 15px;
-    margin-top: 15px;
-}
-
-.icon-item {
-    height: auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    font-size: 0.9rem;
-    color: #555;
-    text-align: center;
     gap: 5px;
 }
 
-/* Contenedor principal */
-.home-container {
-    width: 100%;
-    max-width: 1400px;
-    margin: 0 auto;
-    height: calc(100vh - 70px);
-    padding: 20px;
-    overflow-y: auto;
-    font-family: 'Arial', sans-serif;
-}
-
-/* Estilos para la página CreateExperience */
-.top-plans {
-    background-size: cover;
-    background-position: center;
-    color: #fff;
-    text-align: center;
-    padding: 50px 20px;
-    border-radius: 10px;
-    margin-bottom: 30px;
-}
-
-.top-plans-content h1, .top-plans-content h2 {
-    font-size: 2.5rem;
-    font-weight: bold;
-    margin: 0;
-}
-
-.top-plans-content p {
-    font-size: 1.2rem;
-}
-
-/* Botón de creación de experiencia */
-.continue-btn {
+/* Botón de logout */
+.logout-btn {
     background-color: #a43d4e;
     color: #fff;
     padding: 10px 20px;
+    font-weight: bold;
     border-radius: 5px;
     border: none;
-    font-weight: bold;
     cursor: pointer;
-    margin-top: 20px;
+    transition: background-color 0.3s ease;
 }
 
-.continue-btn:hover {
-    background-color: #892e3e;
+.logout-btn:hover {
+    background-color: #892e3e; /* Cambiar color al pasar el ratón */
 }
 
-/* Estilos para el formulario de creación */
-.form {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    margin-top: 30px;
-}
-
-form label {
+/* Mejora de botones generales */
+button {
     font-size: 1rem;
-    color: #a43d4e;
-    font-weight: bold;
-}
-
-form input,
-form textarea {
-    padding: 10px;
     border-radius: 5px;
-    border: 1px solid #ddd;
-    font-size: 1rem;
-    width: 100%;
-}
-
-form input[type="date"] {
+    padding: 12px 20px;
+    border: none;
     cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
-textarea {
-    resize: vertical;
-}
-
-/* Estilos para los mensajes de error y éxito */
-.error-message, .success-message {
-    padding: 15px;
-    background-color: #f8d7da;
-    border: 1px solid #f5c6cb;
-    color: #721c24;
-    margin-top: 20px;
-    border-radius: 5px;
-}
-
-.success-message {
-    background-color: #d4edda;
-    border-color: #c3e6cb;
-    color: #155724;
+button:hover {
+    background-color: #a43d4e;
+    color: #fff;
+    transform: translateY(-5px); /* Efecto de subir al pasar el ratón */
 }

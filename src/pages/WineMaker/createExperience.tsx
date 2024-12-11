@@ -18,7 +18,7 @@ const CreateExperience: React.FC = () => {
     });
 
     const [error, setError] = useState('');
-    const [success, setSuccess] = useState('');
+    const [showModal, setShowModal] = useState(false); // Estado para el modal de éxito
     const navigate = useNavigate();
 
     // Hook para obtener el ID del propietario desde el localStorage
@@ -44,7 +44,7 @@ const CreateExperience: React.FC = () => {
 
     const handleSubmit = async () => {
         setError('');
-        setSuccess('');
+        setShowModal(false); // Asegurarnos de que el modal esté oculto al inicio del envío
 
         const experienceData = {
             ...formData,
@@ -54,10 +54,15 @@ const CreateExperience: React.FC = () => {
         };
 
         try {
-            console.log(experienceData)
+            console.log(experienceData);
             await experienceService.createExperience(experienceData); // Se envía la experiencia al backend
-            setSuccess('Experience created successfully! Redirecting...');
-            setTimeout(() => navigate('/homeWineMaker'), 3000); // Redirige después de crear la experiencia
+            setShowModal(true); // Mostrar el modal de éxito
+
+            // Redirigir después de un corto periodo de tiempo (3 segundos)
+            setTimeout(() => {
+                setShowModal(false); // Cerrar el modal
+                navigate('/homeWineMaker'); // Redirigir al homeWineMaker
+            }, 3000); // 3 segundos de espera antes de la redirección
         } catch (err) {
             if (err instanceof Error) {
                 setError(err.message);
@@ -68,99 +73,108 @@ const CreateExperience: React.FC = () => {
     };
 
     return (
-        <div className="home-container">
-            <NavWineMaker />
-            <div
-                className="top-plans"
-                style={{
-                    backgroundImage: 'url("../../assets/top-plans-background.jpg")',
-                }}
-            >
-                <div className="top-plans-content">
-                    <h1>Create</h1>
-                    <h2>WineMaker Experience</h2>
-                    <p>Design your unique experience</p>
+        <NavWineMaker> {/* El contenido de la página está dentro de NavWineMaker */}
+            <div className="home-container">
+                <div
+                    className="top-plans"
+                    style={{
+                        backgroundImage: 'url("../../assets/top-plans-background.jpg")',
+                    }}
+                >
+                    <div className="top-plans-content">
+                        <h1>Create</h1>
+                        <h2>WineMaker Experience</h2>
+                        <p>Design your unique experience</p>
+                    </div>
+                </div>
+
+                {error && <div className="error-message">{error}</div>} {/* Muestra el mensaje de error si ocurre */}
+
+                <div className="form">
+                    <label htmlFor="title">Title</label>
+                    <input
+                        type="text"
+                        id="title"
+                        name="title"
+                        placeholder="Enter experience title"
+                        value={formData.title}
+                        onChange={handleChange}
+                    />
+
+                    <label htmlFor="description">Description</label>
+                    <textarea
+                        id="description"
+                        name="description"
+                        placeholder="Enter experience description"
+                        rows={4}
+                        value={formData.description}
+                        onChange={handleChange}
+                    />
+
+                    <label htmlFor="price">Price (€)</label>
+                    <input
+                        type="number"
+                        id="price"
+                        name="price"
+                        placeholder="Enter price"
+                        value={formData.price}
+                        onChange={handleChange}
+                    />
+
+                    <label htmlFor="location">Location</label>
+                    <input
+                        type="text"
+                        id="location"
+                        name="location"
+                        placeholder="Enter experience location"
+                        value={formData.location}
+                        onChange={handleChange}
+                    />
+
+                    <label htmlFor="contactnumber">Contact Number</label>
+                    <input
+                        type="tel"
+                        id="contactnumber"
+                        name="contactnumber"
+                        placeholder="Enter contact number"
+                        value={formData.contactnumber}
+                        onChange={handleChange}
+                    />
+
+                    <label htmlFor="contactmail">Contact Email</label>
+                    <input
+                        type="email"
+                        id="contactmail"
+                        name="contactmail"
+                        placeholder="Enter contact email"
+                        value={formData.contactmail}
+                        onChange={handleChange}
+                    />
+
+                    <label htmlFor="date">Date</label>
+                    <input
+                        type="date"
+                        id="date"
+                        name="date"
+                        value={formData.date}
+                        onChange={handleChange}
+                    />
+
+                    <button className="continue-btn" onClick={handleSubmit}>
+                        Create Experience
+                    </button>
                 </div>
             </div>
 
-            {error && <div className="error-message">{error}</div>}
-            {success && <div className="success-message">{success}</div>}
-
-            <div className="form">
-                <label htmlFor="title">Title</label>
-                <input
-                    type="text"
-                    id="title"
-                    name="title"
-                    placeholder="Enter experience title"
-                    value={formData.title}
-                    onChange={handleChange}
-                />
-
-                <label htmlFor="description">Description</label>
-                <textarea
-                    id="description"
-                    name="description"
-                    placeholder="Enter experience description"
-                    rows={4}
-                    value={formData.description}
-                    onChange={handleChange}
-                />
-
-                <label htmlFor="price">Price (€)</label>
-                <input
-                    type="number"
-                    id="price"
-                    name="price"
-                    placeholder="Enter price"
-                    value={formData.price}
-                    onChange={handleChange}
-                />
-
-                <label htmlFor="location">Location</label>
-                <input
-                    type="text"
-                    id="location"
-                    name="location"
-                    placeholder="Enter experience location"
-                    value={formData.location}
-                    onChange={handleChange}
-                />
-
-                <label htmlFor="contactnumber">Contact Number</label>
-                <input
-                    type="tel"
-                    id="contactnumber"
-                    name="contactnumber"
-                    placeholder="Enter contact number"
-                    value={formData.contactnumber}
-                    onChange={handleChange}
-                />
-
-                <label htmlFor="contactmail">Contact Email</label>
-                <input
-                    type="email"
-                    id="contactmail"
-                    name="contactmail"
-                    placeholder="Enter contact email"
-                    value={formData.contactmail}
-                    onChange={handleChange}
-                />
-
-                <label htmlFor="date">Date</label>
-                <input
-                    type="date"
-                    id="date"
-                    name="date"
-                    value={formData.date}
-                    onChange={handleChange}
-                />
-
-                <button className="continue-btn" onClick={handleSubmit}>
-                    Create Experience
-                </button>
-            </div>
-        </div>
+            {/* Modal de éxito */}
+            {showModal && (
+                <div className="modal">
+                    <div className="modal-content">
+                        <h3>Experience created successfully! Redirecting...</h3>
+                    </div>
+                </div>
+            )}
+        </NavWineMaker>
     );
 };
 

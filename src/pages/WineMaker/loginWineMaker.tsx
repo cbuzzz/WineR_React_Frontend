@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import winerLogo from '../../assets/winerlogot.png';
 import userService from '../../services/userService';
@@ -11,6 +11,11 @@ const Login: React.FC = () => {
     const [redirectToWineLover, setRedirectToWineLover] = useState(false); // Estado para manejar la redirección
     const [showModal, setShowModal] = useState(false); // Estado para mostrar el modal
     const navigate = useNavigate();
+
+    // Borrar el contenido del localStorage cuando se abra la página de login
+    useEffect(() => {
+        localStorage.clear(); // Limpia todo el contenido del localStorage
+    }, []); // Solo ejecutarlo una vez al cargar el componente
 
     const handleLogin = async () => {
         setError(''); // Limpiar errores previos

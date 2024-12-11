@@ -1,5 +1,4 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import winerLogo from '../../assets/winerlogot.png';
 import userService from '../../services/userService';
@@ -12,6 +11,11 @@ const Login: React.FC = () => {
     const [redirectToWineMaker, setRedirectToWineMaker] = useState(false); // Estado para manejar la redirección
     const [showModal, setShowModal] = useState(false); // Estado para mostrar el modal
     const navigate = useNavigate();
+
+    // Borrar el contenido del localStorage cuando se abra la página de login
+    useEffect(() => {
+        localStorage.clear(); // Limpia todo el contenido del localStorage
+    }, []); // Solo ejecutarlo una vez al cargar el componente
 
     const handleLogin = async () => {
         setError(''); // Limpiar errores previos
@@ -33,7 +37,16 @@ const Login: React.FC = () => {
 
             localStorage.setItem('token', token); // Guardar el token en localStorage
             console.log('Logged in successfully:', user);
-            navigate('/homeWineLover'); // Redirigir al home de WineMaker
+
+            // Guardar el ID del usuario en el localStorage
+            if (user && user._id) {
+                localStorage.setItem('id', user._id.toString());
+                console.log('User ID saved to localStorage:', user._id.toString());
+            } else {
+                console.log('User ID not found or user object is invalid');
+            }
+
+            navigate('/homeWineLover'); // Redirigir al home de WineLover
 
         } catch (err) {
             if (err instanceof Error) {

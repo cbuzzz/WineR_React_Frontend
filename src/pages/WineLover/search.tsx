@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import '../../styles/search.css';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import experienceService from '../../services/experienceService';
 import { Experience } from '../../models/experienceModel';
 import { getCoordinates } from '../../utils/geocoding';
+import NavWineLover from '../../components/NavWineLover';  // Importar NavWineLover
 
 // Fix marker icon compatibility
 delete (L.Icon.Default.prototype as any)._getIconUrl;
@@ -93,152 +94,154 @@ const Search: React.FC = () => {
     }
 
     return (
-        <div className="search-container">
-            {/* Cabecera */}
-            <div className="search-header">
-                <h1 className="search-title">Find experiences near you!</h1>
-                <div className="search-actions">
-                    <div className="search-bar">
-                        <input
-                            type="text"
-                            value={inputAddress}
-                            onChange={(e) => setInputAddress(e.target.value)}
-                            placeholder="Where to?"
-                        />
-                        <button onClick={handleSearch}>Search</button>
-                    </div>
-                    <button className="filter-btn" onClick={toggleFilters}>
-                        Filters
-                    </button>
-                </div>
-            </div>
-
-            {/* Contenedor del mapa */}
-            <div className="map-container">
-                <MapContainer center={mapCenter} zoom={13} style={{ height: '600px', width: '100%' }}>
-                    <TileLayer
-                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                        attribution="&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors"
-                    />
-                    {/* User Location Marker */}
-                    {userCoordinates && (
-                        <Marker position={userCoordinates}>
-                            <Popup>Your Location</Popup>
-                        </Marker>
-                    )}
-                    {/* Experience Markers */}
-                    {experiences.map(
-                        (exp, index) =>
-                            exp.coordinates && (
-                                <Marker key={index} position={exp.coordinates}>
-                                    <Popup>
-                                        <strong>{exp.title}</strong>
-                                        <p>{exp.location}</p>
-                                    </Popup>
-                                </Marker>
-                            )
-                    )}
-                </MapContainer>
-            </div>
-            {/* Pop-up de Filtros */}
-            {showFilters && (
-                <div className="filters-popup">
-                    <div className="filters-body">
-                        <div className="filters-header">
-                            <h2>Filters</h2>
-                            <button className="close-btn" onClick={toggleFilters}>
-                                &times;
-                            </button>
+        <NavWineLover>  {/* Envuelve todo el contenido dentro de NavWineLover */}
+            <div className="search-container">
+                {/* Cabecera */}
+                <div className="search-header">
+                    <h1 className="search-title">Find experiences near you!</h1>
+                    <div className="search-actions">
+                        <div className="search-bar">
+                            <input
+                                type="text"
+                                value={inputAddress}
+                                onChange={(e) => setInputAddress(e.target.value)}
+                                placeholder="Where to?"
+                            />
+                            <button onClick={handleSearch}>Search</button>
                         </div>
-                        <div className="filters-content">
-                            {/* Price range */}
-                            <div className="filter-section">
-                                <h3>Price range</h3>
-                                <div className="price-range">
-                                    <div>
-                                        <label>Minimum</label>
-                                        <input type="number" placeholder="$100" />
-                                    </div>
-                                    <span>—</span>
-                                    <div>
-                                        <label>Maximum</label>
-                                        <input type="number" placeholder="$520" />
+                        <button className="filter-btn" onClick={toggleFilters}>
+                            Filters
+                        </button>
+                    </div>
+                </div>
+
+                {/* Contenedor del mapa */}
+                <div className="map-container">
+                    <MapContainer center={mapCenter} zoom={13} style={{ height: '600px', width: '100%' }}>
+                        <TileLayer
+                            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                            attribution="&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors"
+                        />
+                        {/* User Location Marker */}
+                        {userCoordinates && (
+                            <Marker position={userCoordinates}>
+                                <Popup>Your Location</Popup>
+                            </Marker>
+                        )}
+                        {/* Experience Markers */}
+                        {experiences.map(
+                            (exp, index) =>
+                                exp.coordinates && (
+                                    <Marker key={index} position={exp.coordinates}>
+                                        <Popup>
+                                            <strong>{exp.title}</strong>
+                                            <p>{exp.location}</p>
+                                        </Popup>
+                                    </Marker>
+                                )
+                        )}
+                    </MapContainer>
+                </div>
+                {/* Pop-up de Filtros */}
+                {showFilters && (
+                    <div className="filters-popup">
+                        <div className="filters-body">
+                            <div className="filters-header">
+                                <h2>Filters</h2>
+                                <button className="close-btn" onClick={toggleFilters}>
+                                    &times;
+                                </button>
+                            </div>
+                            <div className="filters-content">
+                                {/* Price range */}
+                                <div className="filter-section">
+                                    <h3>Price range</h3>
+                                    <div className="price-range">
+                                        <div>
+                                            <label>Minimum</label>
+                                            <input type="number" placeholder="$100" />
+                                        </div>
+                                        <span>—</span>
+                                        <div>
+                                            <label>Maximum</label>
+                                            <input type="number" placeholder="$520" />
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            {/* Wine Experiences */}
-                            <div className="filter-section">
-                                <h3>Wine Experiences</h3>
-                                <label>
-                                    <input type="checkbox" /> Wine tasting
-                                </label>
-                                <label>
-                                    <input type="checkbox" /> Vineyard walk
-                                </label>
-                                <label>
-                                    <input type="checkbox" /> Winery tour
-                                </label>
-                                <label>
-                                    <input type="checkbox" /> Food and Wine pairing
-                                </label>
-                            </div>
+                                {/* Wine Experiences */}
+                                <div className="filter-section">
+                                    <h3>Wine Experiences</h3>
+                                    <label>
+                                        <input type="checkbox" /> Wine tasting
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" /> Vineyard walk
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" /> Winery tour
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" /> Food and Wine pairing
+                                    </label>
+                                </div>
 
-                            {/* Types of Wine */}
-                            <div className="filter-section">
-                                <h3>Types of Wine</h3>
-                                <label>
-                                    <input type="checkbox" /> Red Wine
-                                </label>
-                                <label>
-                                    <input type="checkbox" /> White Wine
-                                </label>
-                                <label>
-                                    <input type="checkbox" /> BioDynamic Wines
-                                </label>
-                                <label>
-                                    <input type="checkbox" /> Sparkling Wines
-                                </label>
-                            </div>
+                                {/* Types of Wine */}
+                                <div className="filter-section">
+                                    <h3>Types of Wine</h3>
+                                    <label>
+                                        <input type="checkbox" /> Red Wine
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" /> White Wine
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" /> BioDynamic Wines
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" /> Sparkling Wines
+                                    </label>
+                                </div>
 
-                            {/* Level of knowledge */}
-                            <div className="filter-section">
-                                <h3>Level of knowledge</h3>
-                                <label>
-                                    <input type="checkbox" /> Beginner
-                                </label>
-                                <label>
-                                    <input type="checkbox" /> Intermediate
-                                </label>
-                                <label>
-                                    <input type="checkbox" /> Advanced
-                                </label>
-                                <label>
-                                    <input type="checkbox" /> Expert
-                                </label>
-                            </div>
+                                {/* Level of knowledge */}
+                                <div className="filter-section">
+                                    <h3>Level of knowledge</h3>
+                                    <label>
+                                        <input type="checkbox" /> Beginner
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" /> Intermediate
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" /> Advanced
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" /> Expert
+                                    </label>
+                                </div>
 
-                            {/* Other */}
-                            <div className="filter-section">
-                                <h3>Other</h3>
-                                <label>
-                                    <input type="checkbox" /> Large groups
-                                </label>
-                                <label>
-                                    <input type="checkbox" /> Restaurant
-                                </label>
+                                {/* Other */}
+                                <div className="filter-section">
+                                    <h3>Other</h3>
+                                    <label>
+                                        <input type="checkbox" /> Large groups
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" /> Restaurant
+                                    </label>
+                                </div>
                             </div>
-                        </div>
-                        <div className="filters-footer">
-                            <button className="clear-btn">Clear filters</button>
-                            <button className="apply-btn" onClick={toggleFilters}>
-                                Apply filters
-                            </button>
+                            <div className="filters-footer">
+                                <button className="clear-btn">Clear filters</button>
+                                <button className="apply-btn" onClick={toggleFilters}>
+                                    Apply filters
+                                </button>
+                            </div>
                         </div>
                     </div>
-                </div>
-            )}
-        </div>
+                )}
+            </div>
+        </NavWineLover>
     );
 };
 
