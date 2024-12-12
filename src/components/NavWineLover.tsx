@@ -16,6 +16,7 @@ const NavWineLover: React.FC<BaseLayoutProps> = ({ children }) => {
                     <NavLink to="/homeWineLover" className={({ isActive }) => isActive ? 'active' : ''}>HOME</NavLink>
                     <NavLink to="/search" className={({ isActive }) => isActive ? 'active' : ''}>SEARCH</NavLink>
                     <NavLink to="/booking" className={({ isActive }) => isActive ? 'active' : ''}>BOOKINGS</NavLink>
+                    <NavLink to="/friends" className={({ isActive }) => isActive ? 'active' : ''}>FRIENDS</NavLink>
                     <NavLink to="/profileWineLover" className={({ isActive }) => isActive ? 'active' : ''}>PROFILE</NavLink>
                 </div>
             </nav>

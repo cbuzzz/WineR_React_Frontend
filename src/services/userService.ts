@@ -97,10 +97,79 @@ const getUserById = async (userId: string) => {
         throw new Error('Failed to fetch user data');
     }
 };
+
+// Obtener amigos y solicitudes del usuario logeado
+const getFriendsAndRequests = async (userId: string): Promise<{ amigos: string[]; solicitudes: string[] }> => {
+    try {
+        const response = await axios.get(`${API_URL}/${userId}`, getHeaders());
+        return {
+            amigos: response.data.amigos,
+            solicitudes: response.data.solicitudes,
+        };
+    } catch (error) {
+        throw new Error('Failed to fetch friends and requests');
+    }
+};
+
+// Aceptar una solicitud de amistad
+const acceptFriendRequest = async (username: string): Promise<void> => {
+    try {
+        const loggedUser = localStorage.getItem('username');
+        await axios.get(`${API_URL}/friend/${username}/${loggedUser}`, getHeaders());
+        await axios.delete(`${API_URL}/solicitud/${loggedUser}/${username}`, getHeaders());
+        //await axios.delete(`${API_URL}/solicitud/${loggedUser}/${username}`, getHeaders());
+    } catch (error) {
+        throw new Error('Failed to accept friend request');
+    }
+};
+
+// Rechazar una solicitud de amistad
+const rejectFriendRequest = async (username: string): Promise<void> => {
+    try {
+        const loggedUser = localStorage.getItem('username');
+        await axios.delete(`${API_URL}/solicitud/${loggedUser}/${username}`, getHeaders());
+    } catch (error) {
+        throw new Error('Failed to reject friend request');
+    }
+};
+
+// Eliminar un amigo
+const removeFriend = async (username: string): Promise<void> => {
+    try {
+        const loggedUser = localStorage.getItem('username');
+        await axios.delete(`${API_URL}/friend/${loggedUser}/${username}`, getHeaders());
+    } catch (error) {
+        throw new Error('Failed to remove friend');
+    }
+};
+
+const sendFriendRequest = async (targetUsername: string): Promise<void> => {
+    try {
+        const loggedUsername = localStorage.getItem('username');
+        if (!loggedUsername) throw new Error('User not logged in');
+
+        await axios.get(
+            `${API_URL}/solicitud/${targetUsername}/${loggedUsername}`,
+            getHeaders()
+        );
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response?.status === 404) {
+            throw new Error('User not found');
+        }
+        throw new Error('Failed to send friend request');
+    }
+};
+
+
 export default {
     login,
     signup,
     fetchUserExperiences,
     logout,
     getUserById,
+    getFriendsAndRequests,
+    acceptFriendRequest,
+    rejectFriendRequest,
+    removeFriend,
+    sendFriendRequest,
 };

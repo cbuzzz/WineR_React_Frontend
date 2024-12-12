@@ -47,6 +47,8 @@ const SignUp: React.FC = () => {
                 password: formData.password,
                 tipo: 'wineMaker', // Default type
                 experiences: [],
+                amigos: [],
+                solicitudes: [],
             });
             setSuccess('Account created successfully! Redirecting to login...');
             setTimeout(() => navigate('/loginWineMaker'), 3000); // Redirect after success
