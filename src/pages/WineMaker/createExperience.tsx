@@ -4,9 +4,20 @@ import '../../styles/home.css'; // Usamos los mismos estilos que Home
 import NavWineMaker from '../../components/NavWineMaker'; // Asegúrate de que la ruta sea correcta
 import experienceService from '../../services/experienceService';
 import createBackground from '../../assets/vinito.png';
+import { Service } from '../../models/serviceModel';
+import { Experience } from '../../models/experienceModel';
+
+const servicesOptions: Service[] = [
+    { icon: "🍷", label: "Wine tastings" },
+    { icon: "🍴", label: "Restaurant" },
+    { icon: "🅿", label: "Parking" },
+    { icon: "🌿", label: "Vineyard tours" },
+    { icon: "🏛", label: "Winery tours" },
+    { icon: "🐾", label: "Pet friendly" },
+];
 
 const CreateExperience: React.FC = () => {
-    const [formData, setFormData] = useState({
+    const [formData, setFormData] = useState<Experience>({
         title: '',
         description: '',
         price: 0,
@@ -14,8 +25,11 @@ const CreateExperience: React.FC = () => {
         contactnumber: 0,
         contactmail: '',
         date: '',
-        services: [],
-        owner: '', // Inicializamos el campo owner vacío
+        owner: '',
+        participants: [],
+        rating: Math.round(Math.random() * 5),
+        reviews: [],
+        services: [], // Aquí se almacenarán los servicios seleccionados
     });
 
     const [error, setError] = useState('');
@@ -43,20 +57,22 @@ const CreateExperience: React.FC = () => {
         }));
     };
 
+    const handleServiceChange = (service: Service) => {
+        setFormData((prev) => ({
+            ...prev,
+            services: prev.services.some((s) => s.label === service.label)
+                ? prev.services.filter((s) => s.label !== service.label)
+                : [...prev.services, service],
+        }));
+    };
+
     const handleSubmit = async () => {
         setError('');
         setShowModal(false); // Asegurarnos de que el modal esté oculto al inicio del envío
 
-        const experienceData = {
-            ...formData,
-            participants: [], // Inicialmente vacío (arreglo de strings)
-            rating: Math.round(Math.random() * 5),  // Valor predeterminado aleatorio de la puntuación
-            reviews: [],      // Inicialmente vacío (arreglo de strings)
-        };
-
         try {
-            console.log(experienceData);
-            await experienceService.createExperience(experienceData); // Se envía la experiencia al backend
+            console.log(formData);
+            await experienceService.createExperience(formData); // Se envía la experiencia al backend
             setShowModal(true); // Mostrar el modal de éxito
 
             // Redirigir después de un corto periodo de tiempo (3 segundos)
@@ -89,7 +105,8 @@ const CreateExperience: React.FC = () => {
 
                 {error && <div className="error-message">{error}</div>} {/* Muestra el mensaje de error si ocurre */}
 
-                <div className="form">
+                <div className="form-create-experience">
+                    {/* Campos del formulario */}
                     <label style={{ fontWeight: 'bold', color: 'white' }} htmlFor="title">Title</label>
                     <input
                         type="text"
@@ -102,7 +119,7 @@ const CreateExperience: React.FC = () => {
 
                     <label style={{ fontWeight: 'bold', color: 'white' }} htmlFor="description">Description</label>
                     <textarea
-                        style={{ resize: 'none', width: 860 }}
+                        style={{ resize: 'none', width: 1330 }}
                         id="description"
                         name="description"
                         placeholder="Enter the experience description"
@@ -159,6 +176,23 @@ const CreateExperience: React.FC = () => {
                         value={formData.date}
                         onChange={handleChange}
                     />
+
+                    <label style={{ fontWeight: 'bold', color: 'white' }} className="label-create">Services</label>
+                    <div className="services-container-create">
+                        {servicesOptions.map((service, index) => (
+                            <div key={service.label} className="service-checkbox-create">
+                                <label className="service-label-create">
+                                    <input
+                                        type="checkbox"
+                                        checked={formData.services.some((s) => s.label === service.label)}
+                                        onChange={() => handleServiceChange(service)}
+                                    />
+                                    <span className="service-icon-create">{service.icon}</span>
+                                    {service.label}
+                                </label>
+                            </div>
+                        ))}
+                    </div>
 
                     <button className="create-btn" onClick={handleSubmit}>
                         Create Experience

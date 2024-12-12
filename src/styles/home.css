@@ -187,3 +187,43 @@ button:hover {
     transform: translateY(-5px);
     /* Efecto de subir al pasar el ratón */
 }
+
+/* Contenedor principal del formulario */
+.form-create-experience {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Servicios organizados en dos columnas con alineación vertical */
+.services-container-create {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    align-items: start;
+    grid-auto-rows: minmax(50px, auto);
+}
+
+/* Checkbox con icono y etiqueta en una sola línea */
+.service-checkbox-create {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    background-color: #892e3e;
+    border-radius: 8px;
+    color: white;
+    gap: 10px;
+}
+
+.service-label-create {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1rem;
+    color: #fff
+}
+
+.service-icon-create {
+    font-size: 1.5rem;
+    margin-right: 5px;
+}
