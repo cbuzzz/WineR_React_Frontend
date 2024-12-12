@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../styles/home.css'; // Usamos los mismos estilos que Home
-import NavWineLover from '../../components/NavWineLover'; // Asegúrate de que la ruta sea correcta
+import NavWineMaker from '../../components/NavWineMaker'; // Asegúrate de que la ruta sea correcta
 import userService from '../../services/userService'; // Servicio para obtener los detalles del usuario
 
 // Define la interfaz del usuario
@@ -50,7 +50,7 @@ const ProfileWM: React.FC = () => {
   }
 
   return (
-    <NavWineLover>
+    <NavWineMaker>
       <div className="home-container">
         <div
           className="top-plans"
@@ -108,7 +108,7 @@ const ProfileWM: React.FC = () => {
         {/* Botón de Logout */}
         <button className="logout-btn" onClick={handleLogout}>Logout</button>
       </div>
-    </NavWineLover>
+    </NavWineMaker>
   );
 };
 
