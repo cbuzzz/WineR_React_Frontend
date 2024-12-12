@@ -37,7 +37,7 @@ const Login: React.FC = () => {
                 return;
             }
 
-            localStorage.setItem('token', token); // Guardar el token en localStorage
+            localStorage.setItem('auth-token', token); // Guardar el token en localStorage
             console.log('Logged in successfully:', user);
             if (user && user._id) {
                 localStorage.setItem('id', user._id.toString());

@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import '../../styles/experiencedetails.css';
+import '../../styles/experiencedetails.css'; // Asegúrate de tener el mismo archivo de estilos
 import experienceService from '../../services/experienceService';
+import userService from '../../services/userService';
 import { Experience } from '../../models/experienceModel';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import { getCoordinates } from '../../utils/geocoding'; // Import the geocoding utility
+import { getCoordinates } from '../../utils/geocoding';
 
-// Fix Leaflet marker icon compatibility in React
+// Configuración de los íconos de Leaflet
 delete (L.Icon.Default.prototype as any)._getIconUrl;
 L.Icon.Default.mergeOptions({
     iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.3/dist/images/marker-icon-2x.png',
@@ -17,11 +18,13 @@ L.Icon.Default.mergeOptions({
 });
 
 const ExperienceDetails = () => {
-    const { id } = useParams<{ id: string }>(); // Get the experience ID from the URL
+    const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
     const [experience, setExperience] = useState<Experience | null>(null);
     const [error, setError] = useState<string | null>(null);
     const [coordinates, setCoordinates] = useState<[number, number] | null>(null);
+    const [showModal, setShowModal] = useState(false); // Controlar si el modal se muestra o no
+    const [modalMessage, setModalMessage] = useState(''); // Mensaje que se mostrará en el modal
 
     useEffect(() => {
         const fetchExperience = async () => {
@@ -30,7 +33,7 @@ const ExperienceDetails = () => {
                     const data = await experienceService.getExperienceById(id);
                     setExperience(data);
 
-                    const coords = await getCoordinates(data.location); // Fetch coordinates dynamically
+                    const coords = await getCoordinates(data.location);
                     setCoordinates(coords);
                 }
             } catch (err) {
@@ -44,6 +47,46 @@ const ExperienceDetails = () => {
 
         fetchExperience();
     }, [id]);
+
+    const handleBookNow = async () => {
+        try {
+            const userId = localStorage.getItem('id'); // Obtener el ID del usuario desde localStorage
+            if (!userId || !experience || !id) {
+                setModalMessage('User not logged in or experience not found.');
+                setShowModal(true); // Mostrar el modal de error
+                setTimeout(() => setShowModal(false), 2000); // Cerrar el modal después de 2 segundos
+                return;
+            }
+
+            // Verificar si el usuario ya tiene la experiencia
+            const user = await userService.getUserById(userId);
+            const experienceExists = user.experiences.some((expId: string) => expId === id);
+
+            if (experienceExists) {
+                // Si ya tiene la experiencia, mostrar el mensaje de "Ya estás apuntado"
+                setModalMessage('Ya estás apuntado a esta experiencia.');
+                setShowModal(true); // Mostrar el modal de aviso
+                setTimeout(() => setShowModal(false), 2000); // Cerrar el modal después de 2 segundos
+            } else {
+                // Si no está apuntado, proceder con la reserva
+                await experienceService.addUserToExperience(id, userId);
+                await userService.addExperienceToUser(id, userId);
+
+                setModalMessage('Booking successful!');
+                setShowModal(true); // Mostrar el modal de éxito
+
+                setTimeout(() => {
+                    setShowModal(false); // Cerrar el modal después de 2 segundos
+                    navigate('/booking'); // Redirigir a la página de reservas
+                }, 2000); // Cerrar el modal después de 2 segundos
+            }
+        } catch (err) {
+            console.error(err);
+            setModalMessage('Booking failed. Please try again.');
+            setShowModal(true); // Mostrar el modal de error
+            setTimeout(() => setShowModal(false), 2000); // Cerrar el modal después de 2 segundos
+        }
+    };
 
     if (error) {
         return (
@@ -63,47 +106,22 @@ const ExperienceDetails = () => {
         );
     }
 
-    // const experience = {
-    //     id: 1,
-    //     name: "Scala Dei",
-    //     location: "Priorat",
-    //     price: "$$$$",
-    //     rating: 4.93,
-    //     reviews: 273,
-    //     images: [
-    //         "/assets/experience1.jpg",
-    //         "/assets/experience2.jpg",
-    //         "/assets/experience3.jpg",
-    //         "/assets/experience4.jpg",
-    //     ],
-    //     amenities: [
-    //         { icon: "🍷", label: "Wine tastings" },
-    //         { icon: "🍴", label: "Restaurant" },
-    //         { icon: "🅿️", label: "Parking" },
-    //         { icon: "🌿", label: "Vineyard tours" },
-    //         { icon: "🍇", label: "Winery tours" },
-    //         { icon: "🐾", label: "Pet friendly" },
-    //     ],
-    //     about: `
-    //         A fusion of tradition and innovation embedded in our meticulously crafted wines.
-    //         Experience the essence of our boutique winery through personalized tastings,
-    //         guided tours around the vineyards, and exclusive events.`,
-    //     locationDetails: "Plaça del Priorat, 1, Escaladei, Tarragona",
-    // };
-
     return (
         <div className="experience-details">
+            {/* Mostrar el modal solo si showModal es true */}
+            {showModal && (
+                <div className="modal">
+                    <div className="modal-content">
+                        <h3>{modalMessage}</h3> {/* El mensaje que cambia dinámicamente */}
+                    </div>
+                </div>
+            )}
+
             <div className="header">
                 <button onClick={() => navigate(-1)}>← Back</button>
                 <h1>{experience.title}</h1>
                 <button className="favorite">♡</button>
             </div>
-
-            {/* <div className="images-gallery">
-                {experience.images.map((img, index) => (
-                    <img key={index} src={img} alt={`Experience ${index + 1}`} />
-                ))}
-            </div> */}
 
             <div className="details">
                 <h2>{experience.contactmail}</h2>
@@ -143,7 +161,7 @@ const ExperienceDetails = () => {
                     )}
                 </div>
             </div>
-            <button className="book-now">Book Now</button>
+            <button className="book-now" onClick={handleBookNow}>Book Now</button>
         </div>
     );
 };

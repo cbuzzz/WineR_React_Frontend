@@ -204,7 +204,7 @@ const CreateExperience: React.FC = () => {
             {showModal && (
                 <div className="modal">
                     <div className="modal-content">
-                        <h3>Experience created successfully! Redirecting...</h3>
+                        <h3>Experiencia creándose. Redirigiendo al menú principal...</h3>
                     </div>
                 </div>
             )}

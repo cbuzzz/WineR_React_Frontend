@@ -4,17 +4,17 @@ import { Experience } from '../models/experienceModel';
 
 const API_URL = 'http://localhost:3000/api/user'; // Update with your backend URL
 
-// Helper to get token from localStorage
+// Helper para obtener el token del localStorage
 const getToken = (): string | null => {
-    return localStorage.getItem('auth-token');
+    return localStorage.getItem('token');
 };
 
-// Helper to get headers with token
+// Helper para obtener los headers con el token (cambiado a 'auth-token')
 const getHeaders = () => {
     const token = getToken();
     return {
         headers: {
-            'auth-token': token || '', // Add token or send empty string
+            'auth-token': token || '', // Cambiado a 'auth-token'
         },
     };
 };
@@ -24,7 +24,7 @@ const login = async (username: string, password: string): Promise<{ user: User; 
     try {
         const response = await axios.post(`${API_URL}/logIn`, { username, password });
         const { token } = response.data;
-        localStorage.setItem('auth-token', token);
+        localStorage.setItem('token', token);
         return response.data; // user and token
     } catch (error) {
         if (axios.isAxiosError(error)) {
@@ -39,7 +39,7 @@ const login = async (username: string, password: string): Promise<{ user: User; 
 const signup = async (userData: Omit<User, '_id' | 'habilitado'>): Promise<User> => {
     try {
         const response = await axios.post(`${API_URL}/`, userData);
-        return response.data; // Newly created user
+        return response.data; // Usuario recién creado
     } catch (error) {
         if (axios.isAxiosError(error)) {
             const errorMessage = error.response?.data?.message || 'Signup failed';
@@ -49,7 +49,7 @@ const signup = async (userData: Omit<User, '_id' | 'habilitado'>): Promise<User>
     }
 };
 
-// Fetch experiences for the logged-in user
+// Fetch experiencias para el usuario logueado
 const fetchUserExperiences = async (): Promise<Experience[]> => {
     try {
         const response = await axios.get(`${API_URL}/experiences/all`, getHeaders());
@@ -66,34 +66,47 @@ const fetchUserExperiences = async (): Promise<Experience[]> => {
     }
 };
 
+// Método para añadir una experiencia a un usuario
+const addExperienceToUser = async (experienceId: string, userId: string): Promise<Experience> => {
+    try {
+        console.log("Llega aquí");
+        
+        // Ajusta la URL para incluir los parámetros dinámicos
+        const response = await axios.post(
+            `${API_URL}/addExpToPart/${experienceId}/${userId}`, // Ruta dinámica
+            {}, // No se necesita body, los datos están en la URL
+            getHeaders() // Encabezados con 'auth-token'
+        );
 
-// Logout function to clear the token
-const logout = () => {
-    localStorage.removeItem('auth-token'); // Remove token from localStorage
+        console.log(response.data);
+        return response.data; // Devuelve la experiencia actualizada
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            const errorMessage = error.response?.data?.message || 'Failed to add user to experience';
+            throw new Error(errorMessage);
+        }
+        throw new Error('An unexpected error occurred');
+    }
 };
 
+// Obtener el perfil de un usuario por ID
 const getUserById = async (userId: string) => {
-    // Obtener el token del localStorage (o de donde lo estés almacenando)
     const token = localStorage.getItem('token');
     console.log(localStorage.getItem('token'));
 
-
-    // Si no hay token, lanzar un error o manejarlo de alguna forma
     if (!token) {
         throw new Error('No auth token found');
     }
 
     try {
-        // Hacer la solicitud con el token en las cabeceras
         const response = await axios.get(`${API_URL}/profile/${userId}`, {
             headers: {
-                'auth-token': token, // Aquí agregamos el token en la cabecera
+                'auth-token': token, // Usar 'auth-token' en lugar de 'token'
             },
         });
 
-        return response.data; // Devolvemos los datos del usuario
+        return response.data; // Devuelve los datos del usuario
     } catch (error) {
-        // Manejo de errores
         throw new Error('Failed to fetch user data');
     }
 };
@@ -165,7 +178,7 @@ export default {
     login,
     signup,
     fetchUserExperiences,
-    logout,
+    addExperienceToUser,  // Añadir este método al export
     getUserById,
     getFriendsAndRequests,
     acceptFriendRequest,
