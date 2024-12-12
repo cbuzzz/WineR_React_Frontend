@@ -14,7 +14,7 @@ const Login: React.FC = () => {
 
     // Borrar el contenido del localStorage cuando se abra la página de login
     useEffect(() => {
-        localStorage.clear(); // Limpia todo el contenido del localStorage
+        localStorage.clear(); // Limpiar todo el contenido del localStorage
     }, []); // Solo ejecutarlo una vez al cargar el componente
 
     const handleLogin = async () => {
@@ -35,7 +35,8 @@ const Login: React.FC = () => {
                 return;
             }
 
-            localStorage.setItem('token', token); // Guardar el token en localStorage
+            // Cambiar 'token' por 'auth-token' para almacenarlo en el localStorage
+            localStorage.setItem('auth-token', token); // Guardar el auth-token en localStorage
             console.log('Logged in successfully:', user);
 
             // Guardar el ID del usuario en el localStorage

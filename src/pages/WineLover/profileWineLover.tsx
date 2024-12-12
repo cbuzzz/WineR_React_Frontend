@@ -76,34 +76,8 @@ const ProfileWL: React.FC = () => {
           </div>
         </div>
 
-        <div className="user-experiences">
-          <h2>Experiences</h2>
-          {user.experiences.length > 0 ? (
-            <div className="experience-list">
-              {user.experiences.map((experienceId: string, index) => (
-                <div key={index} className="experience-card">
-                  {/* Aquí puedes colocar los detalles de cada experiencia. Para ahora usamos un placeholder */}
-                  <div className="experience-image">
-                    <img
-                      src={`../../assets/experiences/${experienceId}.jpg`} // Asegúrate de tener imágenes de experiencias
-                      alt="Experience"
-                      className="experience-image"
-                    />
-                  </div>
-                  <div className="experience-info">
-                    <div className="experience-name">Experience Name {experienceId}</div>
-                    <div className="experience-description">Description for experience {experienceId}...</div>
-                    <div className="experience-location">Location: Some location</div>
-                    <div className="experience-date">Date: Some Date</div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <p>No experiences found.</p>
-          )}
-        </div>
-
+        {/* Eliminada la sección de experiencias */}
+        
         {/* Botón de Logout */}
         <button className="logout-btn" onClick={handleLogout}>Logout</button>
       </div>
