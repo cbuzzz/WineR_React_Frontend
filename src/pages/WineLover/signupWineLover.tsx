@@ -17,6 +17,7 @@ const SignUp: React.FC = () => {
     const [success, setSuccess] = useState('');
     const navigate = useNavigate();
 
+    // Maneja los cambios en los campos del formulario
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value, type, checked } = e.target;
         setFormData((prev) => ({
@@ -25,17 +26,63 @@ const SignUp: React.FC = () => {
         }));
     };
 
+    // Función para realizar las validaciones del formulario
+    const validateForm = () => {
+        if (!formData.name || !formData.username || !formData.email || !formData.password || !formData.confirmPassword) {
+            setError('All fields are required.');
+            return false;
+        }
+
+        // Validación del nombre (sin caracteres especiales)
+        const nameRegex = /^[a-zA-Z\s]+$/; // Solo letras y espacios
+        if (!nameRegex.test(formData.name)) {
+            setError('Name can only contain letters and spaces.');
+            return false;
+        }
+
+        // Validación del nombre de usuario (sin caracteres especiales)
+        const usernameRegex = /^[a-zA-Z0-9_]+$/; // Solo letras, números y guiones bajos
+        if (!usernameRegex.test(formData.username)) {
+            setError('Username can only contain letters, numbers, and underscores.');
+            return false;
+        }
+
+        // Validación del formato del correo electrónico
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        if (!emailRegex.test(formData.email)) {
+            setError('Please enter a valid email address.');
+            return false;
+        }
+
+        // Validación de la contraseña (al menos 8 caracteres)
+        if (formData.password.length < 8) {
+            setError('Password must be at least 8 characters long.');
+            return false;
+        }
+
+        // Validación de la confirmación de la contraseña
+        if (formData.password !== formData.confirmPassword) {
+            setError('Passwords do not match.');
+            return false;
+        }
+
+        // Validación de aceptación de los términos y condiciones
+        if (!formData.agreeToTerms) {
+            setError('You must agree to the terms and conditions.');
+            return false;
+        }
+
+        // Si todas las validaciones son correctas, regresamos true
+        return true;
+    };
+
+    // Función para manejar el registro
     const handleSignUp = async () => {
         setError('');
         setSuccess('');
 
-        if (!formData.agreeToTerms) {
-            setError('You must agree to the terms and conditions');
-            return;
-        }
-
-        if (formData.password !== formData.confirmPassword) {
-            setError('Passwords do not match');
+        // Validar los datos del formulario
+        if (!validateForm()) {
             return;
         }
 
@@ -50,8 +97,9 @@ const SignUp: React.FC = () => {
                 amigos: [],
                 solicitudes: [],
             });
+
             setSuccess('Account created successfully! Redirecting to login...');
-            setTimeout(() => navigate('/loginWineLover'), 3000); // Redirect after success
+            setTimeout(() => navigate('/loginWineLover'), 3000); // Redirigir después del éxito
         } catch (err) {
             if (err instanceof Error) {
                 setError(err.message);
