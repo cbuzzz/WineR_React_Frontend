@@ -13,7 +13,8 @@ import Booking from './pages/WineLover/booking';
 import Search from './pages/WineLover/search';
 import ProfileWL from './pages/WineLover/profileWineLover';
 import ProfileWM from './pages/WineMaker/profileWineMaker';
-import CreateExperience from './pages/WineMaker/createExperience'; // Ruta para crear experiencia
+import CreateExperience from './pages/WineMaker/createExperience';
+import Friends from './pages/WineLover/friends';
 
 const App: React.FC = () => {
   return (
@@ -31,6 +32,7 @@ const App: React.FC = () => {
         <Route path="/experience/:id" element={<ExperienceDetails />} />
         <Route path="/search" element={<Search />} />
         <Route path="/booking" element={<Booking />} />
+        <Route path="/friends" element={<Friends />} />
         <Route path="/profileWineLover" element={<ProfileWL />} />
 
         {/* Rutas específicas para WineMaker */}

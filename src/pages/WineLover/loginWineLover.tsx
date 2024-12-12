@@ -22,7 +22,7 @@ const Login: React.FC = () => {
         try {
             // Intentar loguearse con el usuario y la contraseña
             const { user, token } = await userService.login(username, password);
-            
+
             // Verificar si el usuario es un WineLover
             if (user.tipo !== 'wineLover') {
                 // Si el usuario no es un WineMaker, comprobar si es un WineMaker
@@ -41,6 +41,7 @@ const Login: React.FC = () => {
             // Guardar el ID del usuario en el localStorage
             if (user && user._id) {
                 localStorage.setItem('id', user._id.toString());
+                localStorage.setItem('username', user.username.toString())
                 console.log('User ID saved to localStorage:', user._id.toString());
             } else {
                 console.log('User ID not found or user object is invalid');
