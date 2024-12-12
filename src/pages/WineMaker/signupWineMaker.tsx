@@ -126,7 +126,7 @@ const SignUp: React.FC = () => {
                                 onChange={handleChange}
                             />
                             <label htmlFor="agreeToTerms">
-                                I agree to the <a href="/terms">terms and conditions</a>
+                                I agree to the <span className="link-terms" onClick={() => navigate('/tyc')}>terms and conditions</span>
                             </label>
                         </label>
                     </div>

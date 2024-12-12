@@ -15,6 +15,7 @@ import ProfileWL from './pages/WineLover/profileWineLover';
 import ProfileWM from './pages/WineMaker/profileWineMaker';
 import CreateExperience from './pages/WineMaker/createExperience';
 import Friends from './pages/WineLover/friends';
+import TyC from './pages/tyc';
 import { TimerProvider } from './components/timercontext';
 
 const App: React.FC = () => {
@@ -28,6 +29,7 @@ const App: React.FC = () => {
           <Route path="/signupWineLover" element={<SignUpWL />} />
           <Route path="/loginWineMaker" element={<LoginWM />} />
           <Route path="/signupWineMaker" element={<SignUpWM />} />
+          <Route path="/tyc" element={<TyC />} />
 
           {/* Rutas específicas para WineLover */}
           <Route path="/homeWineLover" element={<HomeWL />} />
