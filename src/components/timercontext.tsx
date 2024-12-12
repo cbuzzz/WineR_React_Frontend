@@ -14,7 +14,6 @@ export const TimerProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
     useEffect(() => {
         let interval: NodeJS.Timeout;
-
         if (timer > 0) {
             interval = setInterval(() => {
                 setTimer((prev) => prev + 1);
@@ -25,7 +24,6 @@ export const TimerProvider: React.FC<{ children: React.ReactNode }> = ({ childre
                 }
             }, 60000); // Ejecuta cada minuto
         }
-
         return () => clearInterval(interval); // Limpia el intervalo al desmontar
     }, [timer]);
 
