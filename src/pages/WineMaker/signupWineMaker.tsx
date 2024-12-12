@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import winerLogo from '../../assets/winerlogot.png';
 import userService from '../../services/userService';
-import '../../styles/login.css'; // Usaremos los mismos estilos que Login
+import '../../styles/login.css'; // Usamos los mismos estilos que Login
 
 const SignUp: React.FC = () => {
     const [formData, setFormData] = useState({
@@ -25,17 +25,63 @@ const SignUp: React.FC = () => {
         }));
     };
 
+    // Función para realizar las validaciones
+    const validateForm = () => {
+        if (!formData.name || !formData.username || !formData.email || !formData.password || !formData.confirmPassword) {
+            setError('All fields are required.');
+            return false;
+        }
+
+        // Validación del nombre (solo letras y espacios)
+        const nameRegex = /^[a-zA-Z\s]+$/; // Solo letras y espacios
+        if (!nameRegex.test(formData.name)) {
+            setError('Name can only contain letters and spaces.');
+            return false;
+        }
+
+        // Validación del nombre de usuario (solo letras, números y guiones bajos)
+        const usernameRegex = /^[a-zA-Z0-9_]+$/; // Letras, números y guiones bajos
+        if (!usernameRegex.test(formData.username)) {
+            setError('Username can only contain letters, numbers, and underscores.');
+            return false;
+        }
+
+        // Validación del formato del correo electrónico
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        if (!emailRegex.test(formData.email)) {
+            setError('Please enter a valid email address.');
+            return false;
+        }
+
+        // Validación de la contraseña (al menos 8 caracteres)
+        if (formData.password.length < 8) {
+            setError('Password must be at least 8 characters long.');
+            return false;
+        }
+
+        // Validación de la confirmación de la contraseña
+        if (formData.password !== formData.confirmPassword) {
+            setError('Passwords do not match.');
+            return false;
+        }
+
+        // Validación de aceptación de los términos y condiciones
+        if (!formData.agreeToTerms) {
+            setError('You must agree to the terms and conditions.');
+            return false;
+        }
+
+        // Si todas las validaciones son correctas, regresamos true
+        return true;
+    };
+
+    // Función para manejar el registro
     const handleSignUp = async () => {
         setError('');
         setSuccess('');
 
-        if (!formData.agreeToTerms) {
-            setError('You must agree to the terms and conditions');
-            return;
-        }
-
-        if (formData.password !== formData.confirmPassword) {
-            setError('Passwords do not match');
+        // Validar los datos del formulario
+        if (!validateForm()) {
             return;
         }
 
@@ -45,13 +91,14 @@ const SignUp: React.FC = () => {
                 username: formData.username,
                 mail: formData.email,
                 password: formData.password,
-                tipo: 'wineMaker', // Default type
+                tipo: 'wineMaker', // Tipo por defecto
                 experiences: [],
                 amigos: [],
                 solicitudes: [],
             });
+
             setSuccess('Account created successfully! Redirecting to login...');
-            setTimeout(() => navigate('/loginWineMaker'), 3000); // Redirect after success
+            setTimeout(() => navigate('/loginWineMaker'), 3000); // Redirigir después del éxito
         } catch (err) {
             if (err instanceof Error) {
                 setError(err.message);
