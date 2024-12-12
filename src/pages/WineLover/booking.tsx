@@ -7,7 +7,7 @@ import NavWineLover from '../../components/NavWineLover'; // Asegúrate de que l
 // Componente de tarjeta individual para experiencias
 const ExperienceCard: React.FC<{ experience: Experience }> = ({ experience }) => {
     return (
-        <div className="experience-card">
+        <div className="experience-card" style={{ height: 300 }}>
             {/* <img src={`/images/${experience._id}.jpg`} alt={experience.title} className="experience-image" /> */}
             <div className="experience-info">
                 <h3>{experience.title}</h3>

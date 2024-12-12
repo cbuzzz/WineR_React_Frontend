@@ -4,7 +4,7 @@
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
-    background-color: #f8f8f8;
+    background-color: #a2282f;
     border-radius: 15px;
 }
 
@@ -18,7 +18,7 @@
 
 .booking-header h1 {
     font-size: 24px;
-    color: #a2282f;
+    color: #ffffff;
 }
 
 .booking-actions {
@@ -35,7 +35,7 @@
 }
 
 .filter-button {
-    background-color: #a2282f;
+    background-color: #892e3e;
     color: white;
     border: none;
     padding: 10px 20px;
@@ -54,7 +54,7 @@
 .experience-card {
     display: flex;
     flex-direction: column;
-    background-color: white;
+    background-color: #892e3e;
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     overflow: hidden;
@@ -76,7 +76,7 @@
 .experience-info h3 {
     margin: 0;
     font-size: 18px;
-    color: #333;
+    color: #ffffff;
 }
 
 .experience-location,
@@ -85,7 +85,7 @@
 .experience-activities {
     margin: 0;
     font-size: 14px;
-    color: #666;
+    color: #f1e9e9;
 }
 
 .share-button {
