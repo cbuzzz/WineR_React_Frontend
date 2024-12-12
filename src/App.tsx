@@ -15,31 +15,34 @@ import ProfileWL from './pages/WineLover/profileWineLover';
 import ProfileWM from './pages/WineMaker/profileWineMaker';
 import CreateExperience from './pages/WineMaker/createExperience';
 import Friends from './pages/WineLover/friends';
+import { TimerProvider } from './components/timercontext';
 
 const App: React.FC = () => {
   return (
     <Router>
-      <Routes>
-        {/* Rutas sin BaseLayout */}
-        <Route path="/" element={<Welcome />} />
-        <Route path="/loginWineLover" element={<LoginWL />} />
-        <Route path="/signupWineLover" element={<SignUpWL />} />
-        <Route path="/loginWineMaker" element={<LoginWM />} />
-        <Route path="/signupWineMaker" element={<SignUpWM />} />
+      <TimerProvider>
+        <Routes>
+          {/* Rutas sin BaseLayout */}
+          <Route path="/" element={<Welcome />} />
+          <Route path="/loginWineLover" element={<LoginWL />} />
+          <Route path="/signupWineLover" element={<SignUpWL />} />
+          <Route path="/loginWineMaker" element={<LoginWM />} />
+          <Route path="/signupWineMaker" element={<SignUpWM />} />
 
-        {/* Rutas específicas para WineLover */}
-        <Route path="/homeWineLover" element={<HomeWL />} />
-        <Route path="/experience/:id" element={<ExperienceDetails />} />
-        <Route path="/search" element={<Search />} />
-        <Route path="/booking" element={<Booking />} />
-        <Route path="/friends" element={<Friends />} />
-        <Route path="/profileWineLover" element={<ProfileWL />} />
+          {/* Rutas específicas para WineLover */}
+          <Route path="/homeWineLover" element={<HomeWL />} />
+          <Route path="/experience/:id" element={<ExperienceDetails />} />
+          <Route path="/search" element={<Search />} />
+          <Route path="/booking" element={<Booking />} />
+          <Route path="/friends" element={<Friends />} />
+          <Route path="/profileWineLover" element={<ProfileWL />} />
 
-        {/* Rutas específicas para WineMaker */}
-        <Route path="/homeWineMaker" element={<HomeWM />} />
-        <Route path="/createExperience" element={<CreateExperience />} /> {/* Ruta para crear experiencia */}
-        <Route path="/profileWineMaker" element={<ProfileWM />} />
-      </Routes>
+          {/* Rutas específicas para WineMaker */}
+          <Route path="/homeWineMaker" element={<HomeWM />} />
+          <Route path="/createExperience" element={<CreateExperience />} /> {/* Ruta para crear experiencia */}
+          <Route path="/profileWineMaker" element={<ProfileWM />} />
+        </Routes>
+      </TimerProvider>
     </Router>
   );
 };

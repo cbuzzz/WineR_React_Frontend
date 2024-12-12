@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import winerLogo from '../../assets/winerlogot.png';
 import userService from '../../services/userService';
+import { TimerContext } from '../../components/timercontext';
 import '../../styles/login.css';
 
 const Login: React.FC = () => {
@@ -10,6 +11,7 @@ const Login: React.FC = () => {
     const [error, setError] = useState('');
     const [redirectToWineMaker, setRedirectToWineMaker] = useState(false); // Estado para manejar la redirección
     const [showModal, setShowModal] = useState(false); // Estado para mostrar el modal
+    const timerContext = useContext(TimerContext);
     const navigate = useNavigate();
 
     // Borrar el contenido del localStorage cuando se abra la página de login
@@ -45,6 +47,12 @@ const Login: React.FC = () => {
                 console.log('User ID saved to localStorage:', user._id.toString());
             } else {
                 console.log('User ID not found or user object is invalid');
+            }
+
+            if (timerContext) {
+                timerContext.startTimer(); // Llama a startTimer solo si el contexto no es null
+            } else {
+                console.error('TimerContext is not available');
             }
 
             navigate('/homeWineLover'); // Redirigir al home de WineLover
