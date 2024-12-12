@@ -1,7 +1,9 @@
 import axios from 'axios';
 import { Experience } from '../models/experienceModel';
 
-const API_URL = 'http://localhost:3000/api/experiencias'; // Actualiza esta URL base si es necesario
+//const API_URL = 'http://localhost:3000/api/experiencias'; // Actualiza esta URL base si es necesario
+
+const API_URL = 'http://147.83.7.158:5000/api/experiencias';
 
 // Helper para obtener headers con token (ahora con 'auth-token')
 const getHeaders = () => {

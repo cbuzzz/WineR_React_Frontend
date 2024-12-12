@@ -2,7 +2,9 @@ import axios from 'axios';
 import { User } from '../models/userModel';
 import { Experience } from '../models/experienceModel';
 
-const API_URL = 'http://localhost:3000/api/user'; // Update with your backend URL
+//const API_URL = 'http://localhost:3000/api/user'; // Update with your backend URL
+
+const API_URL = 'http://147.83.7.158:5000/api/user';
 
 // Helper para obtener el token del localStorage
 const getToken = (): string | null => {
