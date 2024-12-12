@@ -116,6 +116,8 @@ const acceptFriendRequest = async (username: string): Promise<void> => {
     try {
         const loggedUser = localStorage.getItem('username');
         await axios.get(`${API_URL}/friend/${username}/${loggedUser}`, getHeaders());
+        await axios.delete(`${API_URL}/solicitud/${loggedUser}/${username}`, getHeaders());
+        //await axios.delete(`${API_URL}/solicitud/${loggedUser}/${username}`, getHeaders());
     } catch (error) {
         throw new Error('Failed to accept friend request');
     }
@@ -144,16 +146,20 @@ const removeFriend = async (username: string): Promise<void> => {
 const sendFriendRequest = async (targetUsername: string): Promise<void> => {
     try {
         const loggedUsername = localStorage.getItem('username');
+        if (!loggedUsername) throw new Error('User not logged in');
 
-        const response = await axios.get(
-            `http://localhost:3000/api/user/solicitud/${targetUsername}/${loggedUsername}`,
+        await axios.get(
+            `${API_URL}/solicitud/${targetUsername}/${loggedUsername}`,
             getHeaders()
         );
-        console.log('Solicitud enviada:', response.data);
     } catch (error) {
+        if (axios.isAxiosError(error) && error.response?.status === 404) {
+            throw new Error('User not found');
+        }
         throw new Error('Failed to send friend request');
     }
 };
+
 
 export default {
     login,

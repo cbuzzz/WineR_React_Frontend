@@ -7,7 +7,8 @@ const Friends: React.FC = () => {
     const [friends, setFriends] = useState<string[]>([]);
     const [requests, setRequests] = useState<string[]>([]);
     const [newFriendUsername, setNewFriendUsername] = useState<string>('');
-    const [error, setError] = useState<string | null>(null);
+    const [success, setSuccess] = useState<string>('');
+    const [error, setError] = useState<string>('');
 
     useEffect(() => {
         const fetchFriendsAndRequests = async () => {
@@ -19,7 +20,10 @@ const Friends: React.FC = () => {
                 setFriends(amigos);
                 setRequests(solicitudes);
             } catch (err) {
-                setError((err as Error).message);
+                setError('Username cannot be empty');
+                setTimeout(() => {
+                    setError('');
+                }, 3000);
             }
         };
 
@@ -27,13 +31,27 @@ const Friends: React.FC = () => {
     }, []);
 
     const handleSendRequest = async () => {
+        setError('');
+        setSuccess('');
+
+        if (!newFriendUsername.trim()) {
+            setError('Username cannot be empty');
+            return;
+        }
+
         try {
-            if (!newFriendUsername.trim()) throw new Error('Username cannot be empty');
             await userService.sendFriendRequest(newFriendUsername);
-            alert(`Friend request sent to ${newFriendUsername}`);
-            setNewFriendUsername('');
+            setSuccess(`Friend request sent to ${newFriendUsername}`);
+            setNewFriendUsername(''); // Limpia el campo de texto
+            // Ocultar el mensaje después de 3 segundos
+            setTimeout(() => {
+                setSuccess('');
+            }, 3000);
         } catch (err) {
             setError((err as Error).message);
+            setTimeout(() => {
+                setError('');
+            }, 3000);
         }
     };
 
@@ -42,6 +60,10 @@ const Friends: React.FC = () => {
             await userService.acceptFriendRequest(username);
             setRequests((prev) => prev.filter((req) => req !== username));
             setFriends((prev) => [...prev, username]);
+            // Ocultar el mensaje después de 3 segundos
+            setTimeout(() => {
+                setSuccess('');
+            }, 3000);
         } catch (err) {
             setError((err as Error).message);
         }
@@ -56,12 +78,21 @@ const Friends: React.FC = () => {
         }
     };
 
+    const handleRemoveFriend = async (username: string) => {
+        try {
+            await userService.removeFriend(username);
+            setFriends((prev) => prev.filter((friend) => friend !== username));
+        } catch (err) {
+            setError((err as Error).message);
+        }
+    };
+
     return (
         <NavWineLover>
             <div className="friends-container">
                 <h2 className="title-friends">Friends</h2>
                 {error && <div className="error-message-friends">{error}</div>}
-
+                {success && <div className="success-message-friends">{success}</div>}
                 <div className="send-request-section">
                     <h3 className="section-title-friends">Send Friend Request</h3>
                     <input
@@ -81,8 +112,14 @@ const Friends: React.FC = () => {
                     <ul className="list-friends">
                         {friends.length > 0 ? (
                             friends.map((friend) => (
-                                <li key={friend} className="friend-item-friends">
+                                <li style={{ color: '#892e3e', fontWeight: 'bold' }} key={friend} className="friend-item-friends">
                                     {friend}
+                                    <button
+                                        className="remove-btn-friends"
+                                        onClick={() => handleRemoveFriend(friend)}
+                                    >
+                                        Remove
+                                    </button>
                                 </li>
                             ))
                         ) : (
@@ -96,7 +133,7 @@ const Friends: React.FC = () => {
                     <ul className="list-friends">
                         {requests.length > 0 ? (
                             requests.map((request) => (
-                                <li style={{ color: '#892e3e' }} key={request} className="friend-item-friends">
+                                <li style={{ color: '#892e3e', fontWeight: 'bold' }} key={request} className="friend-item-friends">
                                     {request}
                                     <button
                                         className="accept-btn-friends"
