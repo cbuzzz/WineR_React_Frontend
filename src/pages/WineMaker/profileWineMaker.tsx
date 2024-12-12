@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import '../../styles/home.css'; // Usamos los mismos estilos que Home
 import NavWineMaker from '../../components/NavWineMaker'; // Asegúrate de que la ruta sea correcta
 import userService from '../../services/userService'; // Servicio para obtener los detalles del usuario
+import profileBackground from '../../assets/profilebackground.jpg';
 
 // Define la interfaz del usuario
 interface User {
@@ -54,9 +55,7 @@ const ProfileWM: React.FC = () => {
       <div className="home-container">
         <div
           className="top-plans"
-          style={{
-            backgroundImage: 'url("../../assets/top-plans-background.jpg")', // O usa tu imagen
-          }}
+          style={{ backgroundImage: `url(${profileBackground})` }}
         >
           <div className="top-plans-content">
             <h1>{user.username}'s Profile</h1>

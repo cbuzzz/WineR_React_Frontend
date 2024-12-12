@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import '../../styles/home.css'; // Usamos los mismos estilos que Home
 import NavWineLover from '../../components/NavWineLover'; // Asegúrate de que la ruta sea correcta
 import userService from '../../services/userService'; // Servicio para obtener los detalles del usuario
+import profileBackground from '../../assets/profilebackground.jpg';
 
 // Define la interfaz del usuario
 interface User {
@@ -53,9 +54,7 @@ const ProfileWL: React.FC = () => {
       <div className="home-container">
         <div
           className="top-plans"
-          style={{
-            backgroundImage: 'url("../../assets/vinito.png")', // O usa tu imagen
-          }}
+          style={{ backgroundImage: `url(${profileBackground})` }}
         >
           <div className="top-plans-content">
             <h1>{user.username}'s Profile</h1>
@@ -74,34 +73,6 @@ const ProfileWL: React.FC = () => {
             <p><strong>Account Type:</strong> {user.tipo}</p>
             <p><strong>Status:</strong> {user.habilitado ? 'Active' : 'Inactive'}</p>
           </div>
-        </div>
-
-        <div className="user-experiences">
-          <h2>Experiences</h2>
-          {user.experiences.length > 0 ? (
-            <div className="experience-list">
-              {user.experiences.map((experienceId: string, index) => (
-                <div key={index} className="experience-card">
-                  {/* Aquí puedes colocar los detalles de cada experiencia. Para ahora usamos un placeholder */}
-                  <div className="experience-image">
-                    <img
-                      src={`../../assets/experiences/${experienceId}.jpg`} // Asegúrate de tener imágenes de experiencias
-                      alt="Experience"
-                      className="experience-image"
-                    />
-                  </div>
-                  <div className="experience-info">
-                    <div className="experience-name">Experience Name {experienceId}</div>
-                    <div className="experience-description">Description for experience {experienceId}...</div>
-                    <div className="experience-location">Location: Some location</div>
-                    <div className="experience-date">Date: Some Date</div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <p>No experiences found.</p>
-          )}
         </div>
 
         {/* Botón de Logout */}
