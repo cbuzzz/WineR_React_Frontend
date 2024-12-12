@@ -15,16 +15,20 @@
     background-position: center;
     color: #fff;
     text-align: center;
-    padding: 60px 30px; /* Espacio más grande */
+    padding: 60px 30px;
+    /* Espacio más grande */
     border-radius: 10px;
     margin-bottom: 30px;
-    background-color: rgba(0, 0, 0, 0.5); /* Sombra sutil */
+    background-color: rgba(0, 0, 0, 0.5);
+    /* Sombra sutil */
 }
 
 .top-plans-content h1 {
-    font-size: 3rem; /* Título más grande */
+    font-size: 3rem;
+    /* Título más grande */
     font-weight: bold;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Sombra para mejorar legibilidad */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    /* Sombra para mejorar legibilidad */
 }
 
 .top-plans-content p {
@@ -38,33 +42,41 @@
     align-items: flex-start;
     justify-content: space-between;
     background-color: #fff;
+    height: 500px;
     border-radius: 15px;
     overflow: hidden;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Más sombra */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    /* Más sombra */
     padding: 20px;
     margin: 20px 0;
     gap: 15px;
     border: 2px solid #a43d4e;
-    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Transición suave */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    /* Transición suave */
 }
 
 /* Efecto hover */
 .experience-card:hover {
-    transform: translateY(-10px); /* Subir un poco al hacer hover */
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); /* Sombra más pronunciada */
+    transform: translateY(-10px);
+    /* Subir un poco al hacer hover */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+    /* Sombra más pronunciada */
 }
 
 /* Imagen de experiencia */
 .experience-image {
-    flex: 0 0 30%; /* Más espacio para la imagen */
+    flex: 0 0 30%;
+    /* Más espacio para la imagen */
     border-radius: 10px;
     height: 250px;
     object-fit: cover;
-    transition: transform 0.3s ease; /* Transición para efecto hover */
+    transition: transform 0.3s ease;
+    /* Transición para efecto hover */
 }
 
 .experience-image:hover {
-    transform: scale(1.05); /* Efecto de zoom */
+    transform: scale(1.05);
+    /* Efecto de zoom */
 }
 
 /* Contenedor de la información de la experiencia */
@@ -72,12 +84,14 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 15px; /* Espaciado más grande entre elementos */
+    gap: 15px;
+    /* Espaciado más grande entre elementos */
 }
 
 /* Nombre de la experiencia */
 .experience-name {
-    font-size: 1.7rem; /* Título más grande */
+    font-size: 1.7rem;
+    /* Título más grande */
     color: #a43d4e;
     font-weight: bold;
 }
@@ -119,7 +133,8 @@
 }
 
 .logout-btn:hover {
-    background-color: #892e3e; /* Cambiar color al pasar el ratón */
+    background-color: #892e3e;
+    /* Cambiar color al pasar el ratón */
 }
 
 /* Mejora de botones generales */
@@ -135,5 +150,6 @@ button {
 button:hover {
     background-color: #a43d4e;
     color: #fff;
-    transform: translateY(-5px); /* Efecto de subir al pasar el ratón */
+    transform: translateY(-5px);
+    /* Efecto de subir al pasar el ratón */
 }

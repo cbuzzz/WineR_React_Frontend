@@ -49,7 +49,7 @@ const CreateExperience: React.FC = () => {
         const experienceData = {
             ...formData,
             participants: [], // Inicialmente vacío (arreglo de strings)
-            rating: 0,        // Valor predeterminado de la puntuación
+            rating: Math.round(Math.random() * 5),  // Valor predeterminado aleatorio de la puntuación
             reviews: [],      // Inicialmente vacío (arreglo de strings)
         };
 

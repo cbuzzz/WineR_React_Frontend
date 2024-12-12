@@ -1,7 +1,4 @@
-export interface Service {
-    icon: string; // Icon representation (e.g., emoji or URL)
-    label: string; // Label describing the service (e.g., "Parking")
-}
+import { Service } from "./serviceModel"
 
 export interface Experience {
     _id?: string,
@@ -15,6 +12,6 @@ export interface Experience {
     contactmail: string,
     rating: number,
     reviews: string[],
-    date: string,   
+    date: string,
     services: Service[],
 }

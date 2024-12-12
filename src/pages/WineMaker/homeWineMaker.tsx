@@ -103,7 +103,7 @@ const Home: React.FC = () => {
                                     <img
                                         src={starIcon}
                                         alt="Rating"
-                                        style={{ width: '15px', height: 'auto' }}
+                                        style={{ width: '20px', height: '20px' }}
                                         className="icon-star"
                                     />
                                     {experience.rating}
