@@ -153,3 +153,20 @@ button:hover {
     transform: translateY(-5px);
     /* Efecto de subir al pasar el ratón */
 }
+
+.create-btn {
+    color: #892e3e;
+    font-size: 1rem;
+    border-radius: 5px;
+    padding: 12px 20px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.create-btn:hover {
+    background-color: #a43d4e;
+    color: #fff;
+    transform: translateY(-5px);
+    /* Efecto de subir al pasar el ratón */
+}

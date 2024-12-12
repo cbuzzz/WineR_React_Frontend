@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import '../../styles/home.css'; // Usamos los mismos estilos que Home
 import NavWineMaker from '../../components/NavWineMaker'; // Asegúrate de que la ruta sea correcta
 import experienceService from '../../services/experienceService';
+import createBackground from '../../assets/vinito.png';
 
 const CreateExperience: React.FC = () => {
     const [formData, setFormData] = useState({
@@ -77,9 +78,7 @@ const CreateExperience: React.FC = () => {
             <div className="home-container">
                 <div
                     className="top-plans"
-                    style={{
-                        backgroundImage: 'url("../../assets/top-plans-background.jpg")',
-                    }}
+                    style={{ backgroundImage: `url(${createBackground})` }}
                 >
                     <div className="top-plans-content">
                         <h1>Create</h1>
@@ -91,7 +90,7 @@ const CreateExperience: React.FC = () => {
                 {error && <div className="error-message">{error}</div>} {/* Muestra el mensaje de error si ocurre */}
 
                 <div className="form">
-                    <label htmlFor="title">Title</label>
+                    <label style={{ fontWeight: 'bold', color: 'white' }} htmlFor="title">Title</label>
                     <input
                         type="text"
                         id="title"
@@ -101,17 +100,18 @@ const CreateExperience: React.FC = () => {
                         onChange={handleChange}
                     />
 
-                    <label htmlFor="description">Description</label>
+                    <label style={{ fontWeight: 'bold', color: 'white' }} htmlFor="description">Description</label>
                     <textarea
+                        style={{ resize: 'none', width: 860 }}
                         id="description"
                         name="description"
-                        placeholder="Enter experience description"
+                        placeholder="Enter the experience description"
                         rows={4}
                         value={formData.description}
                         onChange={handleChange}
                     />
 
-                    <label htmlFor="price">Price (€)</label>
+                    <label style={{ fontWeight: 'bold', color: 'white' }} htmlFor="price">Price (€)</label>
                     <input
                         type="number"
                         id="price"
@@ -121,37 +121,37 @@ const CreateExperience: React.FC = () => {
                         onChange={handleChange}
                     />
 
-                    <label htmlFor="location">Location</label>
+                    <label style={{ fontWeight: 'bold', color: 'white' }} htmlFor="location">Location</label>
                     <input
                         type="text"
                         id="location"
                         name="location"
-                        placeholder="Enter experience location"
+                        placeholder="Enter the experience location"
                         value={formData.location}
                         onChange={handleChange}
                     />
 
-                    <label htmlFor="contactnumber">Contact Number</label>
+                    <label style={{ fontWeight: 'bold', color: 'white' }} htmlFor="contactnumber">Contact Number</label>
                     <input
                         type="tel"
                         id="contactnumber"
                         name="contactnumber"
-                        placeholder="Enter contact number"
+                        placeholder="Enter the contact number"
                         value={formData.contactnumber}
                         onChange={handleChange}
                     />
 
-                    <label htmlFor="contactmail">Contact Email</label>
+                    <label style={{ fontWeight: 'bold', color: 'white' }} htmlFor="contactmail">Contact Email</label>
                     <input
                         type="email"
                         id="contactmail"
                         name="contactmail"
-                        placeholder="Enter contact email"
+                        placeholder="Enter the contact email"
                         value={formData.contactmail}
                         onChange={handleChange}
                     />
 
-                    <label htmlFor="date">Date</label>
+                    <label style={{ fontWeight: 'bold', color: 'white' }} htmlFor="date">Date</label>
                     <input
                         type="date"
                         id="date"
@@ -160,7 +160,7 @@ const CreateExperience: React.FC = () => {
                         onChange={handleChange}
                     />
 
-                    <button className="continue-btn" onClick={handleSubmit}>
+                    <button className="create-btn" onClick={handleSubmit}>
                         Create Experience
                     </button>
                 </div>
