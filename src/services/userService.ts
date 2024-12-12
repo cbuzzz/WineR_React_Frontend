@@ -2,9 +2,9 @@ import axios from 'axios';
 import { User } from '../models/userModel';
 import { Experience } from '../models/experienceModel';
 
-//const API_URL = 'http://localhost:3000/api/user'; // Update with your backend URL
+const API_URL = 'http://localhost:3000/api/user'; // Update with your backend URL
 
-const API_URL = 'http://147.83.7.158:5000/api/user';
+// const API_URL = 'http://147.83.7.158:5000/api/user';
 
 // Helper para obtener el token del localStorage
 const getToken = (): string | null => {
@@ -72,7 +72,7 @@ const fetchUserExperiences = async (): Promise<Experience[]> => {
 const addExperienceToUser = async (experienceId: string, userId: string): Promise<Experience> => {
     try {
         console.log("Llega aquí");
-        
+
         // Ajusta la URL para incluir los parámetros dinámicos
         const response = await axios.post(
             `${API_URL}/addExpToPart/${experienceId}/${userId}`, // Ruta dinámica

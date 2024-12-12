@@ -34,7 +34,7 @@ const Home: React.FC = () => {
     }, []);
 
     const handleCardClick = (id: string) => {
-        navigate(`/experience/${id}`); // Redirige al usuario a la página de detalles
+        navigate(`/experienceWL/${id}`); // Redirige al usuario a la página de detalles
     };
 
     return (

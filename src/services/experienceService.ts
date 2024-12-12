@@ -1,9 +1,9 @@
 import axios from 'axios';
 import { Experience } from '../models/experienceModel';
 
-//const API_URL = 'http://localhost:3000/api/experiencias'; // Actualiza esta URL base si es necesario
+const API_URL = 'http://localhost:3000/api/experiencias'; // Actualiza esta URL base si es necesario
 
-const API_URL = 'http://147.83.7.158:5000/api/experiencias';
+// const API_URL = 'http://147.83.7.158:5000/api/experiencias';
 
 // Helper para obtener headers con token (ahora con 'auth-token')
 const getHeaders = () => {
@@ -18,7 +18,7 @@ const getHeaders = () => {
 const addUserToExperience = async (experienceId: string, userId: string): Promise<Experience> => {
     try {
         console.log("Llega aquí");
-        
+
         // Ajusta la URL para incluir los parámetros dinámicos
         const response = await axios.post(
             `${API_URL}/Participant/${experienceId}/${userId}`, // Ruta dinámica

@@ -8,7 +8,8 @@ import SignUpWL from './pages/WineLover/signupWineLover';
 import HomeWM from './pages/WineMaker/homeWineMaker';
 import LoginWM from './pages/WineMaker/loginWineMaker';
 import SignUpWM from './pages/WineMaker/signupWineMaker';
-import ExperienceDetails from './pages/WineLover/experiencedetails';
+import ExperienceDetailsWL from './pages/WineLover/experiencedetails';
+import ExperienceDetailsWM from './pages/WineMaker/experiencedetails';
 import Booking from './pages/WineLover/booking';
 import Search from './pages/WineLover/search';
 import ProfileWL from './pages/WineLover/profileWineLover';
@@ -33,7 +34,7 @@ const App: React.FC = () => {
 
           {/* Rutas específicas para WineLover */}
           <Route path="/homeWineLover" element={<HomeWL />} />
-          <Route path="/experience/:id" element={<ExperienceDetails />} />
+          <Route path="/experienceWL/:id" element={<ExperienceDetailsWL />} />
           <Route path="/search" element={<Search />} />
           <Route path="/booking" element={<Booking />} />
           <Route path="/friends" element={<Friends />} />
@@ -43,6 +44,7 @@ const App: React.FC = () => {
           <Route path="/homeWineMaker" element={<HomeWM />} />
           <Route path="/createExperience" element={<CreateExperience />} /> {/* Ruta para crear experiencia */}
           <Route path="/profileWineMaker" element={<ProfileWM />} />
+          <Route path="/experienceWM/:id" element={<ExperienceDetailsWM />} />
         </Routes>
       </TimerProvider>
     </Router>
