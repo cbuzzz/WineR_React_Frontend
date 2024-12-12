@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../styles/home.css'; // Usamos los mismos estilos que Home
 import NavWineMaker from '../../components/NavWineMaker'; // Asegúrate de que la ruta sea correcta
 import userService from '../../services/userService'; // Servicio para obtener los detalles del usuario
 import profileBackground from '../../assets/profilebackground.jpg';
+import { TimerContext } from '../../components/timercontext';
 
 // Define la interfaz del usuario
 interface User {
@@ -21,6 +22,7 @@ const ProfileWM: React.FC = () => {
   const [user, setUser] = useState<User | null>(null); // Estado para almacenar los datos del usuario
   const [error, setError] = useState<string>(''); // Estado para manejar errores
   const navigate = useNavigate();
+  const timerContext = useContext(TimerContext);
 
   // Hook para obtener el ID del usuario desde el localStorage y hacer la solicitud GET al backend
   useEffect(() => {
@@ -42,7 +44,10 @@ const ProfileWM: React.FC = () => {
 
   // Función para hacer logout
   const handleLogout = () => {
-    localStorage.clear(); // Limpiar todo el localStorage
+    if (timerContext) {
+      timerContext.stopTimer(); // Detiene el temporizador al hacer logout
+    }
+    localStorage.clear(); // Limpia el localStorage
     navigate('/'); // Redirigir a la página de bienvenida
   };
 
