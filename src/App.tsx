@@ -17,6 +17,8 @@ import ProfileWM from './pages/WineMaker/profileWineMaker';
 import CreateExperience from './pages/WineMaker/createExperience';
 import Friends from './pages/WineLover/friends';
 import TyC from './pages/tyc';
+import ChatsWL from './pages/WineLover/chats';
+import ChatsWM from './pages/WineMaker/chats';
 import { TimerProvider } from './components/timercontext';
 
 const App: React.FC = () => {
@@ -39,12 +41,14 @@ const App: React.FC = () => {
           <Route path="/booking" element={<Booking />} />
           <Route path="/friends" element={<Friends />} />
           <Route path="/profileWineLover" element={<ProfileWL />} />
+          <Route path="/chatsWL" element={<ChatsWL />} />
 
           {/* Rutas específicas para WineMaker */}
           <Route path="/homeWineMaker" element={<HomeWM />} />
           <Route path="/createExperience" element={<CreateExperience />} /> {/* Ruta para crear experiencia */}
           <Route path="/profileWineMaker" element={<ProfileWM />} />
           <Route path="/experienceWM/:id" element={<ExperienceDetailsWM />} />
+          <Route path="/chatsWM" element={<ChatsWM />} />
         </Routes>
       </TimerProvider>
     </Router>
