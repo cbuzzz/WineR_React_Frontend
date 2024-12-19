@@ -37,6 +37,24 @@ const login = async (username: string, password: string): Promise<{ user: User; 
     }
 };
 
+const googleLogin = async (googleToken: string): Promise<{ user: User; token: string }> => {
+    try {
+        const response = await axios.post(`${API_URL}/reactGoogleLogin`, { token: googleToken });
+        const { user, token } = response.data;
+        localStorage.setItem('token', token);
+        localStorage.setItem('auth-token', token);
+        localStorage.setItem('id', user._id.toString());
+        localStorage.setItem('username', user.username);
+        return response.data; // user and token
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            const errorMessage = error.response?.data?.message || 'Google login failed';
+            throw new Error(errorMessage);
+        }
+        throw new Error('An unexpected error occurred');
+    }
+};
+
 // Método para registrar un nuevo usuario
 const signup = async (userData: Omit<User, '_id' | 'habilitado'>): Promise<User> => {
     try {
@@ -178,6 +196,7 @@ const sendFriendRequest = async (targetUsername: string): Promise<void> => {
 
 export default {
     login,
+    googleLogin,
     signup,
     fetchUserExperiences,
     addExperienceToUser,  // Añadir este método al export

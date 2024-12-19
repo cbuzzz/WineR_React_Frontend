@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import winerLogo from '../../assets/winerlogot.png';
 import userService from '../../services/userService';
 import { TimerContext } from '../../components/timercontext';
@@ -64,6 +65,41 @@ const Login: React.FC = () => {
         }
     };
 
+    const handleGoogleSuccess = async (response: any) => {
+        try {
+            const { user, token } = await userService.googleLogin(response.credential);
+            if (user.tipo !== 'wineMaker') {
+                if (user.tipo === 'wineLover') {
+                    setRedirectToWineLover(true);
+                    setShowModal(true);
+                } else {
+                    setError('Tipo de usuario no válido');
+                }
+                return;
+            }
+            localStorage.setItem('auth-token', token);
+            if (user && user._id) {
+                localStorage.setItem('id', user._id.toString());
+                localStorage.setItem('username', user.username);
+            }
+            if (timerContext) {
+                timerContext.startTimer();
+            }
+            navigate('/homeWineMaker');
+        } catch (err) {
+            if (err instanceof Error) {
+                setError(err.message);
+            } else {
+                setError('An unexpected error occurred');
+            }
+        }
+    };
+
+    const handleGoogleFailure = () => {
+        console.error('Google login error');
+        setError('Google login failed');
+    };
+
     // Función para cerrar el modal
     const closeModal = () => {
         setShowModal(false);
@@ -119,9 +155,12 @@ const Login: React.FC = () => {
                         <span>or</span>
                     </div>
                     <div className="alternative-login">
-                        <button className="alt-login-btn google-btn">
-                            Continue with Google
-                        </button>
+                        <GoogleOAuthProvider clientId="99436687913-1fvvch8jetgrf2j2r0h96k39db3b7o8c.apps.googleusercontent.com">
+                            <GoogleLogin
+                                onSuccess={handleGoogleSuccess}
+                                onError={handleGoogleFailure}
+                            />
+                        </GoogleOAuthProvider>
                         <button className="alt-login-btn apple-btn">
                             Continue with Apple
                         </button>
