@@ -75,9 +75,50 @@ const createExperience = async (experienceData: Omit<Experience, '_id' | 'rating
     }
 };
 
+const añadirValoracion = async (experienceId: string, rating: number): Promise<void> => {
+    console.log('Calling añadirValoracion function');
+    console.log('Experience ID:', experienceId);
+    console.log('Rating:', rating);
+
+    try {
+        if (!experienceId) {
+            console.error('Error: experienceId is undefined or null');
+            return;
+        }
+        if (rating == null || isNaN(rating)) {
+            console.error('Error: rating is not a valid number');
+            return;
+        }
+
+        const userId = localStorage.getItem('id'); // Obtener el userId desde localStorage
+
+        if (!userId) {
+            console.error('Error: userId is undefined or null');
+            return;
+        }
+
+        // Hacemos la solicitud a la API
+        const response = await axios.post(
+            `${API_URL}/rate/${experienceId}/${userId}`, // Ruta para calificar
+            { ratingValue: rating }, // Enviamos ratingValue en el cuerpo de la solicitud
+            getHeaders() // Incluye los encabezados con el token
+        );
+
+        console.log('Rating submitted successfully:', response.data); // Log del resultado de la API
+    } catch (error) {
+        console.error('Error occurred during rating submission:', error);
+        throw error;
+    }
+};
+
+
+
+
+
 export default {
     getAllExperiences,
     getExperienceById,
     createExperience,
     addUserToExperience, // Exporta esta función
+    añadirValoracion, // Exporta esta nueva función
 };

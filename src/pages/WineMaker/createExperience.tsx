@@ -27,7 +27,7 @@ const CreateExperience: React.FC = () => {
         date: '',
         owner: '',
         participants: [],
-        rating: Math.round(Math.random() * 5),
+        averagerating: 0,
         reviews: [],
         services: [], // Aquí se almacenarán los servicios seleccionados
     });
