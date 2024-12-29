@@ -4,9 +4,13 @@ import UserService from '../../services/userService';
 import experienceService from '../../services/experienceService'; // Importa el servicio que contiene `añadirValoracion`
 import '../../styles/booking.css'; // Archivo CSS para estilos
 import NavWineLover from '../../components/NavWineLover'; // Asegúrate de que la ruta sea correcta
+import { AxiosError } from 'axios';
+
 
 // Componente de tarjeta individual para experiencias
 const ExperienceCard: React.FC<{ experience: Experience; onRateClick: (experienceId: string) => void }> = ({ experience, onRateClick }) => {
+    console.log("Type of averagerating:", typeof experience.averageRating, experience.averageRating);
+
     const handleRateClick = () => {
         if (experience._id) {
             onRateClick(experience._id);
@@ -22,7 +26,7 @@ const ExperienceCard: React.FC<{ experience: Experience; onRateClick: (experienc
                 <p className="experience-location">{experience.location}</p>
                 <p className="experience-date">{experience.date}</p>
                 <p className="experience-description">{experience.description}</p>
-                <p className="experience-rating">Rating: {experience.averagerating} ★</p>
+                <p className="experience-rating">Rating: {experience.averageRating} ★</p>
                 <button className="share-button">Take me there!</button>
                 <button className="rate-button" onClick={handleRateClick}>
                     Rate the experience
@@ -71,14 +75,43 @@ const Booking: React.FC = () => {
     const handleRatingSubmit = async () => {
         if (selectedExperience && rating > 0) {
             try {
-                console.log(rating)
+                console.log(`Submitting rating: ${rating} for experience: ${selectedExperience}`);
+                
+                // Añadir la valoración
                 await experienceService.añadirValoracion(selectedExperience, rating);
+                
+                // Obtener la experiencia actualizada
+                const updatedExperience = await experienceService.getExperienceById(selectedExperience);
+    
+                // Mostrar el valor de `averagerating` en la consola
+                console.log(`Updated averagerating for experience ${selectedExperience}:`, updatedExperience.averageRating);
+    
+                // Actualizar la lista de experiencias en el estado local
+                setExperiences((prevExperiences) =>
+                    prevExperiences.map((exp) =>
+                        exp._id === selectedExperience ? updatedExperience : exp
+                    )
+                );
+    
                 handleCloseModal(); // Cerrar el modal después de la valoración
             } catch (err) {
-                console.error("Error rating experience:", err);
+                // Asegurarnos de que err es un AxiosError y tiene una respuesta
+                if (err instanceof AxiosError && err.response) {
+                    // Verificar si el código de estado es 400
+                    if (err.response.status === 400) {
+                        alert("You have already rated this experience!"); // Mostrar el mensaje al usuario
+                    }
+                } else {
+                    console.error("Error rating experience:", err); // Manejo general del error
+                }
+    
+                handleCloseModal(); // Cerrar el modal después de error
             }
         }
     };
+    
+    
+    
 
     if (loading) {
         return <p>Loading...</p>;
