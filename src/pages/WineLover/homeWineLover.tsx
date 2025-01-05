@@ -96,6 +96,10 @@ const Home: React.FC = () => {
                                     />
                                     {experience.date}
                                 </div>
+                                 {/* Nuevo bloque para el precio */}
+                                <div className="experience-price">
+                                    <strong></strong> ${experience.price.toFixed(2)}
+                                </div>
                                 <div className="experience-description">
                                     {experience.description}
                                 </div>

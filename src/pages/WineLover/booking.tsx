@@ -20,16 +20,16 @@ const ExperienceCard: React.FC<{ experience: Experience; onRateClick: (experienc
     };
 
     return (
-        <div className="experience-card" style={{ height: 300 }}>
+        <div className="experience-card">
             <div className="experience-info">
                 <h3>{experience.title}</h3>
                 <p className="experience-location">{experience.location}</p>
                 <p className="experience-date">{experience.date}</p>
                 <p className="experience-description">{experience.description}</p>
                 <p className="experience-rating">Rating: {experience.averageRating} ★</p>
-                <button className="share-button">Take me there!</button>
+                <button className="share-button">Más información</button>
                 <button className="rate-button" onClick={handleRateClick}>
-                    Rate the experience
+                    Valorar experiencia
                 </button>
             </div>
         </div>
@@ -44,6 +44,9 @@ const Booking: React.FC = () => {
     const [showRatingModal, setShowRatingModal] = useState(false);
     const [selectedExperience, setSelectedExperience] = useState<string | null>(null);
     const [rating, setRating] = useState<number>(0);
+    const [showErrorModal, setShowErrorModal] = useState(false);
+    const [errorMessage, setErrorMessage] = useState<string>('');
+
 
     useEffect(() => {
         const fetchExperiences = async () => {
@@ -99,7 +102,8 @@ const Booking: React.FC = () => {
                 if (err instanceof AxiosError && err.response) {
                     // Verificar si el código de estado es 400
                     if (err.response.status === 400) {
-                        alert("You have already rated this experience!"); // Mostrar el mensaje al usuario
+                        setErrorMessage("You have already rated this experience!");
+                        setShowErrorModal(true); // Muestra el modal de error
                     }
                 } else {
                     console.error("Error rating experience:", err); // Manejo general del error
@@ -110,9 +114,6 @@ const Booking: React.FC = () => {
         }
     };
     
-    
-    
-
     if (loading) {
         return <p>Loading...</p>;
     }
@@ -160,6 +161,18 @@ const Booking: React.FC = () => {
                     </div>
                 </div>
             )}
+            {showErrorModal && (
+    <div className="modal">
+        <div className="modal-content">
+            <h3>Error</h3>
+            <p>{errorMessage}</p>
+            <div>
+                <button onClick={() => setShowErrorModal(false)}>Close</button>
+            </div>
+        </div>
+    </div>
+)}
+
         </NavWineLover>
     );
 };
