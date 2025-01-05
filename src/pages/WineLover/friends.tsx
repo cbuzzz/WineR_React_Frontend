@@ -93,7 +93,7 @@ const Friends: React.FC = () => {
     const handleChat = async (friend: string) => {
         const roomName = [username, friend].sort().join('-'); // Crear un nombre único para la sala
         localStorage.setItem('currentRoom', roomName); // Guardar la sala en localStorage
-        navigate(`/chat/${roomName}`); // Redirigir a la página de chats
+        navigate(`/chatWL/${roomName}`); // Redirigir a la página de chats
     };
 
     return (

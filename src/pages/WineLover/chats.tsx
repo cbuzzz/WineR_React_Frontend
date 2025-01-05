@@ -24,7 +24,7 @@ const Chats: React.FC = () => {
 
     const handleRoomClick = (roomName: string) => {
         localStorage.setItem('currentRoom', roomName);
-        navigate(`/chat/${roomName}`);
+        navigate(`/chatWL/${roomName}`);
     };
 
     return (

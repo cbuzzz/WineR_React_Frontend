@@ -3,9 +3,17 @@ import { Experience } from '../../models/experienceModel';
 import UserService from '../../services/userService';
 import '../../styles/booking.css'; // Archivo CSS para estilos
 import NavWineLover from '../../components/NavWineLover'; // Asegúrate de que la ruta sea correcta
+import { useNavigate } from 'react-router-dom';
 
 // Componente de tarjeta individual para experiencias
 const ExperienceCard: React.FC<{ experience: Experience }> = ({ experience }) => {
+    const navigate = useNavigate();
+    const handleChat = (experienceTitle: string) => {
+        const roomName = encodeURIComponent(experienceTitle); // Codifica el nombre de la sala
+        localStorage.setItem('currentRoom', roomName); // Guarda la sala en localStorage
+        navigate(`/chatWL/${roomName}`); // Redirige a la página del chat
+    };
+
     return (
         <div className="experience-card" style={{ height: 300 }}>
             {/* <img src={`/images/${experience._id}.jpg`} alt={experience.title} className="experience-image" /> */}
@@ -15,7 +23,15 @@ const ExperienceCard: React.FC<{ experience: Experience }> = ({ experience }) =>
                 <p className="experience-date">{experience.date}</p>
                 <p className="experience-description">{experience.description}</p>
                 <p className="experience-rating">Rating: {experience.rating} ★</p>
-                <button className="share-button">Take me there!</button>
+                <div className="experience-actions">
+                    <button className="share-button">Take me there!</button>
+                    <button
+                        className="chat-button"
+                        onClick={() => handleChat(experience.title)}
+                    >
+                        Chat
+                    </button>
+                </div>
             </div>
         </div>
     );

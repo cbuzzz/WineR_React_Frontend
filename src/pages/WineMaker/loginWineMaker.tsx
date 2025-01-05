@@ -41,7 +41,7 @@ const Login: React.FC = () => {
             console.log('Logged in successfully:', user);
             if (user && user._id) {
                 localStorage.setItem('id', user._id.toString());
-                console.log('User ID saved to localStorage:', user._id.toString());
+                localStorage.setItem('username', user.username.toString())
             } else {
                 console.log('User ID not found or user object is invalid');
             }
