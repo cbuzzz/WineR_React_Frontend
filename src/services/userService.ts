@@ -49,6 +49,9 @@ const googleLogin = async (googleToken: string): Promise<{ user: User; token: st
     } catch (error) {
         if (axios.isAxiosError(error)) {
             const errorMessage = error.response?.data?.message || 'Google login failed';
+            if (error.response?.status === 500) {
+                throw new Error('Internal Server Error: Please try again later.');
+            }
             throw new Error(errorMessage);
         }
         throw new Error('An unexpected error occurred');
