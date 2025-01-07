@@ -75,11 +75,7 @@ const createExperience = async (experienceData: Omit<Experience, '_id' | 'rating
     }
 };
 
-const añadirValoracion = async (experienceId: string, rating: number): Promise<void> => {
-    console.log('Calling añadirValoracion function');
-    console.log('Experience ID:', experienceId);
-    console.log('Rating:', rating);
-
+const añadirValoracion = async (experienceId: string, rating: number, comment: string): Promise<void> => {
     try {
         if (!experienceId) {
             console.error('Error: experienceId is undefined or null');
@@ -87,6 +83,10 @@ const añadirValoracion = async (experienceId: string, rating: number): Promise<
         }
         if (rating == null || isNaN(rating)) {
             console.error('Error: rating is not a valid number');
+            return;
+        }
+        if (!comment || comment.trim() === "") {
+            console.error('Error: comment is empty');
             return;
         }
 
@@ -100,20 +100,31 @@ const añadirValoracion = async (experienceId: string, rating: number): Promise<
         // Hacemos la solicitud a la API
         const response = await axios.post(
             `${API_URL}/rate/${experienceId}/${userId}`, // Ruta para calificar
-            { ratingValue: rating }, // Enviamos ratingValue en el cuerpo de la solicitud
+            { 
+                ratingValue: rating, // Valor de la calificación
+                comment: comment // Comentario del usuario
+            }, 
             getHeaders() // Incluye los encabezados con el token
         );
 
-        console.log('Rating submitted successfully:', response.data); // Log del resultado de la API
+        console.log('Rating and comment submitted successfully:', response.data); // Log del resultado de la API
     } catch (error) {
         console.error('Error occurred during rating submission:', error);
         throw error;
     }
 };
 
-
-
-
+const getExperienceRatings = async (experienceId: string): Promise<any[]> => {
+    try {
+        const response = await axios.get(`${API_URL}/ratings/${experienceId}`);
+        return response.data; // Regresa las reseñas de la experiencia
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            console.error('Error fetching ratings:', error.response?.data || error.message);
+        }
+        throw new Error('Failed to fetch ratings');
+    }
+};
 
 export default {
     getAllExperiences,
@@ -121,4 +132,5 @@ export default {
     createExperience,
     addUserToExperience, // Exporta esta función
     añadirValoracion, // Exporta esta nueva función
+    getExperienceRatings,
 };
