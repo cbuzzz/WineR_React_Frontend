@@ -111,7 +111,7 @@ const SignUp: React.FC = () => {
 
     const handleGoogleSuccess = async (response: any) => {
         try {
-            const { user, token } = await userService.googleLogin(response.credential);
+            const { user, token } = await userService.googleLoginMaker(response.credential);
             if (user.tipo !== 'wineMaker') {
                 setError('Tipo de usuario no válido');
                 return;

@@ -71,7 +71,7 @@ const Login: React.FC = () => {
 
     const handleGoogleSuccess = async (response: any) => {
         try {
-            const { user, token } = await userService.googleLogin(response.credential);
+            const { user, token } = await userService.googleLoginLover(response.credential);
             if (user.tipo !== 'wineLover') {
                 if (user.tipo === 'wineMaker') {
                     setRedirectToWineMaker(true);

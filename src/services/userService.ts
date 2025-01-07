@@ -37,9 +37,30 @@ const login = async (username: string, password: string): Promise<{ user: User; 
     }
 };
 
-const googleLogin = async (googleToken: string): Promise<{ user: User; token: string }> => {
+const googleLoginLover = async (googleToken: string): Promise<{ user: User; token: string }> => {
     try {
-        const response = await axios.post(`${API_URL}/reactGoogleLogin`, { token: googleToken });
+        const response = await axios.post(`${API_URL}/reactGoogleLoginLover`, { token: googleToken });
+        const { user, token } = response.data;
+        localStorage.setItem('token', token);
+        localStorage.setItem('auth-token', token);
+        localStorage.setItem('id', user._id.toString());
+        localStorage.setItem('username', user.username);
+        return response.data; // user and token
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            const errorMessage = error.response?.data?.message || 'Google login failed';
+            if (error.response?.status === 500) {
+                throw new Error('Internal Server Error: Please try again later.');
+            }
+            throw new Error(errorMessage);
+        }
+        throw new Error('An unexpected error occurred');
+    }
+};
+
+const googleLoginMaker = async (googleToken: string): Promise<{ user: User; token: string }> => {
+    try {
+        const response = await axios.post(`${API_URL}/reactGoogleLoginMaker`, { token: googleToken });
         const { user, token } = response.data;
         localStorage.setItem('token', token);
         localStorage.setItem('auth-token', token);
@@ -199,7 +220,8 @@ const sendFriendRequest = async (targetUsername: string): Promise<void> => {
 
 export default {
     login,
-    googleLogin,
+    googleLoginLover,
+    googleLoginMaker,
     signup,
     fetchUserExperiences,
     addExperienceToUser,  // Añadir este método al export
