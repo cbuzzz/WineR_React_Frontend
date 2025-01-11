@@ -96,6 +96,10 @@ const Home: React.FC = () => {
                                     />
                                     {experience.date}
                                 </div>
+                                 {/* Nuevo bloque para el precio */}
+                                <div className="experience-price">
+                                    <strong></strong> ${experience.price.toFixed(2)}
+                                </div>
                                 <div className="experience-description">
                                     {experience.description}
                                 </div>
@@ -106,7 +110,7 @@ const Home: React.FC = () => {
                                         style={{ width: '20px', height: '20px' }}
                                         className="icon-star"
                                     />
-                                    {experience.rating}
+                                    {experience.averageRating}
                                 </div>
                             </div>
                         </div>

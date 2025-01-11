@@ -46,9 +46,10 @@
 /* Lista de experiencias */
 .experience-list {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px; /* Espaciado entre las tarjetas */
 }
+
 
 /* Tarjetas de experiencias */
 .experience-card {
@@ -57,8 +58,12 @@
     background-color: #892e3e;
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
+    overflow: hidden; /* Asegura que no se desborde el contenido */
+    padding: 15px;
+    height: auto; /* Elimina la altura fija */
+    min-height: 200px; /* Altura mínima para mantener un diseño consistente */
 }
+
 
 .experience-image {
     width: 100%;
@@ -67,10 +72,11 @@
 }
 
 .experience-info {
-    padding: 15px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 10px; /* Espaciado entre los elementos */
+    height: auto; /* Permitir que crezca dinámicamente */
+    overflow: visible; /* Mostrar todo el contenido */
 }
 
 .experience-info h3 {
@@ -96,4 +102,52 @@
     padding: 10px 15px;
     border-radius: 20px;
     cursor: pointer;
+}
+/* Estilos para el modal */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    width: 90%; /* Cambiado de 300px a 90% del ancho de la pantalla */
+    max-width: 400px; /* Tamaño máximo para pantallas grandes */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex; /* Asegura que los botones se posicionen bien */
+    flex-direction: column; /* Alinear elementos en columna */
+    align-items: center; /* Centrar horizontalmente los elementos */
+}
+
+
+.modal-content input {
+    margin: 10px 0;
+    padding: 10px;
+    width: 100%;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.modal-content button {
+    background-color: #892e3e;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 10px;
+}
+
+.modal-content button:hover {
+    background-color: #a2282f;
 }

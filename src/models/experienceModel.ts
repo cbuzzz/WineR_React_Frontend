@@ -10,7 +10,7 @@ export interface Experience {
     location: string,
     contactnumber: number,
     contactmail: string,
-    rating: number,
+    averageRating: number,
     reviews: string[],
     date: string,
     services: Service[],

@@ -97,6 +97,7 @@ const signup = async (userData: Omit<User, '_id' | 'habilitado'>): Promise<User>
 const fetchUserExperiences = async (): Promise<Experience[]> => {
     try {
         const response = await axios.get(`${API_URL}/experiences/all`, getHeaders());
+        console.log('Experiences fetched:', response.data.experiences);
         return response.data.experiences;
     } catch (error) {
         if (axios.isAxiosError(error)) {

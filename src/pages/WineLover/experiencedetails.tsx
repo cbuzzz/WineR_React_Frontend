@@ -129,7 +129,7 @@ const ExperienceDetails = () => {
                     <strong>{experience.location}</strong> • {experience.date}
                 </p>
                 <p>
-                    Price: {experience.price} € • {experience.rating} ★ ({experience.reviews.length} reviews)
+                    Price: {experience.price} € • {experience.averageRating} ★ ({experience.reviews.length} reviews)
                 </p>
                 <div className="services">
                     {experience.services.map((service, index) => (

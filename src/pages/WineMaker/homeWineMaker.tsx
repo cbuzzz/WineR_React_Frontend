@@ -106,7 +106,7 @@ const Home: React.FC = () => {
                                         style={{ width: '20px', height: '20px' }}
                                         className="icon-star"
                                     />
-                                    {experience.rating}
+                                    {experience.averageRating}
                                 </div>
                             </div>
                         </div>
