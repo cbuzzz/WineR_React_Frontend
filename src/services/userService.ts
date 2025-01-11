@@ -218,7 +218,6 @@ const sendFriendRequest = async (targetUsername: string): Promise<void> => {
     }
 };
 
-
 export default {
     login,
     googleLoginLover,

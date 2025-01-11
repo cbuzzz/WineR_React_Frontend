@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import userService from '../../services/userService';
 import '../../styles/friends.css';
 import NavWineLover from '../../components/NavWineLover';
@@ -9,6 +10,8 @@ const Friends: React.FC = () => {
     const [newFriendUsername, setNewFriendUsername] = useState<string>('');
     const [success, setSuccess] = useState<string>('');
     const [error, setError] = useState<string>('');
+    const navigate = useNavigate();
+    const username = localStorage.getItem('username');
 
     useEffect(() => {
         const fetchFriendsAndRequests = async () => {
@@ -87,6 +90,12 @@ const Friends: React.FC = () => {
         }
     };
 
+    const handleChat = async (friend: string) => {
+        const roomName = [username, friend].sort().join('-'); // Crear un nombre único para la sala
+        localStorage.setItem('currentRoom', roomName); // Guardar la sala en localStorage
+        navigate(`/chatWL/${roomName}`); // Redirigir a la página de chats
+    };
+
     return (
         <NavWineLover>
             <div className="friends-container">
@@ -114,6 +123,12 @@ const Friends: React.FC = () => {
                             friends.map((friend) => (
                                 <li style={{ color: '#892e3e', fontWeight: 'bold' }} key={friend} className="friend-item-friends">
                                     {friend}
+                                    <button
+                                        className="chat-btn-friends"
+                                        onClick={() => handleChat(friend)}
+                                    >
+                                        Chat
+                                    </button>
                                     <button
                                         className="remove-btn-friends"
                                         onClick={() => handleRemoveFriend(friend)}

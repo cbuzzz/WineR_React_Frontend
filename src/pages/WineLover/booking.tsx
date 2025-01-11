@@ -5,9 +5,18 @@ import experienceService from '../../services/experienceService'; // Importa el 
 import '../../styles/booking.css'; // Archivo CSS para estilos
 import NavWineLover from '../../components/NavWineLover'; // Asegúrate de que la ruta sea correcta
 import { AxiosError } from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 // Componente de tarjeta individual para experiencias
 const ExperienceCard: React.FC<{ experience: Experience; onRateClick: (experienceId: string) => void, onShowReviewsClick: (experienceId: string) => void }> = ({ experience, onRateClick, onShowReviewsClick }) => {
+
+    const navigate = useNavigate();
+    const handleChat = (experienceTitle: string) => {
+        const roomName = encodeURIComponent(experienceTitle); // Codifica el nombre de la sala
+        localStorage.setItem('currentRoom', roomName); // Guarda la sala en localStorage
+        navigate(`/chatWL/${roomName}`); // Redirige a la página del chat
+    };
+
     const handleRateClick = () => {
         if (experience._id) {
             onRateClick(experience._id);
@@ -32,10 +41,18 @@ const ExperienceCard: React.FC<{ experience: Experience; onRateClick: (experienc
                 <p className="experience-date">{experience.date}</p>
                 <p className="experience-description">{experience.description}</p>
                 <p className="experience-rating">Rating: {experience.averageRating} ★</p>
-                <button className="share-button" onClick={handleShowReviewsClick}>Ver Reviews</button>
-                <button className="rate-button" onClick={handleRateClick}>
-                    Valorar experiencia
-                </button>
+                <div className="experience-actions">
+                    <button className="share-button" onClick={handleShowReviewsClick}>Ver Reviews</button>
+                    <button className="rate-button" onClick={handleRateClick}>
+                        Valorar experiencia
+                    </button>
+                    <button
+                        className="chat-button"
+                        onClick={() => handleChat(experience.title)}
+                    >
+                        Chat
+                    </button>
+                </div>
             </div>
         </div>
     );
@@ -87,20 +104,20 @@ const Booking: React.FC = () => {
         if (selectedExperience && rating > 0 && comment.trim() !== "") {
             try {
                 console.log(`Submitting rating: ${rating} with comment: "${comment}" for experience: ${selectedExperience}`);
-                
+
                 // Añadir la valoración y el comentario
                 await experienceService.añadirValoracion(selectedExperience, rating, comment);
-                
+
                 // Obtener la experiencia actualizada
                 const updatedExperience = await experienceService.getExperienceById(selectedExperience);
-    
+
                 // Actualizar la lista de experiencias en el estado local
                 setExperiences((prevExperiences) =>
                     prevExperiences.map((exp) =>
                         exp._id === selectedExperience ? updatedExperience : exp
                     )
                 );
-    
+
                 handleCloseModal(); // Cerrar el modal después de la valoración
             } catch (err) {
                 if (err instanceof AxiosError && err.response) {

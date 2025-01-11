@@ -1,0 +1,146 @@
+/* Contenedor principal */
+.chat-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #900;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.chat-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.chat-title {
+    font-size: 1.8rem;
+    color: #ccc;
+}
+
+.chat-connected-users {
+    font-size: 1rem;
+    color: #777;
+}
+
+.chat-room {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.chat-room-input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+.chat-join-room-btn {
+    padding: 10px 20px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.chat-messages {
+    max-height: 400px;
+    overflow-y: auto;
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #900;
+}
+
+.chat-message {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.chat-message-username {
+    font-weight: bold;
+    color: #4caf50;
+    margin-right: 5px;
+}
+
+.chat-message-content {
+    color: #ffffff;
+}
+
+.chat-message-timestamp {
+    font-size: 0.8rem;
+    color: gray;
+    margin-left: 10px;
+}
+
+.chat-input {
+    display: flex;
+}
+
+.chat-message-input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+.chat-send-message-btn {
+    padding: 10px 20px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.chat-btn-friends {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.chat-btn-friends:hover {
+    background-color: #45a049;
+}
+
+.chat-messages-container {
+    height: 400px;
+    /* Altura fija del contenedor */
+    overflow-y: auto;
+    /* Habilitar scroll vertical */
+    border: 1px solid #ccc;
+    /* Opcional, para un borde */
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #f9f9f9;
+    /* Color de fondo para diferenciarlo */
+    border-radius: 5px;
+}
+
+.chat-messages {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    /* Espaciado entre mensajes */
+}
+
+.chat-message-username {
+    font-weight: bold;
+    margin-bottom: 2px;
+}
+
+.chat-message-content {
+    word-wrap: break-word;
+}
