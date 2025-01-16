@@ -218,17 +218,32 @@ const sendFriendRequest = async (targetUsername: string): Promise<void> => {
     }
 };
 
+const getUserProfile = async (username: string): Promise<User> => {
+    try {
+        const response = await axios.get(`${API_URL}/profile/username/${username}`, getHeaders());
+        return response.data; // Devuelve el perfil del usuario
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            const errorMessage = error.response?.data?.message || 'Failed to fetch user profile';
+            throw new Error(errorMessage);
+        }
+        throw new Error('An unexpected error occurred');
+    }
+};
+
+
 export default {
     login,
     googleLoginLover,
     googleLoginMaker,
     signup,
     fetchUserExperiences,
-    addExperienceToUser,  // Añadir este método al export
+    addExperienceToUser,
     getUserById,
     getFriendsAndRequests,
     acceptFriendRequest,
     rejectFriendRequest,
     removeFriend,
     sendFriendRequest,
+    getUserProfile,
 };

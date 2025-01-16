@@ -96,6 +96,10 @@ const Friends: React.FC = () => {
         navigate(`/chatWL/${roomName}`); // Redirigir a la página de chats
     };
 
+    const handleViewProfile = (friend: string) => {
+        navigate(`/profile/${friend}`); // Redirigir a la página del perfil del amigo
+    };
+
     return (
         <NavWineLover>
             <div className="friends-container">
@@ -128,6 +132,12 @@ const Friends: React.FC = () => {
                                         onClick={() => handleChat(friend)}
                                     >
                                         Chat
+                                    </button>
+                                    <button
+                                        className="profile-btn-friends" // Clase única para estilo
+                                        onClick={() => handleViewProfile(friend)}
+                                    >
+                                        Profile
                                     </button>
                                     <button
                                         className="remove-btn-friends"
