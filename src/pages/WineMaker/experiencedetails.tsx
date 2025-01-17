@@ -8,6 +8,7 @@ import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import { getCoordinates } from '../../utils/geocoding';
+import { FaPhone, FaEnvelope } from 'react-icons/fa'; // Import the icons
 
 // Configuración de los íconos de Leaflet
 delete (L.Icon.Default.prototype as any)._getIconUrl;
@@ -25,6 +26,7 @@ const ExperienceDetails = () => {
     const [coordinates, setCoordinates] = useState<[number, number] | null>(null);
     const [showModal, setShowModal] = useState(false); // Controlar si el modal se muestra o no
     const [modalMessage, setModalMessage] = useState(''); // Mensaje que se mostrará en el modal
+    const [wineMakerName, setWineMakerName] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchExperience = async () => {
@@ -35,6 +37,9 @@ const ExperienceDetails = () => {
 
                     const coords = await getCoordinates(data.location);
                     setCoordinates(coords);
+
+                    const wineMaker = await userService.getUserById(data.owner);
+                    setWineMakerName(wineMaker.name);
                 }
             } catch (err) {
                 if (err instanceof Error) {
@@ -84,14 +89,22 @@ const ExperienceDetails = () => {
             </div>
 
             <div className="details">
-                <h2>{experience.contactmail}</h2>
+                <h2>{wineMakerName}</h2> {/* Display the name of the WineMaker */}
                 <p>
                     <strong>{experience.location}</strong> • {experience.date}
                 </p>
                 <p>
                     Price: {experience.price} € • {experience.averageRating} ★ ({experience.reviews.length} reviews)
                 </p>
-                <div className="services">
+                <div className="contact-info" style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '10px', alignItems: 'center' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '5px', justifyContent: 'center' }}>
+                        <FaPhone /> <span>{experience.contactnumber}</span> {/* Telephone number with icon */}
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '5px', justifyContent: 'center' }}>
+                        <FaEnvelope /> <span>{experience.contactmail}</span> {/* Email with icon */}
+                    </div>
+                </div>
+                <div className="services" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '10px' }}>
                     {experience.services.map((service, index) => (
                         <div key={index} className="service">
                             <span>{service.icon}</span>
