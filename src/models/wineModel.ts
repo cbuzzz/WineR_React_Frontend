@@ -9,6 +9,8 @@ export interface Wine {
     brand: string,
     grapetype: string,
     habilitado: boolean
-    flavours: Service[],
+    notes: Service[],
+    year: number,
+    experience: string,
 }
 

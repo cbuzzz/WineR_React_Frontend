@@ -1,0 +1,208 @@
+/* Contenedor principal */
+.two-column-layout {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #a43d4e;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    font-family: 'Arial', sans-serif;
+}
+
+/* Columna izquierda */
+.left-column {
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #892e3e;
+    padding: 20px;
+    border-radius: 10px;
+    color: white;
+    gap: 15px;
+}
+
+/* Imagen del vino */
+.wine-image {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 2px solid #a43d4e;
+    margin-bottom: 10px;
+    transition: transform 0.3s ease;
+}
+
+.wine-image:hover {
+    transform: scale(1.05);
+}
+
+/* Botón para seleccionar la imagen */
+.image-input {
+    font-size: 0.9rem;
+    color: white;
+    background-color: #a43d4e;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.image-input:hover {
+    background-color: #892e3e;
+}
+
+/* Contenedor de notas */
+.notes-container-create {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+}
+
+.notes-checkbox-create {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    background-color: #a43d4e;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+}
+
+.notes-checkbox-create:hover {
+    background-color: #892e3e;
+}
+
+.notes-label-create {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1rem;
+    color: white;
+}
+
+.notes-icon-create {
+    font-size: 1.5rem;
+}
+
+/* Columna derecha */
+.right-column {
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Botón de creación */
+.create-btn {
+    background-color: #892e3e;
+    color: white;
+    padding: 12px 20px;
+    font-weight: bold;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.create-btn:hover {
+    background-color: #44121b;
+    transform: translateY(-5px);
+}
+
+/* Input general */
+input[type="text"],
+input[type="number"] {
+    width: 95%;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus {
+    border-color: #a43d4e;
+    outline: none;
+}
+
+/* Dropdown select */
+.Select__control {
+    border: 1px solid #ccc !important;
+    border-radius: 5px !important;
+    font-size: 1rem !important;
+}
+
+.Select__control:hover {
+    border-color: #a43d4e !important;
+}
+
+.Select__menu {
+    z-index: 9999;
+}
+
+/* Espaciado adicional entre los selects */
+.Select__wrapper {
+    margin-bottom: 20px;
+    /* Aumenta el espacio entre los selects */
+}
+
+/* Colores del interior de los Selects */
+.Select__menu {
+    background-color: #a43d4e;
+    /* Fondo del menú desplegable */
+    color: white;
+    /* Color del texto */
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.Select__menu-list {
+    padding: 10px 0;
+}
+
+.Select__option {
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.Select__option--is-focused {
+    background-color: #892e3e;
+    /* Color al pasar el mouse */
+}
+
+.Select__option--is-selected {
+    background-color: #6f2733;
+    /* Color al seleccionar */
+    font-weight: bold;
+}
+
+.Select__placeholder {
+    color: #f4dcdc;
+    /* Color del texto del placeholder */
+}
+
+.Select__control {
+    border: 1px solid #a43d4e !important;
+    /* Borde del Select */
+    border-radius: 5px !important;
+    font-size: 1rem !important;
+    background-color: #ffffff !important;
+    /* Fondo del control */
+}
+
+.Select__control:hover {
+    border-color: #892e3e !important;
+}
+
+.Select__single-value {
+    color: #892e3e;
+    /* Color del texto seleccionado */
+}

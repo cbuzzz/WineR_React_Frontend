@@ -1,20 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../../styles/home.css'; // Reutilizamos los estilos existentes
+import Select from 'react-select';
+import '../../styles/createwine.css';
 import NavWineMaker from '../../components/NavWineMaker';
-import wineService from '../../services/wineService'; // Servicio para gestionar vinos
+import wineService from '../../services/wineService';
+import grapeTypeService from '../../services/grapeTypeService';
+import experienceService from '../../services/experienceService';
 import createBackground from '../../assets/vinito.png';
+import defaultWineImage from '../../assets/winebottleint.png';
 import { Service } from '../../models/serviceModel';
 import { Wine } from '../../models/wineModel';
+import { Experience } from '../../models/experienceModel';
+import { SingleValue } from 'react-select';
 
-// Opciones de sabores
-const flavourOptions: Service[] = [
-    { icon: "🍒", label: "Cherry" },
-    { icon: "🍓", label: "Strawberry" },
-    { icon: "🍋", label: "Citrus" },
-    { icon: "🍫", label: "Chocolate" },
-    { icon: "🌿", label: "Herbaceous" },
-    { icon: "🌰", label: "Nutty" },
+const noteOptions: Service[] = [
+    { icon: "🍓", label: "Fruity" },
+    { icon: "🌸", label: "Floral" },
+    { icon: "🫛", label: "Vegetable" },
+    { icon: "🫚", label: "Spiced" },
+    { icon: "🐴", label: "Animal" },
+    { icon: "🌰", label: "Toasted" },
 ];
 
 const CreateWine: React.FC = () => {
@@ -26,14 +31,18 @@ const CreateWine: React.FC = () => {
         brand: '',
         grapetype: '',
         habilitado: true,
-        flavours: [],
+        year: 2018,
+        notes: [],
+        experience: '',
     });
 
+    const [selectedImage, setSelectedImage] = useState<string | null>(null);
+    const [experiences, setExperiences] = useState<Experience[]>([]);
+    const [grapeTypes, setGrapeTypes] = useState<{ value: string; label: string }[]>([]);
     const [error, setError] = useState('');
     const [showModal, setShowModal] = useState(false);
     const navigate = useNavigate();
 
-    // Obtener el ID del propietario desde localStorage
     useEffect(() => {
         const userId = localStorage.getItem('id');
         if (userId) {
@@ -41,12 +50,35 @@ const CreateWine: React.FC = () => {
                 ...prevData,
                 owner: userId,
             }));
+
+            const fetchExperiences = async () => {
+                try {
+                    const userExperiences = await experienceService.getUserExperiences(userId);
+                    setExperiences(userExperiences || []); // Actualiza el estado con las experiencias
+                } catch (err) {
+                    console.error('Failed to fetch experiences:', err);
+                }
+            };
+            const fetchGrapeTypes = async () => {
+                try {
+                    const response = await grapeTypeService.getGrapeTypes();
+                    setGrapeTypes(response.map((type: { name: string; color: string }) => ({
+                        value: type.name,
+                        label: `${type.name} (${type.color})`,
+                    })));
+                } catch (err) {
+                    console.error('Failed to fetch grape types:', err);
+                }
+            };
+
+            fetchExperiences();
+            fetchGrapeTypes();
         } else {
             setError('User ID not found in localStorage');
         }
     }, []);
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
         setFormData((prev) => ({
             ...prev,
@@ -54,12 +86,38 @@ const CreateWine: React.FC = () => {
         }));
     };
 
-    const handleFlavourChange = (flavour: Service) => {
+    const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setSelectedImage(reader.result as string); // Carga la imagen seleccionada
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
+    const handleGrapeTypeChange = (selectedOption: SingleValue<{ value: string; label: string }>) => {
         setFormData((prev) => ({
             ...prev,
-            flavours: prev.flavours.some((f) => f.label === flavour.label)
-                ? prev.flavours.filter((f) => f.label !== flavour.label)
-                : [...prev.flavours, flavour],
+            grapetype: selectedOption ? selectedOption.value : '',
+            color: selectedOption?.value.includes('RED') ? 'Red' : 'White', // Determina el color según el contenido del string
+        }));
+    };
+
+    const handleExperienceChange = (selectedOption: SingleValue<{ value: string | undefined; label: string }>) => {
+        setFormData((prev) => ({
+            ...prev,
+            experience: selectedOption?.value || '',
+        }));
+    };
+
+    const handleNoteChange = (note: Service) => {
+        setFormData((prev) => ({
+            ...prev,
+            notes: prev.notes.some((n) => n.label === note.label)
+                ? prev.notes.filter((n) => n.label !== note.label)
+                : [...prev.notes, note],
         }));
     };
 
@@ -88,104 +146,183 @@ const CreateWine: React.FC = () => {
 
     return (
         <NavWineMaker> {/* El contenido de la página está dentro de NavWineMaker */}
-            <div className="home-container">
-                <div
-                    className="top-plans"
-                    style={{ backgroundImage: `url(${createBackground})` }}
-                >
-                    <div className="top-plans-content">
-                        <h1>Create</h1>
-                        <h2>New Wine</h2>
-                        <p>Design your unique wine</p>
-                    </div>
-                </div>
 
-                {error && <div className="error-message">{error}</div>} {/* Muestra el mensaje de error si ocurre */}
+            <div className="top-plans-content">
+                <h1>Add your wine to WineR</h1>
+                <h2>New Wine</h2>
+            </div>
 
-                <div className="form-create-wine">
-                    {/* Campos del formulario */}
-                    <label style={{ fontWeight: 'bold', color: 'white' }} htmlFor="name">Name</label>
+            {error && <div className="error-message">{error}</div>}
+            <div className="two-column-layout">
+                <div className="left-column">
+                    <img
+                        src={selectedImage || defaultWineImage}
+                        alt="Wine"
+                        className="wine-image"
+                    />
                     <input
-                        type="text"
-                        id="name"
-                        name="name"
-                        placeholder="Enter wine name"
-                        value={formData.name}
-                        onChange={handleChange}
+                        type="file"
+                        accept="image/*"
+                        onChange={handleImageChange}
+                        className="image-input"
                     />
 
-                    <label style={{ fontWeight: 'bold', color: 'white' }} htmlFor="price">Price (€)</label>
-                    <input
-                        type="number"
-                        id="price"
-                        name="price"
-                        placeholder="Enter price"
-                        value={formData.price}
-                        onChange={handleChange}
-                    />
-
-                    <label style={{ fontWeight: 'bold', color: 'white' }} htmlFor="color">Color</label>
-                    <input
-                        type="text"
-                        id="color"
-                        name="color"
-                        placeholder="Enter wine color"
-                        value={formData.color}
-                        onChange={handleChange}
-                    />
-
-                    <label style={{ fontWeight: 'bold', color: 'white' }} htmlFor="brand">Brand</label>
-                    <input
-                        type="text"
-                        id="brand"
-                        name="brand"
-                        placeholder="Enter wine brand"
-                        value={formData.brand}
-                        onChange={handleChange}
-                    />
-
-                    <label style={{ fontWeight: 'bold', color: 'white' }} htmlFor="grapetype">Grape Type</label>
-                    <input
-                        type="text"
-                        id="grapetype"
-                        name="grapetype"
-                        placeholder="Enter grape type"
-                        value={formData.grapetype}
-                        onChange={handleChange}
-                    />
-
-                    <label style={{ fontWeight: 'bold', color: 'white' }} className="label-create">Flavours</label>
-                    <div className="flavours-container-create">
-                        {flavourOptions.map((flavour, index) => (
-                            <div key={flavour.label} className="flavour-checkbox-create">
-                                <label className="flavour-label-create">
+                    <label style={{ fontWeight: 'bold', color: 'white' }} className="label-create">Notes</label>
+                    <div className="notes-container-create">
+                        {noteOptions.map((note) => (
+                            <div key={note.label} className="notes-checkbox-create">
+                                <label className="notes-label-create">
                                     <input
                                         type="checkbox"
-                                        checked={formData.flavours.some((f) => f.label === flavour.label)}
-                                        onChange={() => handleFlavourChange(flavour)}
+                                        checked={formData.notes.some((n) => n.label === note.label)}
+                                        onChange={() => handleNoteChange(note)}
                                     />
-                                    <span className="flavour-icon-create">{flavour.icon}</span>
-                                    {flavour.label}
+                                    <span className="notes-icon-create">{note.icon}</span>
+                                    {note.label}
                                 </label>
                             </div>
                         ))}
                     </div>
+                </div>
+                <div className="right-column">
+                    <div className="form-create-wine">
+                        {/* Campos del formulario */}
+                        <label style={{ fontWeight: 'bold', color: 'white' }} htmlFor="name">Name</label>
+                        <input
+                            type="text"
+                            id="name"
+                            name="name"
+                            placeholder="Enter wine name"
+                            value={formData.name}
+                            onChange={handleChange}
+                        />
 
+                        <label style={{ fontWeight: 'bold', color: 'white' }} htmlFor="price">Price (€)</label>
+                        <input
+                            type="number"
+                            id="price"
+                            name="price"
+                            placeholder="Enter price"
+                            value={formData.price}
+                            onChange={handleChange}
+                        />
+                        <label htmlFor="year" style={{ fontWeight: 'bold', color: 'white' }}>Year</label>
+                        <input
+                            type="number"
+                            id="year"
+                            name="year"
+                            placeholder="Enter the wine's year"
+                            value={formData.year || 2018}
+                            onChange={handleChange}
+                        />
+
+                        <label style={{ fontWeight: 'bold', color: 'white' }} htmlFor="brand">Brand</label>
+                        <input
+                            type="text"
+                            id="brand"
+                            name="brand"
+                            placeholder="Enter wine brand"
+                            value={formData.brand}
+                            onChange={handleChange}
+                        />
+
+                        <label style={{ fontWeight: 'bold', color: 'white' }} htmlFor="grapetype">Grape Type</label>
+                        <div className="Select__wrapper">
+                            <Select
+                                options={grapeTypes}
+                                onChange={handleGrapeTypeChange}
+                                placeholder="Select a grape type"
+                                isClearable
+                                styles={{
+                                    control: (base) => ({
+                                        ...base,
+                                        borderColor: '#a43d4e',
+                                        backgroundColor: '#ffffff',
+                                        '&:hover': { borderColor: '#892e3e' },
+                                    }),
+                                    menu: (base) => ({
+                                        ...base,
+                                        backgroundColor: '#a43d4e',
+                                        color: 'white',
+                                        borderRadius: '5px',
+                                        zIndex: 9999,
+                                    }),
+                                    option: (base, { isFocused, isSelected }) => ({
+                                        ...base,
+                                        backgroundColor: isSelected ? '#6f2733' : isFocused ? '#892e3e' : '#a43d4e',
+                                        color: 'white',
+                                        cursor: 'pointer',
+                                    }),
+                                    placeholder: (base) => ({
+                                        ...base,
+                                        color: 'gray',
+                                    }),
+                                    singleValue: (base) => ({
+                                        ...base,
+                                        color: '#892e3e',
+                                    }),
+                                }}
+                            />
+                        </div>
+                        <label htmlFor="experience" style={{ fontWeight: 'bold', color: 'white' }}>Experience</label>
+                        <div className="Select__wrapper">
+                            <Select
+                                options={experiences.map((exp) => ({
+                                    value: exp._id,
+                                    label: exp.title,
+                                }))}
+                                onChange={handleExperienceChange}
+                                placeholder="Select an experience"
+                                isClearable
+                                styles={{
+                                    control: (base) => ({
+                                        ...base,
+                                        borderColor: '#a43d4e',
+                                        backgroundColor: '#ffffff',
+                                        '&:hover': { borderColor: '#892e3e' },
+                                    }),
+                                    menu: (base) => ({
+                                        ...base,
+                                        backgroundColor: '#a43d4e',
+                                        color: 'white',
+                                        borderRadius: '5px',
+                                        zIndex: 9999,
+                                    }),
+                                    option: (base, { isFocused, isSelected }) => ({
+                                        ...base,
+                                        backgroundColor: isSelected ? '#6f2733' : isFocused ? '#892e3e' : '#a43d4e',
+                                        color: 'white',
+                                        cursor: 'pointer',
+                                    }),
+                                    placeholder: (base) => ({
+                                        ...base,
+                                        color: 'gray',
+                                    }),
+                                    singleValue: (base) => ({
+                                        ...base,
+                                        color: '#892e3e',
+                                    }),
+                                }}
+                            />
+                        </div>
+                    </div>
                     <button className="create-btn" onClick={handleSubmit}>
                         Create Wine
                     </button>
+
                 </div>
             </div>
-
             {/* Modal de éxito */}
-            {showModal && (
-                <div className="modal">
-                    <div className="modal-content">
-                        <h3>Wine is being created. Redirecting to the main menu...</h3>
+            {
+                showModal && (
+                    <div className="modal">
+                        <div className="modal-content">
+                            <h3>Wine is being created. Redirecting to the main menu...</h3>
+                        </div>
                     </div>
-                </div>
-            )}
-        </NavWineMaker>
+                )
+            }
+        </NavWineMaker >
     );
 };
 

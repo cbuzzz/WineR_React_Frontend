@@ -17,7 +17,6 @@ const getHeaders = () => {
 
 const addUserToExperience = async (experienceId: string, userId: string): Promise<Experience> => {
     try {
-        console.log("Llega aquí");
 
         // Ajusta la URL para incluir los parámetros dinámicos
         const response = await axios.post(
@@ -37,7 +36,6 @@ const addUserToExperience = async (experienceId: string, userId: string): Promis
     }
 };
 
-// Otros métodos del servicio
 const getAllExperiences = async (): Promise<Experience[]> => {
     try {
         const response = await axios.get<Experience[]>(API_URL, getHeaders()); // Usa 'getHeaders' aquí también
@@ -75,9 +73,25 @@ const createExperience = async (experienceData: Omit<Experience, '_id' | 'rating
     }
 };
 
+const getUserExperiences = async (userId: string): Promise<Experience[]> => {
+    try {
+        const response = await axios.get<Experience[]>(
+            `${API_URL}/user/exp/${userId}`,
+            getHeaders()
+        );
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching experiences:', error);
+        throw new Error('Failed to fetch user experiences');
+    }
+};
+
+
+
 export default {
     getAllExperiences,
     getExperienceById,
     createExperience,
-    addUserToExperience, // Exporta esta función
+    addUserToExperience,
+    getUserExperiences,
 };
