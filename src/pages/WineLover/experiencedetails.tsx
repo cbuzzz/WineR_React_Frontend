@@ -9,6 +9,7 @@ import L from 'leaflet';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import { getCoordinates } from '../../utils/geocoding';
 import { FaPhone, FaEnvelope } from 'react-icons/fa'; // Import the icons
+import NavWineLover from '../../components/NavWineLover';
 
 // Configuración de los íconos de Leaflet
 delete (L.Icon.Default.prototype as any)._getIconUrl;
@@ -112,7 +113,8 @@ const ExperienceDetails = () => {
     }
 
     return (
-        <div className="experience-details">
+        <NavWineLover>
+            <div className="experience-details">
             {/* Mostrar el modal solo si showModal es true */}
             {showModal && (
                 <div className="modal">
@@ -122,10 +124,9 @@ const ExperienceDetails = () => {
                 </div>
             )}
 
-            <div className="header">
-                <button onClick={() => navigate(-1)}>← Back</button>
-                <h1>{experience.title}</h1>
-                <button className="favorite">♡</button>
+            <div className="header" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
+                <button onClick={() => navigate(-1)} style={{ alignSelf: 'flex-start' }}>← Back</button>
+                <h1 style={{ margin: '0' }}>{experience.title}</h1>
             </div>
 
             <div className="details">
@@ -176,6 +177,7 @@ const ExperienceDetails = () => {
             </div>
             <button className="book-now" onClick={handleBookNow}>Book Now</button>
         </div>
+        </NavWineLover>
     );
 };
 

@@ -82,10 +82,9 @@ const ExperienceDetails = () => {
                 </div>
             )}
 
-            <div className="header">
-                <button onClick={() => navigate(-1)}>← Back</button>
-                <h1>{experience.title}</h1>
-                <button className="favorite">♡</button>
+            <div className="header" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
+                <button onClick={() => navigate(-1)} style={{ alignSelf: 'flex-start' }}>← Back</button>
+                <h1 style={{ margin: '0' }}>{experience.title}</h1>
             </div>
 
             <div className="details">
