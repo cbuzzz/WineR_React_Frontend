@@ -15,6 +15,7 @@ import Search from './pages/WineLover/search';
 import ProfileWL from './pages/WineLover/profileWineLover';
 import ProfileWM from './pages/WineMaker/profileWineMaker';
 import CreateExperience from './pages/WineMaker/createExperience';
+import CreateWine from './pages/WineMaker/createWine';
 import Friends from './pages/WineLover/friends';
 import TyC from './pages/tyc';
 import ChatsWL from './pages/WineLover/chats';
@@ -51,6 +52,7 @@ const App: React.FC = () => {
           {/* Rutas específicas para WineMaker */}
           <Route path="/homeWineMaker" element={<HomeWM />} />
           <Route path="/createExperience" element={<CreateExperience />} /> {/* Ruta para crear experiencia */}
+          <Route path="/createWine" element={<CreateWine />} /> {/* Ruta para crear experiencia */}
           <Route path="/profileWineMaker" element={<ProfileWM />} />
           <Route path="/experienceWM/:id" element={<ExperienceDetailsWM />} />
           <Route path="/chatsWM" element={<ChatsWM />} />
