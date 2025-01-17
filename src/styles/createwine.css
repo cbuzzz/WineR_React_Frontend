@@ -206,3 +206,36 @@ input[type="number"]:focus {
     color: #892e3e;
     /* Color del texto seleccionado */
 }
+
+/* Imágenes color de vino */
+.two-column-layout-wines {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 0;
+}
+
+.right-column-wines,
+.left-column-wines {
+    width: 50%;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.right-column-wines img,
+.left-column-wines img {
+    width: 150px;
+    height: auto;
+    border-radius: 10px;
+    opacity: 0.7;
+    /* Imagen no seleccionada */
+}
+
+.right-column-wines.highlighted img,
+.left-column-wines.highlighted img {
+    opacity: 1;
+    /* Imagen seleccionada */
+    transform: scale(1.1);
+    /* Resaltar con escala */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+    /* Sombra para la imagen seleccionada */
+}

@@ -6,8 +6,9 @@ import NavWineMaker from '../../components/NavWineMaker';
 import wineService from '../../services/wineService';
 import grapeTypeService from '../../services/grapeTypeService';
 import experienceService from '../../services/experienceService';
-import createBackground from '../../assets/vinito.png';
 import defaultWineImage from '../../assets/winebottleint.png';
+import RedWineImage from '../../assets/red-wine.png';
+import WhiteWineImage from '../../assets/white-wine.png';
 import { Service } from '../../models/serviceModel';
 import { Wine } from '../../models/wineModel';
 import { Experience } from '../../models/experienceModel';
@@ -101,7 +102,7 @@ const CreateWine: React.FC = () => {
         setFormData((prev) => ({
             ...prev,
             grapetype: selectedOption ? selectedOption.value : '',
-            color: selectedOption?.value.includes('RED') ? 'Red' : 'White', // Determina el color según el contenido del string
+            color: selectedOption?.label.includes('(RED)') ? 'Red' : selectedOption?.label.includes('(WHITE)') ? 'White' : '', // Determina el color según el contenido del string
         }));
     };
 
@@ -264,6 +265,25 @@ const CreateWine: React.FC = () => {
                                 }}
                             />
                         </div>
+
+                        <label style={{ fontWeight: 'bold', color: 'white' }} htmlFor="brand">Color</label>
+                        <div className="two-column-layout-wines">
+                            <div className={`right-column-wines ${formData.color === 'Red' ? 'highlighted' : ''}`}>
+                                <img
+                                    src={RedWineImage}
+                                    alt="Red Wine"
+                                    className="redwine-image"
+                                />
+                            </div>
+                            <div className={`left-column-wines ${formData.color === 'White' ? 'highlighted' : ''}`}>
+                                <img
+                                    src={WhiteWineImage}
+                                    alt="White Wine"
+                                    className="whitewine-image"
+                                />
+                            </div>
+                        </div>
+
                         <label htmlFor="experience" style={{ fontWeight: 'bold', color: 'white' }}>Experience</label>
                         <div className="Select__wrapper">
                             <Select
