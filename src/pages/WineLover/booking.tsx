@@ -137,14 +137,15 @@ const Booking: React.FC = () => {
     };
 
     const handleShowReviewsClick = async (experienceId: string) => {
-        try {
-            const reviews = await experienceService.getExperienceRatings(experienceId); // Llamada al backend para obtener las reseñas
-            setSelectedReviews(reviews); // Almacenar las reseñas en el estado
-            setShowReviewsModal(true); // Mostrar el modal con las reseñas
-        } catch (err) {
-            console.error("Error fetching reviews:", err);
-        }
-    };
+    try {
+        const reviews = await experienceService.getExperienceRatings(experienceId);  // Ahora esto devuelve un array de objetos Review
+        setSelectedReviews(reviews);  // Almacena las reseñas en el estado
+        setShowReviewsModal(true);    // Muestra el modal con las reseñas
+    } catch (err) {
+        console.error("Error fetching reviews:", err);
+    }
+};
+
 
     const handleCloseReviewsModal = () => {
         setShowReviewsModal(false);
@@ -221,24 +222,30 @@ const Booking: React.FC = () => {
             )}
 
             {/* Modal para mostrar las reseñas */}
-            {showReviewsModal && selectedReviews.length > 0 && (
-                <div className="modal">
-                    <div className="modal-content">
-                        <h3>Reviews for this experience</h3>
-                        <ul>
-                            {selectedReviews.map((review, index) => (
-                                <li key={index}>
-                                    <p><strong>Rating:</strong> {review.rating} ★</p>
-                                    <p><strong>Comment:</strong> {review.comment}</p>
-                                </li>
-                            ))}
-                        </ul>
-                        <div>
-                            <button onClick={handleCloseReviewsModal}>Close</button>
-                        </div>
+{showReviewsModal && selectedReviews.length > 0 && (
+    <div className="modal">
+        <div className="modal-content">
+            <h3>Reviews for this experience</h3>
+            <ul>
+                {selectedReviews.map((review, index) => (
+                    <div key={review._id}>
+                        <li>
+                            <p><strong>User:</strong> {review.user}</p>
+                            <p><strong>Rating:</strong> {review.value} ★</p>
+                            <p><strong>Comment:</strong> {review.comment}</p>
+                        </li>
+                        {/* Línea horizontal para separar las valoraciones */}
+                        {index < selectedReviews.length - 1 && <hr />}
                     </div>
-                </div>
-            )}
+                ))}
+            </ul>
+            <div>
+                <button onClick={handleCloseReviewsModal}>Close</button>
+            </div>
+        </div>
+    </div>
+)}
+
         </NavWineLover>
     );
 };

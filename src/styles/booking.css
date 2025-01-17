@@ -151,3 +151,16 @@
 .modal-content button:hover {
     background-color: #a2282f;
 }
+
+/* Elimina los puntos de la lista */
+ul {
+    list-style-type: none; /* Quitar los puntos por defecto */
+    padding: 0; /* Elimina el padding de la lista */
+    margin: 0; /* Elimina el margen de la lista */
+}
+
+/* Estilo para los elementos de la lista */
+li {
+    padding: 10px 0; /* Añade algo de espacio entre las valoraciones */
+}
+

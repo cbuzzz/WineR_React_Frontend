@@ -116,6 +116,7 @@ const añadirValoracion = async (experienceId: string, rating: number, comment: 
 
 const getExperienceRatings = async (experienceId: string): Promise<any[]> => {
     try {
+        console.log("Este es el id de la experiencia: ", experienceId)
         const response = await axios.get(`${API_URL}/ratings/${experienceId}`);
         return response.data; // Regresa las reseñas de la experiencia
     } catch (error) {

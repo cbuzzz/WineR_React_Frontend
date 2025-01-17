@@ -11,7 +11,13 @@ export interface Experience {
     contactnumber: number,
     contactmail: string,
     averageRating: number,
-    reviews: string[],
+    reviews: Review[];  // Aquí cambiamos de string[] a Review[]
     date: string,
     services: Service[],
+}
+
+export interface Review {
+    user: string; // ID del usuario
+    value: number; // Puntuación entre 0-5
+    comment: string; // El comentario de la reseña
 }
