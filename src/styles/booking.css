@@ -11,7 +11,7 @@
 /* Cabecera */
 .booking-header {
     display: flex;
-    justify-content: space-between;
+    justify-content: center; /* Center the title */
     align-items: center;
     margin-bottom: 20px;
 }
@@ -19,6 +19,7 @@
 .booking-header h1 {
     font-size: 24px;
     color: #ffffff;
+    text-align: center; /* Ensure the title is centered */
 }
 
 .booking-actions {
@@ -99,10 +100,13 @@
     background-color: #a2282f;
     color: white;
     border: none;
-    padding: 10px 15px;
+    padding: 6px 12px; /* Slightly reduce padding to fit in one line */
     border-radius: 20px;
     cursor: pointer;
+    margin-right: 5px; /* Keep margin small to fit in one line */
+    font-size: 14px; /* Adjust font size for better readability */
 }
+
 /* Estilos para el modal */
 .modal {
     position: fixed;
@@ -162,5 +166,11 @@ ul {
 /* Estilo para los elementos de la lista */
 li {
     padding: 10px 0; /* Añade algo de espacio entre las valoraciones */
+}
+
+.experience-actions {
+    display: flex;
+    gap: 10px; /* Add gap between buttons */
+    flex-wrap: wrap; /* Ensure buttons wrap if they overflow */
 }
 

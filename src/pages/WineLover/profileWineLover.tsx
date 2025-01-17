@@ -5,6 +5,8 @@ import NavWineLover from '../../components/NavWineLover'; // Asegúrate de que l
 import userService from '../../services/userService'; // Servicio para obtener los detalles del usuario
 import profileBackground from '../../assets/profilebackground.jpg';
 import { TimerContext } from '../../components/timercontext';
+import { FaStar, FaUserFriends, FaWineGlassAlt, FaUser, FaEnvelope, FaUserTag, FaCheckCircle, FaTimesCircle } from 'react-icons/fa'; // Import additional icons
+import defaultProfilePicture from '../../assets/defaultProfilePicture.png'; // Import default profile picture
 
 // Define la interfaz del usuario
 interface User {
@@ -16,6 +18,9 @@ interface User {
   tipo: 'admin' | 'wineLover' | 'wineMaker';
   habilitado: boolean;
   experiences: string[];
+  amigos: string[];
+  solicitudes: string[];
+  profilePicture?: string; // URL de la foto de perfil
 }
 
 const ProfileWL: React.FC = () => {
@@ -51,6 +56,11 @@ const ProfileWL: React.FC = () => {
     navigate('/'); // Redirigir a la página de bienvenida
   };
 
+  // Función para redirigir a la página de edición del perfil
+  const handleEditProfile = () => {
+    navigate('/edit-profile'); // Redirigir a la página de edición del perfil
+  };
+
   if (!user) {
     return <div>Loading...</div>; // Mostrar un mensaje mientras cargan los datos
   }
@@ -64,6 +74,11 @@ const ProfileWL: React.FC = () => {
         >
           <div className="top-plans-content">
             <h1>{user.username}'s Profile</h1>
+            <img
+              src={user.profilePicture || defaultProfilePicture}
+              alt={`${user.username}'s profile`}
+              className="profile-picture"
+            />
             <p>Welcome to your profile page</p>
           </div>
         </div>
@@ -72,17 +87,26 @@ const ProfileWL: React.FC = () => {
 
         <div className="profile-info">
           <h2>User Information</h2>
-          <div className="profile-details">
-            <p><strong>Name:</strong> {user.name}</p>
-            <p><strong>Email:</strong> {user.mail}</p>
-            <p><strong>Username:</strong> {user.username}</p>
-            <p><strong>Account Type:</strong> {user.tipo}</p>
-            <p><strong>Status:</strong> {user.habilitado ? 'Active' : 'Inactive'}</p>
+          <div className="stats-details">
+            <p><FaUser className="icon" /> <strong>Name:</strong> {user.name}</p>
+            <p><FaEnvelope className="icon" /> <strong>Email:</strong> {user.mail}</p>
+            <p><FaUserTag className="icon" /> <strong>Username:</strong> {user.username}</p>
+            <p><FaUser className="icon" /> <strong>Account Type:</strong> {user.tipo}</p>
+            <p>{user.habilitado ? <FaCheckCircle className="icon" /> : <FaTimesCircle className="icon" />} <strong>Status:</strong> {user.habilitado ? 'Active' : 'Inactive'}</p>
+          </div>
+
+          <h2>Activity</h2>
+          <div className="stats-details">
+            <p><FaUserFriends className="icon" /> <strong>Friends:</strong> {user.amigos.length}</p>
+            <p><FaWineGlassAlt className="icon" /> <strong>Experiences:</strong> {user.experiences.length}</p>
           </div>
         </div>
 
-        {/* Botón de Logout */}
-        <button className="logout-btn" onClick={handleLogout}>Logout</button>
+        {/* Botones de Logout y Edit Profile */}
+        <div className="button-group">
+          <button className="logout-btn" onClick={handleLogout}>Logout</button>
+          <button className="logout-btn" onClick={handleEditProfile}>Edit Profile</button>
+        </div>
       </div>
     </NavWineLover>
   );
