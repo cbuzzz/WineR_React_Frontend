@@ -50,6 +50,34 @@
     gap: 20px; /* Espaciado entre las tarjetas */
 }
 
+/* Calendario */
+.calendar-container {
+    margin-top: 30px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.calendar-button {
+    padding: 10px;
+    border: none;
+    background-color: #892e3e;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.calendar-button:hover {
+    background-color: #a2282f;
+}
 
 /* Tarjetas de experiencias */
 .experience-card {
@@ -63,7 +91,6 @@
     height: auto; /* Elimina la altura fija */
     min-height: 200px; /* Altura mínima para mantener un diseño consistente */
 }
-
 
 .experience-image {
     width: 100%;
@@ -103,6 +130,7 @@
     border-radius: 20px;
     cursor: pointer;
 }
+
 /* Estilos para el modal */
 .modal {
     position: fixed;
@@ -128,7 +156,6 @@
     flex-direction: column; /* Alinear elementos en columna */
     align-items: center; /* Centrar horizontalmente los elementos */
 }
-
 
 .modal-content input {
     margin: 10px 0;
@@ -164,3 +191,84 @@ li {
     padding: 10px 0; /* Añade algo de espacio entre las valoraciones */
 }
 
+/* Calendario */
+.calendar-container {
+    width: 300px;
+    margin: 0 auto;
+    background-color: #ffffff; /* Fondo blanco */
+    padding: 10px;
+    border-radius: 10px; /* Bordes redondeados para el contenedor */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilo global del calendario */
+.react-calendar {
+    width: 100%; /* Asegurar que el calendario se adapte al contenedor */
+    max-width: 100%; /* Evitar que el calendario crezca fuera del contenedor */
+    background-color: transparent; /* Fondo transparente para respetar el contenedor */
+    font-size: 12px; /* Reducir ligeramente el tamaño del texto */
+    border: none; /* Quitar bordes del calendario */
+    color: #333333; /* Color oscuro (negrita) para el texto */
+}
+
+/* Espacio entre la cabecera del calendario y el contenido del calendario */
+.react-calendar__navigation {
+    margin-bottom: 20px; /* Agregar margen inferior para separar la barra de navegación (mes anterior/siguiente) del calendario */
+}
+
+/* Eliminar los bordes redondeados en todas las casillas del calendario */
+.react-calendar__tile {
+    border-radius: 10px !important; /* Bordes redondeados en las casillas */
+    font-weight: bold; /* Negrita para los días */
+}
+
+/* Título y días de la semana en negrita */
+.react-calendar__month-view__weekdays {
+    font-weight: bold; /* Negrita para los días de la semana */
+    color: #333333; /* Color oscuro para los días de la semana */
+}
+
+.react-calendar__navigation button {
+    font-weight: bold; /* Negrita para los botones de navegación */
+}
+
+/* Día actual */
+.react-calendar__tile--now {
+    background-color: #ffffff; /* Fondo blanco para el día actual */
+    color: #333333; /* Texto oscuro para el día actual */
+    border-radius: 10px !important; /* Bordes redondeados para el día actual */
+}
+
+/* Día seleccionado */
+.react-calendar__tile--active {
+    background-color: #f3e6d3; /* Fondo color vino para el día seleccionado */
+    color: #000000; /* Texto blanco */
+    border-radius: 10px !important; /* Bordes redondeados para el día seleccionado */
+}
+
+/* Hover sobre cualquier fecha */
+.react-calendar__tile:hover {
+    background-color: #892e3e; /* Fondo oscuro al pasar el mouse */
+    color: white;
+    cursor: pointer;
+    border-radius: 10px !important; /* Bordes redondeados en hover */
+}
+
+/* Resaltar fechas con experiencias (color vino blanco) */
+.react-calendar .highlighted-date {
+    background-color: #892e3e !important; /* Color suave vino blanco */
+    color: #ffffff !important; /* Texto oscuro para las fechas con experiencias */
+    border-radius: 10px !important; /* Bordes redondeados para las fechas con experiencias */
+}
+
+/* Hover en fechas con experiencias */
+.react-calendar .highlighted-date:hover {
+    background-color: #a2282f !important; /* Cambiar a color vino cuando se pasa el ratón */
+    color: white !important;
+    cursor: pointer;
+}
+/* Título del calendario */
+.calendar-container h2 {
+    font-weight: bold; /* Poner el texto en negrita */
+    color: #a2282f; /* Color oscuro para el texto del título */
+}
