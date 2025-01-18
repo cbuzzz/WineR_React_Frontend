@@ -9,50 +9,66 @@ import ubiIcon from '../../assets/ubi.png';
 import dateIcon from '../../assets/date.png';
 import experienceService from '../../services/experienceService';
 import { Experience } from '../../models/experienceModel';
-import NavWineMaker from '../../components/NavWineMaker'; // Asegúrate de que la ruta sea correcta
+import NavWineMaker from '../../components/NavWineMaker';
 import userService from '../../services/userService';
+import Calendar from 'react-calendar'; // Asegúrate de instalar react-calendar
 
 const Home: React.FC = () => {
     const navigate = useNavigate();
     const [experiences, setExperiences] = useState<Experience[]>([]);
+    const [selectedDateExperiences, setSelectedDateExperiences] = useState<Experience[]>([]);
     const [error, setError] = useState('');
-    const [loading, setLoading] = useState(true); // Estado de carga
+    const [loading, setLoading] = useState(true);
 
-    // Obtener el id del usuario desde localStorage
     const id = localStorage.getItem('id');
 
     useEffect(() => {
         if (!id) {
             setError('User not found');
-            setLoading(false); // Detener carga si no se encuentra el id
+            setLoading(false);
             return;
         }
 
         const fetchExperiences = async () => {
             try {
-                const data = await userService.getUserExperiences(); // Pasar el id al servicio
+                const data = await userService.getUserExperiences(); // Asegúrate de que filtre solo las experiencias del usuario
                 setExperiences(data);
-                setLoading(false); // Detener carga al recibir los datos
+                setLoading(false);
             } catch (err) {
                 if (err instanceof Error) {
                     setError(err.message);
                 } else {
                     setError('An unexpected error occurred');
                 }
-                setLoading(false); // Detener carga incluso si hay error
+                setLoading(false);
             }
         };
 
         fetchExperiences();
-    }, [id]); // Rehacer la petición si el id cambia (en caso de que se cambie el usuario)
+    }, [id]);
 
     const handleCardClick = (id: string) => {
-        navigate(`/experienceWM/${id}`); // Redirige al usuario a la página de detalles
+        navigate(`/experienceWM/${id}`);
+    };
+
+    const getExperienceDates = () => {
+        return experiences.map((experience) => new Date(experience.date));
+    };
+
+    const handleDayClick = (date: Date) => {
+        const selectedExperiences = experiences.filter((experience) => {
+            const expDate = new Date(experience.date);
+            return (
+                expDate.getFullYear() === date.getFullYear() &&
+                expDate.getMonth() === date.getMonth() &&
+                expDate.getDate() === date.getDate()
+            );
+        });
+        setSelectedDateExperiences(selectedExperiences);
     };
 
     return (
         <NavWineMaker>
-            {/* Todo el contenido de la página Home va como children */}
             <div className="home-container">
                 <div
                     className="top-plans"
@@ -67,70 +83,101 @@ const Home: React.FC = () => {
                 </div>
 
                 {error && <div className="error-message">{error}</div>}
-                
-                {loading ? ( // Mostrar mensaje de carga
+
+                {loading ? (
                     <div className="loading-message">Loading experiences...</div>
                 ) : (
+                    <div className="calendar-container">
+                        <h2>My Experience Calendar</h2>
+                        <Calendar
+                            onChange={(date) => console.log(date)}
+                            value={new Date()}
+                            tileClassName={({ date }) => {
+                                const experienceDates = getExperienceDates();
+                                return experienceDates.some(
+                                    (expDate) =>
+                                        expDate.getFullYear() === date.getFullYear() &&
+                                        expDate.getMonth() === date.getMonth() &&
+                                        expDate.getDate() === date.getDate()
+                                )
+                                    ? 'highlighted-date'
+                                    : '';
+                            }}
+                            onClickDay={handleDayClick}
+                        />
+                    </div>
+                )}
+
+                {selectedDateExperiences.length > 0 && (
+                    <div className="calendar-experiences">
+                        <h3>Experiences on this day:</h3>
+                        <ul>
+                            {selectedDateExperiences.map((experience) => (
+                                <li key={experience._id}>
+                                    <strong>{experience.title}</strong> - {experience.description}
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                )}
+
+                {!loading && experiences.length > 0 && (
                     <div className="experience-list">
-                        {experiences.length === 0 ? (
-                            <div className="no-experiences-message">No experiences found.</div> // Mensaje si no hay experiencias
-                        ) : (
-                            experiences.map((experience) => (
-                                <div
-                                    className="experience-card"
-                                    key={experience._id}
-                                    onClick={() => handleCardClick(experience._id || '')} // Hace la card clickeable
-                                    style={{ cursor: 'pointer' }}
-                                >
-                                    <img
-                                        src={expImg}
-                                        alt={experience.title}
-                                        className="experience-image"
-                                    />
-                                    <div className="experience-info">
-                                        <div className="experience-name">
-                                            <img
-                                                src={wineIcon}
-                                                alt="Wine bottle"
-                                                style={{ width: '20px', height: 'auto' }}
-                                                className="icon-wine"
-                                            />
-                                            {experience.title}
-                                        </div>
-                                        <div className="experience-location">
-                                            <img
-                                                src={ubiIcon}
-                                                alt="Location"
-                                                style={{ width: '15px', height: 'auto' }}
-                                                className="icon-ubi"
-                                            />
-                                            {experience.location} {experience.price}
-                                        </div>
-                                        <div className="experience-date">
-                                            <img
-                                                src={dateIcon}
-                                                alt="Date"
-                                                style={{ width: '15px', height: 'auto' }}
-                                                className="date-ubi"
-                                            />
-                                            {experience.date}
-                                        </div>
-                                        <div className="experience-description">
-                                            {experience.description}
-                                        </div>
-                                        <div className="experience-rating">
-                                            <img
-                                                src={starIcon}
-                                                alt="Rating"
-                                                style={{ width: '20px', height: '20px' }}
-                                                className="icon-star"
-                                            />
-                                            {experience.averageRating}
-                                        </div>
+                        {experiences.map((experience) => (
+                            <div
+                                className="experience-card"
+                                key={experience._id}
+                                onClick={() => handleCardClick(experience._id || '')}
+                                style={{ cursor: 'pointer' }}
+                            >
+                                <img
+                                    src={expImg}
+                                    alt={experience.title}
+                                    className="experience-image"
+                                />
+                                <div className="experience-info">
+                                    <div className="experience-name">
+                                        <img
+                                            src={wineIcon}
+                                            alt="Wine bottle"
+                                            style={{ width: '20px', height: 'auto' }}
+                                            className="icon-wine"
+                                        />
+                                        {experience.title}
+                                    </div>
+                                    <div className="experience-location">
+                                        <img
+                                            src={ubiIcon}
+                                            alt="Location"
+                                            style={{ width: '15px', height: 'auto' }}
+                                            className="icon-ubi"
+                                        />
+                                        {experience.location} {experience.price}
+                                    </div>
+                                    <div className="experience-date">
+                                        <img
+                                            src={dateIcon}
+                                            alt="Date"
+                                            style={{ width: '15px', height: 'auto' }}
+                                            className="date-ubi"
+                                        />
+                                        {experience.date}
+                                    </div>
+                                    <div className="experience-description">
+                                        {experience.description}
+                                    </div>
+                                    <div className="experience-rating">
+                                        <img
+                                            src={starIcon}
+                                            alt="Rating"
+                                            style={{ width: '20px', height: '20px' }}
+                                            className="icon-star"
+                                        />
+                                        {experience.averageRating}
                                     </div>
                                 </div>
-                            ))
-                        )}
+                            </div>
+                        ))}
                     </div>
                 )}
             </div>

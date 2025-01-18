@@ -60,6 +60,37 @@ const getExperienceById = async (id: string): Promise<Experience> => {
     }
 };
 
+const removeUserFromExperience = async (experienceId: string, userId: string): Promise<void> => {
+    try {
+        console.log("ENTRA AQUI")
+        await axios.delete(
+            `${API_URL}/deleteUserFromExp/${experienceId}/${userId}`, // Ruta ajustada sin 'participant'
+            getHeaders() // Agrega encabezados si es necesario, como Authorization
+        );
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            throw new Error(error.response?.data?.message || 'Failed to remove user from experience');
+        }
+        throw new Error('An unexpected error occurred');
+    }
+};
+
+const removeCommentFromExperience = async (experienceId: string, commentId: string): Promise<void> => {
+    try {
+        await axios.delete(
+            `${API_URL}/${experienceId}/comment/${commentId}`, // Ruta ajustada para comentarios
+            getHeaders() // Agrega encabezados si es necesario
+        );
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            throw new Error(error.response?.data?.message || 'Failed to remove comment from experience');
+        }
+        throw new Error('An unexpected error occurred');
+    }
+};
+
+
+
 const createExperience = async (experienceData: Omit<Experience, '_id' | 'rating' | 'reviews'>): Promise<Experience> => {
     try {
         const response = await axios.post(`${API_URL}/`, experienceData, getHeaders()); // Usa 'getHeaders' aquí también
@@ -156,6 +187,30 @@ const addWineToExperience = async (experienceId: string, wineId: string): Promis
     }
 };
 
+const updateExperience = async (id: string, updatedExperienceData: Partial<Experience>): Promise<Experience> => {
+    try {
+        console.log("Llega al servicio de actualización de experiencia");
+        console.log(updatedExperienceData);
+
+        // Ajusta la URL para incluir el ID de la experiencia
+        const response = await axios.put(
+            `${API_URL}/${id}`, // Ruta ajustada para actualizar la experiencia
+            updatedExperienceData, // Datos a actualizar
+            getHeaders() // Encabezados para autenticación
+        );
+
+        console.log('Experiencia actualizada:', response.data);
+        return response.data; // Retorna la experiencia actualizada
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            const errorMessage = error.response?.data?.message || 'Failed to update experience';
+            throw new Error(errorMessage);
+        }
+        throw new Error('An unexpected error occurred');
+    }
+};
+
+
 
 export default {
     getAllExperiences,
@@ -166,4 +221,7 @@ export default {
     añadirValoracion,
     getExperienceRatings,
     addWineToExperience,
+    removeUserFromExperience,
+    removeCommentFromExperience,
+    updateExperience,
 };

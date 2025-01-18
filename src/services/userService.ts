@@ -257,6 +257,21 @@ const getUserProfile = async (username: string): Promise<User> => {
     }
 };
 
+const removeExperienceFromUser = async (experienceId: string, userId: string): Promise<void> => {
+    try {
+        console.log("ENTRA AQUI")
+        await axios.delete(
+            `${API_URL}/deleteExpFromUser/${experienceId}/${userId}`, // Ruta ajustada sin 'participant'
+            getHeaders() // Agrega encabezados si es necesario, como Authorization
+        );
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            throw new Error(error.response?.data?.message || 'Failed to remove user from experience');
+        }
+        throw new Error('An unexpected error occurred');
+    }
+};
+
 // Obtener las experiencias del usuario por token (usando 'id' en lugar de 'userId')
 const getUserExperiences = async () => {
     const token = localStorage.getItem('token'); // Obtener el token del localStorage
@@ -308,4 +323,5 @@ export default {
     getUserProfile,
     updateUser,
     getUserExperiences,
+    removeExperienceFromUser,
 };

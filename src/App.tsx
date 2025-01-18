@@ -25,6 +25,8 @@ import ChatWM from './pages/WineMaker/chat';
 import FriendProfile from './pages/WineLover/friendProfile';
 import ListWines from './pages/WineLover/listWines';
 import ListWinesWM from './pages/WineMaker/listWines';
+import ManageExpWM from './pages/WineMaker/manageExperience';
+
 import { TimerProvider } from './components/timercontext';
 import { BadWordsProvider } from './utils/badWordsContext'; // Importa el contexto
 
@@ -63,6 +65,8 @@ const App: React.FC = () => {
           <Route path="/chatsWM" element={<ChatsWM />} />
           <Route path="/chatWM/:roomName" element={<ChatWM />} />
           <Route path="/listWinesWM" element={<ListWinesWM />} />
+          <Route path="/manageExpWM/:id" element={<ManageExpWM />} /> 
+
         </Routes>
       </TimerProvider>
       </BadWordsProvider>

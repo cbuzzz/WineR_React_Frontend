@@ -10,6 +10,7 @@ export interface User {
     amigos: string[]; // Lista de amigos
     solicitudes: string[]; // Lista de solicitudes de amistad
     googleId?: string; // ID de Google opcional
+    
 };
 
 export type PublicUserInfo = Pick<User, 'name'>;
