@@ -1,0 +1,87 @@
+.listwines-container-list {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #a43d4e;
+    border-radius: 10px;
+    color: white;
+    font-family: 'Arial', sans-serif;
+}
+
+.listwines-title-list {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #ffffff;
+}
+
+.wine-list-container-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.wine-card-list {
+    display: flex;
+    align-items: center;
+    background-color: #892e3e;
+    border-radius: 10px;
+    padding: 15px;
+    width: 70%;
+    margin: 0 auto;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.wine-card-list:hover {
+    transform: scale(1.02);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+.wine-card-image-list {
+    width: 150px;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-right: 20px;
+}
+
+.wine-details-list {
+    flex: 1;
+}
+
+.wine-details-list p {
+    margin: 5px 0;
+    font-size: 1rem;
+}
+
+.wine-experience-card-list {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #a43d4e;
+    border-radius: 10px;
+    padding: 10px;
+    width: 40%;
+    cursor: pointer;
+    text-align: center;
+    color: white;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.wine-experience-card-list:hover {
+    background-color: #cc5f6e;
+    transform: scale(1.05);
+}
+
+.experience-card-list h4 {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.experience-card-list p {
+    font-size: 0.9rem;
+    margin: 5px 0 0 0;
+}

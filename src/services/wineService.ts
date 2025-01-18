@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Wine } from '../models/wineModel';
 
-const API_URL = 'http://localhost:3000/api/wine'; 
+const API_URL = 'http://localhost:3000/api/wine';
 
 // Helper para obtener headers con token (ahora con 'auth-token')
 const getHeaders = () => {
@@ -26,16 +26,20 @@ const createWine = async (wineData: Omit<Wine, '_id'>): Promise<Wine> => {
     }
 };
 
-
-
-
-
-
-
-
-
-
+const getWines = async (): Promise<Wine[]> => {
+    try {
+        const response = await axios.get(`${API_URL}/`, getHeaders());
+        return response.data; // Devuelve la lista de vinos desde el backend
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            const errorMessage = error.response?.data?.message || 'Failed to fetch wines';
+            throw new Error(errorMessage);
+        }
+        throw new Error('An unexpected error occurred');
+    }
+};
 
 export default {
-createWine
+    createWine,
+    getWines,
 };
