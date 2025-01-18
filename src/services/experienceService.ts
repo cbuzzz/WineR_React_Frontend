@@ -140,12 +140,30 @@ const getExperienceRatings = async (experienceId: string): Promise<any[]> => {
     }
 };
 
+const addWineToExperience = async (experienceId: string, wineId: string): Promise<void> => {
+    try {
+        const response = await axios.post(
+            `${API_URL}/addWine/${experienceId}/${wineId}`,
+            {},
+            getHeaders()
+        );
+        console.log('Wine added to experience successfully:', response.data);
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            console.error('Error adding wine to experience:', error.response?.data?.message || error.message);
+        }
+        throw new Error('Failed to add wine to experience');
+    }
+};
+
+
 export default {
     getAllExperiences,
     getExperienceById,
     createExperience,
     addUserToExperience,
     getUserExperiences,
-    añadirValoracion, // Exporta esta nueva función
+    añadirValoracion,
     getExperienceRatings,
+    addWineToExperience,
 };

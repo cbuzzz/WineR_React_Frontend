@@ -128,7 +128,12 @@ const CreateWine: React.FC = () => {
 
         try {
             console.log(formData);
-            await wineService.createWine(formData); // Llamar al servicio para crear el vino
+            const createdWine = await wineService.createWine(formData); // Crear el vino
+            console.log('Wine created:', createdWine);
+
+            if (formData.experience && createdWine._id) {
+                await experienceService.addWineToExperience(formData.experience, createdWine._id); // Asociar el vino a la experiencia
+            }
             setShowModal(true); // Mostrar el modal de éxito
 
             // Redirigir después de 3 segundos
