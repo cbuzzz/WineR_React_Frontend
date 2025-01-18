@@ -26,10 +26,12 @@ import FriendProfile from './pages/WineLover/friendProfile';
 import ListWines from './pages/WineLover/listWines';
 import ListWinesWM from './pages/WineMaker/listWines';
 import { TimerProvider } from './components/timercontext';
+import { BadWordsProvider } from './utils/badWordsContext'; // Importa el contexto
 
 const App: React.FC = () => {
   return (
     <Router>
+    <BadWordsProvider> {/* Envolvemos toda la aplicación */}
       <TimerProvider>
         <Routes>
           {/* Rutas sin BaseLayout */}
@@ -63,6 +65,7 @@ const App: React.FC = () => {
           <Route path="/listWinesWM" element={<ListWinesWM />} />
         </Routes>
       </TimerProvider>
+      </BadWordsProvider>
     </Router>
   );
 };

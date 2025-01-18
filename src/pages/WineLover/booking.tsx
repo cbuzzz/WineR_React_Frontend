@@ -7,6 +7,7 @@ import NavWineLover from '../../components/NavWineLover';
 import { AxiosError } from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Calendar from 'react-calendar'; // Asegúrate de instalar react-calendar
+import { useBadWords } from '../../utils/badWordsContext';  // Importa el hook useBadWords
 
 const ExperienceCard: React.FC<{ experience: Experience; onRateClick: (experienceId: string) => void, onShowReviewsClick: (experienceId: string) => void }> = ({ experience, onRateClick, onShowReviewsClick }) => {
 
@@ -64,6 +65,7 @@ const Booking: React.FC = () => {
     const [showReviewsModal, setShowReviewsModal] = useState(false); // Estado para controlar el modal de reseñas
     const [selectedReviews, setSelectedReviews] = useState<any[]>([]); // Estado para almacenar las reseñas seleccionadas
     const [selectedExperience, setSelectedExperience] = useState<string | null>(null);
+    const { cleanText, containsBadWords } = useBadWords();  // Usa el hook para acceder a las funciones del contexto
 
     useEffect(() => {
         const fetchExperiences = async () => {
@@ -111,11 +113,17 @@ const Booking: React.FC = () => {
 
     const handleRatingSubmit = async () => {
         if (selectedExperience && rating > 0 && comment.trim() !== "") {
+            const cleanedComment = cleanText(comment);  // Filtra las malas palabras del comentario
+            if (containsBadWords(cleanedComment)) {
+                setErrorMessage("Your comment contains inappropriate language. Please edit your comment.");
+                setShowErrorModal(true);  // Muestra el modal de error
+                return;
+            }
             try {
                 console.log(`Submitting rating: ${rating} with comment: "${comment}" for experience: ${selectedExperience}`);
-
+                
                 // Añadir la valoración y el comentario
-                await experienceService.añadirValoracion(selectedExperience, rating, comment);
+                await experienceService.añadirValoracion(selectedExperience, rating, cleanedComment);  // Usar el comentario limpio
 
                 // Obtener la experiencia actualizada
                 const updatedExperience = await experienceService.getExperienceById(selectedExperience);

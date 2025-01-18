@@ -4,6 +4,7 @@ import { io } from 'socket.io-client';
 import '../../styles/chat.css';
 import NavWineMaker from '../../components/NavWineMaker';
 import chatService from '../../services/chatService';
+import { useBadWords } from '../../utils/badWordsContext';  // Importa el hook para el contexto de malas palabras
 
 const Chat: React.FC = () => {
     const { roomName } = useParams<{ roomName: string }>();
@@ -11,19 +12,22 @@ const Chat: React.FC = () => {
     const [message, setMessage] = useState<string>('');
     const [messages, setMessages] = useState<any[]>([]);
     const username = localStorage.getItem('username');
+    const { cleanText } = useBadWords();  // Accede a la función cleanText del contexto
 
     useEffect(() => {
         const newSocket = io('http://localhost:3000');
         setSocket(newSocket);
 
         newSocket.on('message-receive', (newMessage: any) => {
+            // Limpiar el mensaje recibido antes de añadirlo a los mensajes
+            newMessage.content = cleanText(newMessage.content);
             setMessages((prevMessages) => [...prevMessages, newMessage]);
         });
 
         return () => {
             newSocket.disconnect();
         };
-    }, []);
+    }, [cleanText]);
 
     useEffect(() => {
         if (roomName) {
@@ -31,6 +35,11 @@ const Chat: React.FC = () => {
             const fetchMessages = async () => {
                 try {
                     const previousMessages = await chatService.getMessagesFromRoom(roomName);
+                    // Limpiar los mensajes anteriores antes de mostrarlos
+                    const cleanedMessages = previousMessages.map((msg: any) => ({
+                        ...msg,
+                        content: cleanText(msg.content),
+                    }));
                     setMessages(previousMessages);
                 } catch (err) {
                     console.error('Failed to fetch messages:', err);
@@ -39,14 +48,16 @@ const Chat: React.FC = () => {
 
             fetchMessages();
         }
-    }, [roomName, socket]);
+    }, [roomName, socket, cleanText]);
 
     const handleSendMessage = () => {
         if (message.trim() && roomName) {
+            // Limpiar el mensaje antes de enviarlo
+            const cleanedMessage = cleanText(message);
             const newMessage = {
                 roomName,
                 username,
-                content: message,
+                content: cleanedMessage,
             };
             socket.emit('sendMessage', newMessage);
             setMessage('');
