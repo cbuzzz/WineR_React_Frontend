@@ -44,7 +44,7 @@ const ExperienceCard: React.FC<{ experience: Experience; onRateClick: (experienc
                 <div className="experience-actions">
                     <button className="share-button" onClick={handleShowReviewsClick}>Ver Reviews</button>
                     <button className="rate-button" onClick={handleRateClick}>
-                        Valorar experiencia
+                        Valorar Experiencia
                     </button>
                     <button
                         className="chat-button"
@@ -139,7 +139,11 @@ const Booking: React.FC = () => {
     const handleShowReviewsClick = async (experienceId: string) => {
     try {
         const reviews = await experienceService.getExperienceRatings(experienceId);  // Ahora esto devuelve un array de objetos Review
-        setSelectedReviews(reviews);  // Almacena las reseñas en el estado
+        const reviewsWithUsernames = await Promise.all(reviews.map(async (review) => {
+            const user = await UserService.getUserById(review.user); // Obtener el usuario por ID
+            return { ...review, username: user.username }; // Añadir el username al review
+        }));
+        setSelectedReviews(reviewsWithUsernames);  // Almacena las reseñas en el estado
         setShowReviewsModal(true);    // Muestra el modal con las reseñas
     } catch (err) {
         console.error("Error fetching reviews:", err);
@@ -165,10 +169,6 @@ const Booking: React.FC = () => {
             <div className="booking-container">
                 <header className="booking-header">
                     <h1>Upcoming Bookings</h1>
-                    <div className="booking-actions">
-                        <input type="text" placeholder="Search..." className="search-bar1" />
-                        <button className="filter-button">Filters</button>
-                    </div>
                 </header>
                 <div className="experience-list">
                     {experiences.map((experience) => (
@@ -230,7 +230,7 @@ const Booking: React.FC = () => {
                 {selectedReviews.map((review, index) => (
                     <div key={review._id}>
                         <li>
-                            <p><strong>User:</strong> {review.user}</p>
+                            <p><strong>User:</strong> {review.username}</p>
                             <p><strong>Rating:</strong> {review.value} ★</p>
                             <p><strong>Comment:</strong> {review.comment}</p>
                         </li>

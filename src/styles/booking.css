@@ -95,7 +95,9 @@
     color: #f1e9e9;
 }
 
-.share-button {
+.share-button,
+.rate-button,
+.chat-button {
     align-self: flex-start;
     background-color: #a2282f;
     color: white;
@@ -122,34 +124,42 @@
 
 .modal-content {
     background-color: white;
-    padding: 20px;
-    border-radius: 10px;
+    padding: 30px; /* Increase padding for better spacing */
+    border-radius: 15px; /* Increase border-radius for a smoother look */
     text-align: center;
     width: 90%; /* Cambiado de 300px a 90% del ancho de la pantalla */
-    max-width: 400px; /* Tamaño máximo para pantallas grandes */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    max-width: 500px; /* Increase max-width for larger screens */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Increase shadow for a more pronounced effect */
     display: flex; /* Asegura que los botones se posicionen bien */
     flex-direction: column; /* Alinear elementos en columna */
     align-items: center; /* Centrar horizontalmente los elementos */
 }
 
+.modal-content h3 {
+    margin-bottom: 20px; /* Add margin below the title */
+    color: #892e3e; /* Use the primary color for the title */
+}
 
-.modal-content input {
+.modal-content input,
+.modal-content textarea {
     margin: 10px 0;
     padding: 10px;
     width: 100%;
-    border-radius: 5px;
+    border-radius: 10px; /* Increase border-radius for input fields */
     border: 1px solid #ccc;
+    font-size: 16px; /* Increase font size for better readability */
 }
 
 .modal-content button {
     background-color: #892e3e;
     color: white;
-    padding: 10px;
+    padding: 12px 20px; /* Increase padding for buttons */
     border: none;
-    border-radius: 5px;
+    border-radius: 20px; /* Increase border-radius for buttons */
     cursor: pointer;
     margin: 10px;
+    font-size: 16px; /* Increase font size for buttons */
+    transition: background-color 0.3s ease; /* Add transition for hover effect */
 }
 
 .modal-content button:hover {
@@ -172,5 +182,6 @@ li {
     display: flex;
     gap: 10px; /* Add gap between buttons */
     flex-wrap: wrap; /* Ensure buttons wrap if they overflow */
+    justify-content: center; /* Center the buttons */
 }
 

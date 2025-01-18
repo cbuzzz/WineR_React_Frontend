@@ -129,12 +129,12 @@ const ProfileWL: React.FC = () => {
         if (updatedUser) {
           setUser(updatedUser);
           setEditData(updatedUser);
-
+          localStorage.setItem('username', updatedUser.username);
           setModalMessage('Profile updated successfully!');
           setModalType('success');
           setShowModal(true);
           setFormVisible(false);
-
+        
           setTimeout(() => {
             setShowModal(false);
             window.location.reload();
