@@ -24,6 +24,7 @@ import ChatWL from './pages/WineLover/chat';
 import ChatWM from './pages/WineMaker/chat';
 import FriendProfile from './pages/WineLover/friendProfile';
 import ListWines from './pages/WineLover/listWines';
+import ListWinesWM from './pages/WineMaker/listWines';
 import { TimerProvider } from './components/timercontext';
 
 const App: React.FC = () => {
@@ -59,6 +60,7 @@ const App: React.FC = () => {
           <Route path="/experienceWM/:id" element={<ExperienceDetailsWM />} />
           <Route path="/chatsWM" element={<ChatsWM />} />
           <Route path="/chatWM/:roomName" element={<ChatWM />} />
+          <Route path="/listWinesWM" element={<ListWinesWM />} />
         </Routes>
       </TimerProvider>
     </Router>

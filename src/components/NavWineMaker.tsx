@@ -15,6 +15,7 @@ const NavWineMaker: React.FC<BaseLayoutProps> = ({ children }) => {
                 <div className="nav-links">
                     <NavLink to="/homeWineMaker" className={({ isActive }) => isActive ? 'active' : ''}>HOME</NavLink>
                     <NavLink to="/createExperience" className={({ isActive }) => isActive ? 'active' : ''}>CREATE EXPERIENCE</NavLink>
+                    <NavLink to="/listWinesWM" className={({ isActive }) => isActive ? 'active' : ''}>WINES</NavLink>
                     <NavLink to="/createWine" className={({ isActive }) => isActive ? 'active' : ''}>CREATE WINE</NavLink>
                     <NavLink to="/profileWineMaker" className={({ isActive }) => isActive ? 'active' : ''}>PROFILE</NavLink>
                     <NavLink to="/chatsWM" className={({ isActive }) => isActive ? 'active' : ''}>CHATS</NavLink>

@@ -39,7 +39,19 @@ const getWines = async (): Promise<Wine[]> => {
     }
 };
 
+const getWinesByOwner = async (ownerId: string): Promise<Wine[]> => {
+    try {
+        const response = await axios.get(`${API_URL}/owner/${ownerId}`, getHeaders());
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching wines by owner:', error);
+        throw new Error('Failed to fetch wines by owner');
+    }
+};
+
+
 export default {
     createWine,
     getWines,
+    getWinesByOwner,
 };
