@@ -1,7 +1,6 @@
 import React, { ReactNode } from 'react';
 import { NavLink } from 'react-router-dom';
 import wineRLogo from '../assets/winerlogo.png';
-import '../styles/baselayout.css';
 
 interface BaseLayoutProps {
     children: ReactNode;

@@ -3,7 +3,7 @@
     width: 100%;
     max-width: 1400px;
     margin: 0 auto;
-    height: calc(100vh - 70px);
+    min-height: calc(100vh - 70px); /* Ensure it takes full height */
     padding: 20px;
     overflow-y: auto;
     font-family: 'Arial', sans-serif;
@@ -15,7 +15,7 @@
     background-position: center;
     color: #fff;
     text-align: center;
-    padding: 60px 30px;
+    padding: 30px 15px;
     /* Espacio más grande */
     border-radius: 10px;
     margin-bottom: 30px;
@@ -227,3 +227,252 @@ button:hover {
     font-size: 1.5rem;
     margin-right: 5px;
 }
+
+.profile-stats {
+    margin-top: 20px;
+}
+
+.stats-details {
+    display: flex;
+    flex-direction: row; /* Change to row */
+    flex-wrap: wrap; /* Allow wrapping */
+    gap: 20px;
+    justify-content: center; /* Center align items */
+}
+
+.stats-details p {
+    display: flex;
+    align-items: center;
+    gap: 5px; /* Reduce gap between icon and text */
+    margin: 0;
+    justify-content: center; /* Center text */
+    width: auto; /* Adjust width */
+}
+
+.icon {
+    min-width: 20px; /* Ensure icons have a consistent width */
+    text-align: center; /* Center align icons */
+    margin-right: 5px; /* Add space between icon and text */
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.stat-icon {
+    font-size: 2rem;
+    margin-bottom: 5px;
+    color: #ff6347; /* Tomato color */
+}
+
+.logout-btn {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #ff6347; /* Tomato color */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.logout-btn:hover {
+    background-color: #ff4500; /* Darker tomato color */
+}
+
+/* User Information Section */
+.profile-info {
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    /* Removed background-color */
+}
+
+.profile-details {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.profile-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.profile-icon {
+    font-size: 1.5rem;
+    margin-right: 10px;
+    color: #ff6347; /* Tomato color */
+}
+
+.profile-item p {
+    margin: 0;
+}
+
+.profile-details {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.profile-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.profile-item strong {
+    color: #333;
+}
+
+.button-group {
+    display: flex;
+    justify-content: center; /* Center buttons */
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.refresh-btn {
+    background-color: #4CAF50; /* Green color */
+    color: white;
+    padding: 10px 20px;
+    font-weight: bold;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.refresh-btn:hover {
+    background-color: #45a049; /* Darker green color */
+}
+
+.edit-profile-btn {
+    background-color: #a43d4e; /* Same color as logout button */
+    color: #fff;
+    padding: 10px 20px;
+    font-weight: bold;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.edit-profile-btn:hover {
+    background-color: #892e3e; /* Same hover effect as logout button */
+}
+
+.top-plans-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.profile-picture {
+    width: 100px; /* Smaller size */
+    height: 100px; /* Smaller size */
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #fff; /* Adjust border size */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin: 10px 0; /* Add margin to separate from text */
+}
+
+/* Estilos para el modal */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    width: 90%; /* Cambiado de 300px a 90% del ancho de la pantalla */
+    max-width: 400px; /* Tamaño máximo para pantallas grandes */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex; /* Asegura que los botones se posicionen bien */
+    flex-direction: column; /* Alinear elementos en columna */
+    align-items: center; /* Centrar horizontalmente los elementos */
+}
+
+/* Estilo para el mensaje en el modal */
+.modal-content p {
+    font-size: 20px; /* Aumenta el tamaño del texto */
+    font-weight: bold; /* Hace que el texto sea en negrita */
+}
+
+.modal-content input {
+    margin: 10px 0;
+    padding: 10px;
+    width: 100%;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.modal-content button {
+    background-color: #892e3e;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 10px;
+}
+
+.modal-content button:hover {
+    background-color: #a2282f;
+}
+
+/* Estilos para el modal de éxito */
+.modal-success .modal-content {
+    background-color: #4CAF50;  /* Verde para éxito */
+    color: white;
+}
+
+/* Estilos para el modal de error */
+.modal-error .modal-content {
+    background-color: #F44336;  /* Rojo para error */
+    color: white;
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    max-width: 400px;
+    width: 80%;
+}
+

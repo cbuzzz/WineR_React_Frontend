@@ -10,6 +10,9 @@ import dateIcon from '../../assets/date.png';
 import experienceService from '../../services/experienceService';
 import { Experience } from '../../models/experienceModel';
 import NavWineLover from '../../components/NavWineLover'; // Asegúrate de que la ruta sea correcta
+import { FaPhone, FaEnvelope } from 'react-icons/fa'; // Import the icons
+import 'react-tooltip/dist/react-tooltip.css';
+import { Tooltip } from 'react-tooltip';
 
 const Home: React.FC = () => {
     const navigate = useNavigate();
@@ -96,7 +99,20 @@ const Home: React.FC = () => {
                                     />
                                     {experience.date}
                                 </div>
-                                {/* Nuevo bloque para el precio */}
+                                <div className="contact-icons" style={{ display: 'flex', gap: '20px', justifyContent: 'center', alignItems: 'center' }}>
+                                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                        <FaPhone data-tooltip-id={`phone-tooltip-${experience._id}`} />
+                                        <Tooltip id={`phone-tooltip-${experience._id}`} place="top">
+                                            {experience.contactnumber}
+                                        </Tooltip>
+                                    </div>
+                                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                        <FaEnvelope data-tooltip-id={`email-tooltip-${experience._id}`} />
+                                        <Tooltip id={`email-tooltip-${experience._id}`} place="top">
+                                            {experience.contactmail}
+                                        </Tooltip>
+                                    </div>
+                                </div>
                                 <div className="experience-price">
                                     <strong></strong> {experience.price.toFixed(2)}€
                                 </div>
