@@ -20,7 +20,6 @@ const ListWines: React.FC = () => {
                     throw new Error('Owner ID not found');
                 }
 
-                // Llama a la API con el ownerId
                 const response = await wineService.getWinesByOwner(ownerId);
                 if (Array.isArray(response)) {
                     setWines(response);
@@ -38,11 +37,11 @@ const ListWines: React.FC = () => {
                     }, {} as Record<string, any>);
                     setExperienceData(experiencesMap);
                 } else {
-                    throw new Error('Invalid data format');
+                    setWines([]); // Si no hay vinos, establece un array vacío
                 }
             } catch (err) {
                 console.error('Error fetching wines:', err);
-                setError('Failed to fetch wines');
+                setError('network');
             }
         };
 
@@ -57,8 +56,29 @@ const ListWines: React.FC = () => {
         return <p className="error-message">{error}</p>;
     }
 
+    if (error === 'network') {
+        return <p className="error-message">Failed to fetch wines</p>;
+    }
+
+    if (wines.length === 0) {
+        return (
+            <NavWineMaker>
+                <div className="no-wines-container">
+                    <p className="no-wines-message">You don't own wines yet, add your first wine!</p>
+                    <button
+                        className="create-wine-button"
+                        onClick={() => navigate('/createWine')}
+                    >
+                        Create Wine
+                    </button>
+                </div>
+            </NavWineMaker>
+        );
+    }
+
     return (
         <NavWineMaker>
+
             <div className="listwines-container">
                 <h1 className="listwines-title">Your Wines</h1>
                 <div className="wine-list">
