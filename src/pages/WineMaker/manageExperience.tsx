@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import '../../styles/home.css'; // Usamos los mismos estilos que Home
+import '../../styles/manageExperiences.css';
 import NavWineMaker from '../../components/NavWineMaker';
 import experienceService from '../../services/experienceService';
-import userService from '../../services/userService'; // Importamos el userService
+import userService from '../../services/userService';
 import createBackground from '../../assets/vinito.png';
 import { Service } from '../../models/serviceModel';
 import { Experience } from '../../models/experienceModel';
@@ -20,6 +20,7 @@ const servicesOptions: Service[] = [
 const EditExperience: React.FC = () => {
     const { id } = useParams<{ id: string }>();
     const [formData, setFormData] = useState<Experience | null>(null);
+    const [usernames, setUsernames] = useState<{ [key: string]: string }>({}); // Almacena los usernames
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
@@ -28,6 +29,16 @@ const EditExperience: React.FC = () => {
             try {
                 const experience = await experienceService.getExperienceById(id!);
                 setFormData(experience);
+
+                // Obtener los usernames de los participantes
+                const usernamesPromises = experience.participants.map(async (participantId) => {
+                    const user = await userService.getUserById(participantId);  // Usamos tu función getUserById
+                    return { [participantId]: user.username };  // Asumimos que user.username existe
+                });
+                const usernamesData = await Promise.all(usernamesPromises);
+                
+                // Actualiza los usernames
+                setUsernames(usernamesData.reduce((acc, curr) => ({ ...acc, ...curr }), {}));
             } catch (err) {
                 setError('Failed to fetch experience');
             }
@@ -59,34 +70,14 @@ const EditExperience: React.FC = () => {
     const handleParticipantRemove = async (participantId: string) => {
         if (formData) {
             try {
-                // Primero eliminar al participante de la experiencia en el backend
                 await experienceService.removeUserFromExperience(id!, participantId);
-                
-                // Luego eliminar al participante de la lista en el frontend
                 setFormData((prev) => ({
                     ...prev!,
                     participants: prev!.participants.filter((p) => p !== participantId),
                 }));
-
-                // Además, llamar a la función de userService para eliminar la experiencia del usuario
                 await userService.removeExperienceFromUser(id!, participantId);
-
             } catch (err) {
                 setError('Failed to remove participant');
-            }
-        }
-    };
-
-    const handleCommentRemove = async (commentId: string) => {
-        if (formData) {
-            try {
-                await experienceService.removeCommentFromExperience(id!, commentId);
-                setFormData((prev) => ({
-                    ...prev!,
-                    reviews: prev!.reviews.filter((r) => r.id !== commentId),
-                }));
-            } catch (err) {
-                setError('Failed to remove comment');
             }
         }
     };
@@ -109,10 +100,7 @@ const EditExperience: React.FC = () => {
     return (
         <NavWineMaker>
             <div className="home-container">
-                <div
-                    className="top-plans"
-                    style={{ backgroundImage: `url(${createBackground})` }}
-                >
+                <div className="top-plans" style={{ backgroundImage: `url(${createBackground})` }}>
                     <div className="top-plans-content">
                         <h1>Edit</h1>
                         <h2>WineMaker Experience</h2>
@@ -127,25 +115,46 @@ const EditExperience: React.FC = () => {
                         type="text"
                         id="title"
                         name="title"
-                        value={formData.title}
+                        value={formData.title || ''}
                         onChange={handleChange}
                     />
 
-                    {/* Similar structure for other fields like description, price, location, etc. */}
+                    <label style={{ fontWeight: 'bold', color: 'white' }} htmlFor="description">Description</label>
+                    <textarea
+                        id="description"
+                        name="description"
+                        value={formData.description || ''}
+                        onChange={handleChange}
+                    />
 
-                    <label style={{ fontWeight: 'bold', color: 'white' }} className="label-create">Services</label>
-                    <div className="services-container-create">
+                    <label style={{ fontWeight: 'bold', color: 'white' }} htmlFor="location">Location</label>
+                    <input
+                        type="text"
+                        id="location"
+                        name="location"
+                        value={formData.location || ''}
+                        onChange={handleChange}
+                    />
+
+                    <label style={{ fontWeight: 'bold', color: 'white' }} htmlFor="date">Date</label>
+                    <input
+                        type="date"
+                        id="date"
+                        name="date"
+                        value={formData.date || ''}
+                        onChange={handleChange}
+                    />
+
+                    <label style={{ fontWeight: 'bold', color: 'white' }}>Services</label>
+                    <div>
                         {servicesOptions.map((service) => (
-                            <div key={service.label} className="service-checkbox-create">
-                                <label className="service-label-create">
-                                    <input
-                                        type="checkbox"
-                                        checked={formData.services.some((s) => s.label === service.label)}
-                                        onChange={() => handleServiceChange(service)}
-                                    />
-                                    <span className="service-icon-create">{service.icon}</span>
-                                    {service.label}
-                                </label>
+                            <div key={service.label}>
+                                <input
+                                    type="checkbox"
+                                    checked={formData.services.some((s) => s.label === service.label)}
+                                    onChange={() => handleServiceChange(service)}
+                                />
+                                <span>{service.icon} {service.label}</span>
                             </div>
                         ))}
                     </div>
@@ -154,18 +163,8 @@ const EditExperience: React.FC = () => {
                     <ul>
                         {formData.participants.map((participant) => (
                             <li key={participant}>
-                                {participant}{" "}
+                                {usernames[participant] || participant}{" "}
                                 <button onClick={() => handleParticipantRemove(participant)}>Remove</button>
-                            </li>
-                        ))}
-                    </ul>
-
-                    <h3>Comments</h3>
-                    <ul>
-                        {formData.reviews.map((review) => (
-                            <li key={review.id}>
-                                <strong>{review.user}: </strong>{review.comment}{" "}
-                                <button onClick={() => handleCommentRemove(review.id)}>Remove</button>
                             </li>
                         ))}
                     </ul>

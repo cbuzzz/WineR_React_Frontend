@@ -1,354 +1,181 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import Select from 'react-select';
-import '../../styles/createwine.css';
+import { useParams, useNavigate } from 'react-router-dom';
+import '../../styles/home.css';
 import NavWineMaker from '../../components/NavWineMaker';
-import wineService from '../../services/wineService';
-import grapeTypeService from '../../services/grapeTypeService';
 import experienceService from '../../services/experienceService';
-import defaultWineImage from '../../assets/winebottleint.png';
-import RedWineImage from '../../assets/red-wine.png';
-import WhiteWineImage from '../../assets/white-wine.png';
+import userService from '../../services/userService';  // Importa tu userService
+import createBackground from '../../assets/vinito.png';
 import { Service } from '../../models/serviceModel';
-import { Wine } from '../../models/wineModel';
 import { Experience } from '../../models/experienceModel';
-import { SingleValue } from 'react-select';
 
-const noteOptions: Service[] = [
-    { icon: "🍓", label: "Fruity" },
-    { icon: "🌸", label: "Floral" },
-    { icon: "🫛", label: "Vegetable" },
-    { icon: "🫚", label: "Spiced" },
-    { icon: "🐴", label: "Animal" },
-    { icon: "🌰", label: "Toasted" },
+const servicesOptions: Service[] = [
+    { icon: "🍷", label: "Wine tastings" },
+    { icon: "🍴", label: "Restaurant" },
+    { icon: "🅿", label: "Parking" },
+    { icon: "🌿", label: "Vineyard tours" },
+    { icon: "🏛", label: "Winery tours" },
+    { icon: "🐾", label: "Pet friendly" },
 ];
 
-const CreateWine: React.FC = () => {
-    const [formData, setFormData] = useState<Wine>({
-        owner: '',
-        name: '',
-        price: 0,
-        color: '',
-        brand: '',
-        grapetype: '',
-        habilitado: true,
-        year: 2018,
-        notes: [],
-        experience: '',
-    });
-
-    const [selectedImage, setSelectedImage] = useState<string | null>(null);
-    const [experiences, setExperiences] = useState<Experience[]>([]);
-    const [grapeTypes, setGrapeTypes] = useState<{ value: string; label: string }[]>([]);
+const EditExperience: React.FC = () => {
+    const { id } = useParams<{ id: string }>();
+    const [formData, setFormData] = useState<Experience | null>(null);
+    const [usernames, setUsernames] = useState<{ [key: string]: string }>({}); // Almacena los usernames
     const [error, setError] = useState('');
-    const [showModal, setShowModal] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
-        const userId = localStorage.getItem('id');
-        if (userId) {
-            setFormData((prevData) => ({
-                ...prevData,
-                owner: userId,
-            }));
+        const fetchExperience = async () => {
+            try {
+                const experience = await experienceService.getExperienceById(id!);
+                setFormData(experience);
 
-            const fetchExperiences = async () => {
-                try {
-                    const userExperiences = await experienceService.getUserExperiences(userId);
-                    setExperiences(userExperiences || []); // Actualiza el estado con las experiencias
-                } catch (err) {
-                    console.error('Failed to fetch experiences:', err);
-                }
-            };
-            const fetchGrapeTypes = async () => {
-                try {
-                    const response = await grapeTypeService.getGrapeTypes();
-                    setGrapeTypes(response.map((type: { name: string; color: string }) => ({
-                        value: type.name,
-                        label: `${type.name} (${type.color})`,
-                    })));
-                } catch (err) {
-                    console.error('Failed to fetch grape types:', err);
-                }
-            };
+                // Obtener los usernames de los participantes
+                const usernamesPromises = experience.participants.map(async (participantId) => {
+                    const user = await userService.getUserById(participantId);  // Usamos tu función getUserById
+                    return { [participantId]: user.username };  // Asumimos que user.username existe
+                });
+                const usernamesData = await Promise.all(usernamesPromises);
+                
+                // Actualiza los usernames
+                setUsernames(usernamesData.reduce((acc, curr) => ({ ...acc, ...curr }), {}));
+            } catch (err) {
+                setError('Failed to fetch experience');
+            }
+        };
+        fetchExperience();
+    }, [id]);
 
-            fetchExperiences();
-            fetchGrapeTypes();
-        } else {
-            setError('User ID not found in localStorage');
-        }
-    }, []);
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
-        setFormData((prev) => ({
-            ...prev,
-            [name]: value,
-        }));
-    };
-
-    const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setSelectedImage(reader.result as string); // Carga la imagen seleccionada
-            };
-            reader.readAsDataURL(file);
+        if (formData) {
+            setFormData((prev) => ({
+                ...prev!,
+                [name]: value,
+            }));
         }
     };
 
-    const handleGrapeTypeChange = (selectedOption: SingleValue<{ value: string; label: string }>) => {
-        setFormData((prev) => ({
-            ...prev,
-            grapetype: selectedOption ? selectedOption.value : '',
-            color: selectedOption?.label.includes('(RED)') ? 'Red' : selectedOption?.label.includes('(WHITE)') ? 'White' : '', // Determina el color según el contenido del string
-        }));
+    const handleServiceChange = (service: Service) => {
+        if (formData) {
+            setFormData((prev) => ({
+                ...prev!,
+                services: prev!.services.some((s) => s.label === service.label)
+                    ? prev!.services.filter((s) => s.label !== service.label)
+                    : [...prev!.services, service],
+            }));
+        }
     };
 
-    const handleExperienceChange = (selectedOption: SingleValue<{ value: string | undefined; label: string }>) => {
-        setFormData((prev) => ({
-            ...prev,
-            experience: selectedOption?.value || '',
-        }));
-    };
-
-    const handleNoteChange = (note: Service) => {
-        setFormData((prev) => ({
-            ...prev,
-            notes: prev.notes.some((n) => n.label === note.label)
-                ? prev.notes.filter((n) => n.label !== note.label)
-                : [...prev.notes, note],
-        }));
+    const handleParticipantRemove = async (participantId: string) => {
+        if (formData) {
+            try {
+                await experienceService.removeUserFromExperience(id!, participantId);
+                setFormData((prev) => ( {
+                    ...prev!,
+                    participants: prev!.participants.filter((p) => p !== participantId),
+                }));
+                await userService.removeExperienceFromUser(id!, participantId);
+            } catch (err) {
+                setError('Failed to remove participant');
+            }
+        }
     };
 
     const handleSubmit = async () => {
-        setError('');
-        setShowModal(false);
+        if (!formData) return;
 
         try {
-            console.log(formData);
-            const createdWine = await wineService.createWine(formData); // Crear el vino
-            console.log('Wine created:', createdWine);
-
-            if (formData.experience && createdWine._id) {
-                await experienceService.addWineToExperience(formData.experience, createdWine._id); // Asociar el vino a la experiencia
-            }
-            setShowModal(true); // Mostrar el modal de éxito
-
-            // Redirigir después de 3 segundos
-            setTimeout(() => {
-                setShowModal(false);
-                navigate('/homeWineMaker'); // Redirigir al menú principal
-            }, 3000);
+            await experienceService.updateExperience(id!, formData);
+            navigate('/homeWineMaker');
         } catch (err) {
-            if (err instanceof Error) {
-                setError(err.message);
-            } else {
-                setError('An unexpected error occurred');
-            }
+            setError('Failed to update experience');
         }
     };
 
+    if (!formData) {
+        return <div>Loading...</div>;
+    }
+
     return (
-        <NavWineMaker> {/* El contenido de la página está dentro de NavWineMaker */}
+        <NavWineMaker>
+            <div className="home-container">
+                <div className="top-plans" style={{ backgroundImage: `url(${createBackground})` }}>
+                    <div className="top-plans-content">
+                        <h1>Edit</h1>
+                        <h2>WineMaker Experience</h2>
+                    </div>
+                </div>
 
-            <div className="top-plans-content">
-                <h1>Add your wine to WineR</h1>
-                <h2>New Wine</h2>
-            </div>
+                {error && <div className="error-message">{error}</div>}
 
-            {error && <div className="error-message">{error}</div>}
-            <div className="two-column-layout">
-                <div className="left-column">
-                    <img
-                        src={selectedImage || defaultWineImage}
-                        alt="Wine"
-                        className="wine-image"
-                    />
+                <div className="form-create-experience">
+                    <label style={{ fontWeight: 'bold', color: 'white' }} htmlFor="title">Title</label>
                     <input
-                        type="file"
-                        accept="image/*"
-                        onChange={handleImageChange}
-                        className="image-input"
+                        type="text"
+                        id="title"
+                        name="title"
+                        value={formData.title}
+                        onChange={handleChange}
                     />
 
-                    <label style={{ fontWeight: 'bold', color: 'white' }} className="label-create">Notes</label>
-                    <div className="notes-container-create">
-                        {noteOptions.map((note) => (
-                            <div key={note.label} className="notes-checkbox-create">
-                                <label className="notes-label-create">
-                                    <input
-                                        type="checkbox"
-                                        checked={formData.notes.some((n) => n.label === note.label)}
-                                        onChange={() => handleNoteChange(note)}
-                                    />
-                                    <span className="notes-icon-create">{note.icon}</span>
-                                    {note.label}
-                                </label>
+                    <label style={{ fontWeight: 'bold', color: 'white' }} htmlFor="description">Description</label>
+                    <textarea
+                        id="description"
+                        name="description"
+                        value={formData.description || ''}
+                        onChange={handleChange}
+                    />
+
+                    <label style={{ fontWeight: 'bold', color: 'white' }} htmlFor="location">Location</label>
+                    <input
+                        type="text"
+                        id="location"
+                        name="location"
+                        value={formData.location}
+                        onChange={handleChange}
+                    />
+
+                    <label style={{ fontWeight: 'bold', color: 'white' }} htmlFor="date">Date</label>
+                    <input
+                        type="date"
+                        id="date"
+                        name="date"
+                        value={formData.date}
+                        onChange={handleChange}
+                    />
+
+                    <label style={{ fontWeight: 'bold', color: 'white' }}>Services</label>
+                    <div>
+                        {servicesOptions.map((service) => (
+                            <div key={service.label}>
+                                <input
+                                    type="checkbox"
+                                    checked={formData.services.some((s) => s.label === service.label)}
+                                    onChange={() => handleServiceChange(service)}
+                                />
+                                <span>{service.icon} {service.label}</span>
                             </div>
                         ))}
                     </div>
-                </div>
-                <div className="right-column">
-                    <div className="form-create-wine">
-                        {/* Campos del formulario */}
-                        <label style={{ fontWeight: 'bold', color: 'white' }} htmlFor="name">Name</label>
-                        <input
-                            type="text"
-                            id="name"
-                            name="name"
-                            placeholder="Enter wine name"
-                            value={formData.name}
-                            onChange={handleChange}
-                        />
 
-                        <label style={{ fontWeight: 'bold', color: 'white' }} htmlFor="price">Price (€)</label>
-                        <input
-                            type="number"
-                            id="price"
-                            name="price"
-                            placeholder="Enter price"
-                            value={formData.price}
-                            onChange={handleChange}
-                        />
-                        <label htmlFor="year" style={{ fontWeight: 'bold', color: 'white' }}>Year</label>
-                        <input
-                            type="number"
-                            id="year"
-                            name="year"
-                            placeholder="Enter the wine's year"
-                            value={formData.year || 2018}
-                            onChange={handleChange}
-                        />
+                    <h3>Participants</h3>
+                    <ul>
+                        {formData.participants.map((participant) => (
+                            <li key={participant}>
+                                {usernames[participant] || participant}{" "}
+                                <button onClick={() => handleParticipantRemove(participant)}>Remove</button>
+                            </li>
+                        ))}
+                    </ul>
 
-                        <label style={{ fontWeight: 'bold', color: 'white' }} htmlFor="brand">Brand</label>
-                        <input
-                            type="text"
-                            id="brand"
-                            name="brand"
-                            placeholder="Enter wine brand"
-                            value={formData.brand}
-                            onChange={handleChange}
-                        />
-
-                        <label style={{ fontWeight: 'bold', color: 'white' }} htmlFor="grapetype">Grape Type</label>
-                        <div className="Select__wrapper">
-                            <Select
-                                options={grapeTypes}
-                                onChange={handleGrapeTypeChange}
-                                placeholder="Select a grape type"
-                                isClearable
-                                styles={{
-                                    control: (base) => ({
-                                        ...base,
-                                        borderColor: '#a43d4e',
-                                        backgroundColor: '#ffffff',
-                                        '&:hover': { borderColor: '#892e3e' },
-                                    }),
-                                    menu: (base) => ({
-                                        ...base,
-                                        backgroundColor: '#a43d4e',
-                                        color: 'white',
-                                        borderRadius: '5px',
-                                        zIndex: 9999,
-                                    }),
-                                    option: (base, { isFocused, isSelected }) => ({
-                                        ...base,
-                                        backgroundColor: isSelected ? '#6f2733' : isFocused ? '#892e3e' : '#a43d4e',
-                                        color: 'white',
-                                        cursor: 'pointer',
-                                    }),
-                                    placeholder: (base) => ({
-                                        ...base,
-                                        color: 'gray',
-                                    }),
-                                    singleValue: (base) => ({
-                                        ...base,
-                                        color: '#892e3e',
-                                    }),
-                                }}
-                            />
-                        </div>
-
-                        <label style={{ fontWeight: 'bold', color: 'white' }} htmlFor="brand">Color</label>
-                        <div className="two-column-layout-wines">
-                            <div className={`right-column-wines ${formData.color === 'Red' ? 'highlighted' : ''}`}>
-                                <img
-                                    src={RedWineImage}
-                                    alt="Red Wine"
-                                    className="redwine-image"
-                                />
-                            </div>
-                            <div className={`left-column-wines ${formData.color === 'White' ? 'highlighted' : ''}`}>
-                                <img
-                                    src={WhiteWineImage}
-                                    alt="White Wine"
-                                    className="whitewine-image"
-                                />
-                            </div>
-                        </div>
-
-                        <label htmlFor="experience" style={{ fontWeight: 'bold', color: 'white' }}>Experience</label>
-                        <div className="Select__wrapper">
-                            <Select
-                                options={experiences.map((exp) => ({
-                                    value: exp._id,
-                                    label: exp.title,
-                                }))}
-                                onChange={handleExperienceChange}
-                                placeholder="Select an experience"
-                                isClearable
-                                styles={{
-                                    control: (base) => ({
-                                        ...base,
-                                        borderColor: '#a43d4e',
-                                        backgroundColor: '#ffffff',
-                                        '&:hover': { borderColor: '#892e3e' },
-                                    }),
-                                    menu: (base) => ({
-                                        ...base,
-                                        backgroundColor: '#a43d4e',
-                                        color: 'white',
-                                        borderRadius: '5px',
-                                        zIndex: 9999,
-                                    }),
-                                    option: (base, { isFocused, isSelected }) => ({
-                                        ...base,
-                                        backgroundColor: isSelected ? '#6f2733' : isFocused ? '#892e3e' : '#a43d4e',
-                                        color: 'white',
-                                        cursor: 'pointer',
-                                    }),
-                                    placeholder: (base) => ({
-                                        ...base,
-                                        color: 'gray',
-                                    }),
-                                    singleValue: (base) => ({
-                                        ...base,
-                                        color: '#892e3e',
-                                    }),
-                                }}
-                            />
-                        </div>
-                    </div>
                     <button className="create-btn" onClick={handleSubmit}>
-                        Create Wine
+                        Save Changes
                     </button>
-
                 </div>
             </div>
-            {/* Modal de éxito */}
-            {
-                showModal && (
-                    <div className="modal">
-                        <div className="modal-content">
-                            <h3>Wine is being created. Redirecting to the main menu...</h3>
-                        </div>
-                    </div>
-                )
-            }
-        </NavWineMaker >
+        </NavWineMaker>
     );
 };
 
-export default CreateWine;
+export default EditExperience;
