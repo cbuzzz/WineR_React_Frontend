@@ -21,6 +21,31 @@ const getHeaders = () => {
     };
 };
 
+const updateUser = async (id: string, updatedUserData: Partial<User>): Promise<User> => {
+    try {
+        console.log("Llega al servicio de actualización de usuario");
+        console.log(updatedUserData);
+
+        // Ajusta la URL para incluir el ID del usuario
+        const response = await axios.put(
+            `${API_URL}/${id}`, // La ruta debe ser `/id` según tu backend
+            updatedUserData, // Los datos que deseas actualizar
+            getHeaders() // Incluye los encabezados de autenticación
+        );
+
+        console.log('Usuario actualizado:', response.data);
+        return response.data; // Devuelve los datos del usuario actualizado
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            const errorMessage = error.response?.data?.message || 'Failed to update user';
+            throw new Error(errorMessage);
+        }
+        throw new Error('An unexpected error occurred');
+    }
+};
+
+
+
 // Método para logearse
 const login = async (username: string, password: string): Promise<{ user: User; token: string }> => {
     try {
@@ -246,4 +271,5 @@ export default {
     removeFriend,
     sendFriendRequest,
     getUserProfile,
+    updateUser,
 };

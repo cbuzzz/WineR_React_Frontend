@@ -43,11 +43,11 @@ const ExperienceCard: React.FC<{ experience: Experience; onRateClick: (experienc
                 <p className="experience-rating">Rating: {experience.averageRating} ★</p>
                 <div className="experience-actions">
                     <button className="share-button" onClick={handleShowReviewsClick}>Ver Reviews</button>
-                    <button className="share-button" onClick={handleRateClick}>
+                    <button className="rate-button" onClick={handleRateClick}>
                         Valorar experiencia
                     </button>
                     <button
-                        className="share-button"
+                        className="chat-button"
                         onClick={() => handleChat(experience.title)}
                     >
                         Chat
@@ -164,7 +164,11 @@ const Booking: React.FC = () => {
         <NavWineLover>
             <div className="booking-container">
                 <header className="booking-header">
-                    <h1 className="center-title">Upcoming Bookings</h1>
+                    <h1>Upcoming Bookings</h1>
+                    <div className="booking-actions">
+                        <input type="text" placeholder="Search..." className="search-bar1" />
+                        <button className="filter-button">Filters</button>
+                    </div>
                 </header>
                 <div className="experience-list">
                     {experiences.map((experience) => (
