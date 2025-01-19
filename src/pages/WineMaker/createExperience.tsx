@@ -30,7 +30,7 @@ const CreateExperience: React.FC = () => {
         averageRating: 0,
         reviews: [],
         services: [], // Aquí se almacenarán los servicios seleccionados
-        images: [], // Añadimos un campo para las imágenes
+        image: '', // Añadimos un campo para las imágenes
     });
 
     const [selectedImage, setSelectedImage] = useState<File | null>(null);
@@ -84,16 +84,18 @@ const CreateExperience: React.FC = () => {
         setShowModal(false); // Asegurarnos de que el modal esté oculto al inicio del envío
 
         try {
-            await experienceService.createExperience(formData);
+            const createdExp = await experienceService.createExperience(formData);
 
             // Subir imagen si se seleccionó
-            if (selectedImage) {
+            if (formData.title && createdExp._id && selectedImage) {
+                setShowModal(true); // Mostrar el modal de éxito
                 const imageFormData = new FormData();
                 imageFormData.append('image', selectedImage);
                 // Llamar al servicio de subida de imágenes
-                await experienceService.uploadExperienceImage(formData.title, imageFormData);
+                await experienceService.uploadExperienceImage(createdExp._id, imageFormData);
             }
-            setShowModal(true); // Mostrar el modal de éxito
+
+
 
             // Redirigir después de un corto periodo de tiempo (3 segundos)
             setTimeout(() => {
@@ -181,6 +183,26 @@ const CreateExperience: React.FC = () => {
                             value={formData.price}
                             onChange={handleChange}
                             className="createexp-input"
+                        />
+
+                        <label style={{ fontWeight: 'bold', color: 'white' }} htmlFor="contactnumber">Contact Number</label>
+                        <input
+                            type="tel"
+                            id="contactnumber"
+                            name="contactnumber"
+                            placeholder="Enter the contact number"
+                            value={formData.contactnumber}
+                            onChange={handleChange}
+                        />
+
+                        <label style={{ fontWeight: 'bold', color: 'white' }} htmlFor="contactmail">Contact Email</label>
+                        <input
+                            type="email"
+                            id="contactmail"
+                            name="contactmail"
+                            placeholder="Enter the contact email"
+                            value={formData.contactmail}
+                            onChange={handleChange}
                         />
 
                         <label style={{ fontWeight: 'bold', color: 'white' }} htmlFor="location" className="createexp-label">Location</label>
