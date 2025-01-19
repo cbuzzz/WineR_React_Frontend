@@ -31,6 +31,7 @@ const CreateExperience: React.FC = () => {
         reviews: [],
         services: [], // Aquí se almacenarán los servicios seleccionados
         image: '', // Añadimos un campo para las imágenes
+        wines: [],
     });
 
     const [selectedImage, setSelectedImage] = useState<File | null>(null);

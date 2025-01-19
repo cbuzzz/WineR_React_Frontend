@@ -49,6 +49,19 @@ const getWinesByOwner = async (ownerId: string): Promise<Wine[]> => {
     }
 };
 
+const getWineById = async (wineId: string): Promise<Wine> => {
+    try {
+        const response = await axios.get(`${API_URL}/${wineId}`, getHeaders());
+        return response.data; // Devuelve el vino solicitado desde el backend
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            const errorMessage = error.response?.data?.message || 'Failed to fetch wine by ID';
+            throw new Error(errorMessage);
+        }
+        throw new Error('An unexpected error occurred');
+    }
+};
+
 const uploadWineImage = async (wineId: string, imageFormData: FormData): Promise<void> => {
     try {
         await axios.post(`http://localhost:3000/api/images/update-image/wine/${wineId}`, imageFormData, {
@@ -74,4 +87,5 @@ export default {
     getWines,
     getWinesByOwner,
     uploadWineImage,
+    getWineById,
 };

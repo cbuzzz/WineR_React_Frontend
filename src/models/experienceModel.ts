@@ -15,6 +15,7 @@ export interface Experience {
     date: string,
     services: Service[],
     image: string,
+    wines: string[],
 }
 
 export interface Review {

@@ -1,88 +1,203 @@
-.experience-details {
-    max-width: 1200px;
+.container-experiencedetails {
+    max-width: 1000px;
+    max-height: 1000px;
     margin: auto;
     padding: 20px;
     color: #333;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: #a43d4e;
 }
 
-.header {
+.header-experiencedetails {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
+    text-align: center;
 }
 
-.header button {
-    background: none;
-    border: none;
+.back-button-experiencedetails {
+    align-self: flex-start;
     font-size: 1.2rem;
     cursor: pointer;
-    color: #900;
-}
-
-.images-gallery {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 10px;
-    margin-bottom: 20px;
-}
-
-.images-gallery img {
-    width: 100%;
+    color: #fff;
+    background-color: #892e3e;
+    padding: 15px;
+    border: none;
     border-radius: 8px;
-    object-fit: cover;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
-.details h2 {
-    color: #900;
+.title-experiencedetails {
+    margin: 0;
+    color: #fff;
+}
+
+.layout-experiencedetails {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #a43d4e;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.left-column-experiencedetails {
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background-color: #892e3e;
+    padding: 20px;
+    border-radius: 10px;
+    color: white;
+}
+
+.wine-section-experiencedetails {
+    text-align: center;
+    margin-bottom: 0;
+}
+
+.wine-title-experiencedetails {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
     margin-bottom: 10px;
 }
 
-.services {
+.wine-content-container {
     display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin: 20px 0;
+    gap: 20px;
+    align-items: flex-start;
 }
 
-.service {
-    display: flex;
-    align-items: center;
-    gap: 5px;
+.wine-image-container {
+    flex: 0 0 40%;
 }
 
-.amenity span {
-    font-size: 1.5rem;
+.wine-image-experiencedetails {
+    width: 65%;
+    height: auto;
+    max-height: 200px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin: 0;
+    border: 2px solid #a43d4e;
+    transition: transform 0.3s ease;
 }
 
-.map {
-    margin: 20px 0;
-    text-align: center;
+.wine-image-experiencedetails:hover {
+    transform: scale(1.05);
 }
 
-.map img {
-    max-width: 100%;
+.wine-details-experiencedetails {
+    flex: 0 0 47%;
+    text-align: left;
+    padding: 15px;
+    background-color: #a43d4e;
+    border-radius: 8px;
+    margin: 0;
+}
+
+.wine-name-experiencedetails {
+    margin: 0 0 10px 0;
+}
+
+.wine-info-experiencedetails {
+    margin: 5px 0;
+}
+
+.info-section-experiencedetails {
+    padding: 15px;
+    background-color: #a43d4e;
     border-radius: 8px;
 }
 
-.book-now {
-    display: block;
+.location-date-experiencedetails,
+.price-rating-experiencedetails {
+    margin: 10px 0;
+}
+
+.contact-info-experiencedetails {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 15px 0;
+}
+
+.contact-item-experiencedetails {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.services-experiencedetails {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 15px 0;
+}
+
+.service-item-experiencedetails {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 8px 12px;
+    background-color: #892e3e;
+    border-radius: 5px;
+}
+
+.description-experiencedetails {
+    margin-top: 20px;
+}
+
+.right-column-experiencedetails {
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.map-container-experiencedetails {
+    flex-grow: 1;
+    background-color: #892e3e;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.map-title-experiencedetails {
+    color: white;
+    margin: 10px 0;
+}
+
+.map-experiencedetails {
+    height: 500px;
     width: 100%;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.manage-btn,
+.book-button-experiencedetails {
+    background-color: #892e3e;
+    color: white;
     padding: 15px;
-    background-color: #900;
-    color: #fff;
-    text-align: center;
     font-size: 1.2rem;
     border: none;
     border-radius: 8px;
     cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
-/* Estilo básico para el modal */
-.modal {
+.manage-btn,
+.book-button-experiencedetails:hover {
+    background-color: #44121b;
+    transform: translateY(-2px);
+}
+
+.modal-experiencedetails {
     position: fixed;
     top: 0;
     left: 0;
@@ -91,12 +206,11 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
-    z-index: 1000; /* Asegurarse de que el modal esté encima de todo */
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
 }
 
-/* Contenido del modal */
-.modal-content {
+.modal-content-experiencedetails {
     background-color: white;
     padding: 20px;
     border-radius: 8px;
@@ -104,9 +218,57 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Estilo del mensaje dentro del modal */
-.modal h3 {
+.modal-title-experiencedetails {
     margin: 0;
     font-size: 1.2em;
     font-weight: bold;
+}
+
+.experience-image-container-experiencedetails {
+    padding: 15px;
+    background-color: #892e3e;
+    border-radius: 10px;
+}
+
+.experience-image-experiencedetails {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+}
+
+.experience-image-experiencedetails:hover {
+    transform: scale(1.02);
+}
+
+@media (max-width: 768px) {
+    .wine-content-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .wine-image-container,
+    .wine-details-experiencedetails {
+        flex: 0 0 100%;
+        width: 100%;
+    }
+
+    .wine-image-experiencedetails {
+        max-height: 150px;
+        margin-bottom: 15px;
+    }
+
+    .layout-experiencedetails {
+        flex-direction: column;
+    }
+
+    .left-column-experiencedetails,
+    .right-column-experiencedetails {
+        width: 100%;
+    }
+
+    .map-experiencedetails {
+        height: 300px;
+    }
 }
