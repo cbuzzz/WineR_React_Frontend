@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { User } from '../models/userModel';
 import { Experience } from '../models/experienceModel';
+import { idText } from 'typescript';
 
 const API_URL = 'http://localhost:3000/api/user'; // Update with your backend URL
 
@@ -256,6 +257,55 @@ const getUserProfile = async (username: string): Promise<User> => {
     }
 };
 
+const removeExperienceFromUser = async (experienceId: string, userId: string): Promise<void> => {
+    try {
+        console.log("ENTRA AQUI")
+        await axios.delete(
+            `${API_URL}/deleteExpFromUser/${experienceId}/${userId}`, // Ruta ajustada sin 'participant'
+            getHeaders() // Agrega encabezados si es necesario, como Authorization
+        );
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            throw new Error(error.response?.data?.message || 'Failed to remove user from experience');
+        }
+        throw new Error('An unexpected error occurred');
+    }
+};
+
+// Obtener las experiencias del usuario por token (usando 'id' en lugar de 'userId')
+const getUserExperiences = async () => {
+    const token = localStorage.getItem('token'); // Obtener el token del localStorage
+    const id = localStorage.getItem('id'); // Obtener el 'id' del localStorage
+
+    if (!token) {
+        throw new Error('No auth token found');
+    }
+
+    if (!id) {
+        throw new Error('No user ID found');
+    }
+
+    try {
+        console.log("Entra aqui")
+        // Llamada a la API backend para obtener las experiencias del usuario
+        const response = await axios.get(`${API_URL}/experiences/${id}`, {
+            headers: {
+                'auth-token': token, // Usar 'auth-token' en lugar de 'Authorization'
+            },
+        });
+        console.log("Recibo estas experiencias:",response.data.experiences)
+
+        return response.data.experiences; // Devuelve las experiencias del usuario
+    } catch (error) {
+        throw new Error('Failed to fetch user experiences');
+    }
+};
+
+
+
+
+
+
 
 export default {
     login,
@@ -272,4 +322,6 @@ export default {
     sendFriendRequest,
     getUserProfile,
     updateUser,
+    getUserExperiences,
+    removeExperienceFromUser,
 };

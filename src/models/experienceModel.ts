@@ -18,6 +18,7 @@ export interface Experience {
 }
 
 export interface Review {
+    id: string;
     user: string; // ID del usuario
     value: number; // Puntuación entre 0-5
     comment: string; // El comentario de la reseña

@@ -9,6 +9,7 @@ import L from 'leaflet';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import { getCoordinates } from '../../utils/geocoding';
 import { FaPhone, FaEnvelope } from 'react-icons/fa'; // Import the icons
+import NavWineMaker from '../../components/NavWineMaker';
 
 // Configuración de los íconos de Leaflet
 delete (L.Icon.Default.prototype as any)._getIconUrl;
@@ -53,6 +54,14 @@ const ExperienceDetails = () => {
         fetchExperience();
     }, [id]);
 
+    const handleManageExperience = () => {
+        if (experience) {
+            // Redirigir a la página de gestión de la experiencia pasando el id
+            navigate(`/manageExpWM/${experience._id}`);
+        }
+    };
+    
+
     if (error) {
         return (
             <div className="experience-details">
@@ -72,68 +81,73 @@ const ExperienceDetails = () => {
     }
 
     return (
-        <div className="experience-details">
-            {/* Mostrar el modal solo si showModal es true */}
-            {showModal && (
-                <div className="modal">
-                    <div className="modal-content">
-                        <h3>{modalMessage}</h3> {/* El mensaje que cambia dinámicamente */}
-                    </div>
-                </div>
-            )}
-
-            <div className="header" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
-                <button onClick={() => navigate(-1)} style={{ alignSelf: 'flex-start' }}>← Back</button>
-                <h1 style={{ margin: '0' }}>{experience.title}</h1>
-            </div>
-
-            <div className="details">
-                <h2>{wineMakerName}</h2> {/* Display the name of the WineMaker */}
-                <p>
-                    <strong>{experience.location}</strong> • {experience.date}
-                </p>
-                <p>
-                    Price: {experience.price} € • {experience.averageRating} ★ ({experience.reviews.length} reviews)
-                </p>
-                <div className="contact-info" style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '10px', alignItems: 'center' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '5px', justifyContent: 'center' }}>
-                        <FaPhone /> <span>{experience.contactnumber}</span> {/* Telephone number with icon */}
-                    </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '5px', justifyContent: 'center' }}>
-                        <FaEnvelope /> <span>{experience.contactmail}</span> {/* Email with icon */}
-                    </div>
-                </div>
-                <div className="services" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '10px' }}>
-                    {experience.services.map((service, index) => (
-                        <div key={index} className="service">
-                            <span>{service.icon}</span>
-                            <p>{service.label}</p>
+        <NavWineMaker>
+            <div className="experience-details">
+                {/* Mostrar el modal solo si showModal es true */}
+                {showModal && (
+                    <div className="modal">
+                        <div className="modal-content">
+                            <h3>{modalMessage}</h3> {/* El mensaje que cambia dinámicamente */}
                         </div>
-                    ))}
+                    </div>
+                )}
+
+                <div className="header" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
+                    <button onClick={() => navigate(-1)} style={{ alignSelf: 'flex-start' }}>← Back</button>
+                    <h1 style={{ margin: '0' }}>{experience.title}</h1>
                 </div>
 
-                <h3>About</h3>
-                <p>{experience.description}</p>
+                <div className="details">
+                    <h2>{wineMakerName}</h2> {/* Display the name of the WineMaker */}
+                    <p>
+                        <strong>{experience.location}</strong> • {experience.date}
+                    </p>
+                    <p>
+                        Price: {experience.price} € • {experience.averageRating} ★ ({experience.reviews.length} reviews)
+                    </p>
 
-                <h3>Location</h3>
+                    <div className="contact-info" style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '10px', alignItems: 'center' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '5px', justifyContent: 'center' }}>
+                            <FaPhone /> <span>{experience.contactnumber}</span> {/* Telephone number with icon */}
+                        </div>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '5px', justifyContent: 'center' }}>
+                            <FaEnvelope /> <span>{experience.contactmail}</span> {/* Email with icon */}
+                        </div>
+                    </div>
 
-                <div className="map">
-                    {coordinates ? (
-                        <MapContainer center={coordinates} zoom={13} style={{ height: '400px', width: '100%' }}>
-                            <TileLayer
-                                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                                attribution="&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors"
-                            />
-                            <Marker position={coordinates}>
-                                <Popup>{experience.location}</Popup>
-                            </Marker>
-                        </MapContainer>
-                    ) : (
-                        <p>Loading map...</p>
-                    )}
+                    <div className="services" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '10px' }}>
+                        {experience.services.map((service, index) => (
+                            <div key={index} className="service">
+                                <span>{service.icon}</span>
+                                <p>{service.label}</p>
+                            </div>
+                        ))}
+                    </div>
+
+                    <h3>About</h3>
+                    <p>{experience.description}</p>
+
+                    <h3>Location</h3>
+
+                    <div className="map">
+                        {coordinates ? (
+                            <MapContainer center={coordinates} zoom={13} style={{ height: '400px', width: '100%' }}>
+                                <TileLayer
+                                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                                    attribution="&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors"
+                                />
+                                <Marker position={coordinates}>
+                                    <Popup>{experience.location}</Popup>
+                                </Marker>
+                            </MapContainer>
+                        ) : (
+                            <p>Loading map...</p>
+                        )}
+                    </div>
                 </div>
+                <button className="manage-btn" onClick={handleManageExperience}>Manage Experience</button>
             </div>
-        </div>
+        </NavWineMaker>
     );
 };
 
