@@ -12,5 +12,6 @@ export interface Wine {
     notes: Service[],
     year: number,
     experience: string,
+    image: string,
 }
 

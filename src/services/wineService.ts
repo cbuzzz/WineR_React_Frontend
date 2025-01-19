@@ -49,9 +49,29 @@ const getWinesByOwner = async (ownerId: string): Promise<Wine[]> => {
     }
 };
 
+const uploadWineImage = async (wineId: string, imageFormData: FormData): Promise<void> => {
+    try {
+        await axios.post(`http://localhost:3000/api/images/update-image/wine/${wineId}`, imageFormData, {
+            headers: {
+                'auth-token': localStorage.getItem('token') || '',
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+        console.log('Wine image uploaded successfully');
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            const errorMessage = error.response?.data?.message || 'Failed to upload wine image';
+            throw new Error(errorMessage);
+        }
+        throw new Error('An unexpected error occurred during image upload');
+    }
+};
+
+
 
 export default {
     createWine,
     getWines,
     getWinesByOwner,
+    uploadWineImage,
 };

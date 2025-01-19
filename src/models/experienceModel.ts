@@ -14,6 +14,7 @@ export interface Experience {
     reviews: Review[];  // Aquí cambiamos de string[] a Review[]
     date: string,
     services: Service[],
+    images: string[],
 }
 
 export interface Review {
