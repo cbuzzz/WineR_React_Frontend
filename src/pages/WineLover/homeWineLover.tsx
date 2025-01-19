@@ -13,11 +13,14 @@ import NavWineLover from '../../components/NavWineLover'; // Asegúrate de que l
 import { FaPhone, FaEnvelope } from 'react-icons/fa'; // Import the icons
 import 'react-tooltip/dist/react-tooltip.css';
 import { Tooltip } from 'react-tooltip';
+import wineRLogo from '../../assets/winerlogo.png';
+
 
 const Home: React.FC = () => {
     const navigate = useNavigate();
     const [experiences, setExperiences] = useState<Experience[]>([]);
     const [error, setError] = useState('');
+    const [modalVisible, setModalVisible] = useState(false); // Estado para el modal
 
     useEffect(() => {
         const fetchExperiences = async () => {
@@ -40,6 +43,16 @@ const Home: React.FC = () => {
         navigate(`/experienceWL/${id}`); // Redirige al usuario a la página de detalles
     };
 
+    const handleSeeMoreClick = () => {
+        setModalVisible(true); // Mostrar el modal
+    };
+    
+    const handleCloseModal = () => {
+        setModalVisible(false); // Cerrar el modal
+    };
+    
+    
+
     return (
         <NavWineLover>
             {/* Todo el contenido de la página Home va como children */}
@@ -52,7 +65,9 @@ const Home: React.FC = () => {
                         <h1>Welcome</h1>
                         <h2>WineLover</h2>
                         <p>Discover Unique Experiences</p>
-                        <button className="see-more-btn">See more</button>
+                        <button className="see-more-btn" onClick={handleSeeMoreClick}>
+                                See more
+                        </button>
                     </div>
                 </div>
 
@@ -130,9 +145,24 @@ const Home: React.FC = () => {
                                     {experience.averageRating}
                                 </div>
                             </div>
-                        </div>
+                        </div>                        
                     ))}
+                    </div>
+    
+                        {/* Modal específico para el botón See More */}
+                        {modalVisible && (
+                        <div className="see-more-modal-overlay">
+                        <div className="see-more-modal-content">
+                        <button className="see-more-close-modal-btn" onClick={handleCloseModal}>×</button>
+                        <h2>About Our Application</h2>
+                        <p>We provide unique experiences in the world of wine. Explore the best tours, tastings, and more!</p>
+                        <p>Our platform connects wine lovers with wineries offering exclusive experiences.</p>
+                        <p>Browse and book your next adventure with ease.</p>
+                        <img src={wineRLogo} alt="WineR Logo" className="wine-logo" />
+                        </div>
                 </div>
+                )}
+
             </div>
         </NavWineLover>
     );
