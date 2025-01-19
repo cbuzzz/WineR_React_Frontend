@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../../styles/home.css'; 
-import NavWineLover from '../../components/NavWineLover'; 
-import userService from '../../services/userService'; 
+import '../../styles/home.css';
+import NavWineLover from '../../components/NavWineLover';
+import userService from '../../services/userService';
 import profileBackground from '../../assets/profilebackground.jpg';
 import { TimerContext } from '../../components/timercontext';
 import { FaUserFriends, FaWineGlassAlt, FaUser, FaEnvelope, FaUserTag, FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
@@ -19,22 +19,25 @@ interface User {
   experiences: string[];
   amigos: string[];
   solicitudes: string[];
-  profilePicture?: string;
+  image?: string;
 }
 
 const ProfileWL: React.FC = () => {
-  const [user, setUser] = useState<User | null>(null); 
-  const [error, setError] = useState<string>(''); 
-  const [showEditModal, setShowEditModal] = useState<boolean>(false); 
-  const [editData, setEditData] = useState<Partial<User>>({}); 
-  const [newPassword, setNewPassword] = useState<string>(''); 
-  const [confirmPassword, setConfirmPassword] = useState<string>(''); 
-  const [modalMessage, setModalMessage] = useState<string>(''); 
-  const [modalType, setModalType] = useState<'success' | 'error'>('success'); 
-  const [showModal, setShowModal] = useState<boolean>(false); 
-  const [formVisible, setFormVisible] = useState<boolean>(true); 
+  const [user, setUser] = useState<User | null>(null);
+  const [error, setError] = useState<string>('');
+  const [showEditModal, setShowEditModal] = useState<boolean>(false);
+  const [editData, setEditData] = useState<Partial<User>>({});
+  const [newPassword, setNewPassword] = useState<string>('');
+  const [confirmPassword, setConfirmPassword] = useState<string>('');
+  const [modalMessage, setModalMessage] = useState<string>('');
+  const [modalType, setModalType] = useState<'success' | 'error'>('success');
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [formVisible, setFormVisible] = useState<boolean>(true);
   const navigate = useNavigate();
   const timerContext = useContext(TimerContext);
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [showImageModal, setShowImageModal] = useState(false);
+
 
   useEffect(() => {
     const userId = localStorage.getItem('id');
@@ -55,14 +58,14 @@ const ProfileWL: React.FC = () => {
 
   const handleLogout = () => {
     if (timerContext) {
-      timerContext.stopTimer(); 
+      timerContext.stopTimer();
     }
-    localStorage.clear(); 
-    navigate('/'); 
+    localStorage.clear();
+    navigate('/');
   };
 
   const handleEditProfile = () => {
-    setShowEditModal(true); 
+    setShowEditModal(true);
   };
 
   const handleInputChange = (field: keyof User, value: string) => {
@@ -71,6 +74,39 @@ const ProfileWL: React.FC = () => {
       [field]: value,
     }));
   };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setSelectedImage(e.target.files[0]);
+    }
+  };
+
+  const handleUploadImage = async () => {
+    if (user && selectedImage) {
+      const formData = new FormData();
+      formData.append('image', selectedImage);
+
+      try {
+        await userService.uploadProfileImage(user._id!, formData);
+        setModalMessage('Profile image updated successfully!');
+        setModalType('success');
+        setShowModal(true);
+
+        setTimeout(() => {
+          setShowModal(false);
+          window.location.reload(); // Actualizar página para mostrar la nueva imagen
+        }, 2000);
+      } catch (err) {
+        console.error('Error uploading profile image:', err);
+        setModalMessage('Failed to upload profile image.');
+        setModalType('error');
+        setShowModal(true);
+      }
+    }
+    setShowImageModal(false);
+  };
+
+
 
   const validatePassword = (): boolean => {
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
@@ -98,7 +134,7 @@ const ProfileWL: React.FC = () => {
       return false;
     }
 
-    const nameRegex = /^[a-zA-Z\s]+$/; 
+    const nameRegex = /^[a-zA-Z\s]+$/;
     if (name && !nameRegex.test(name)) {
       setModalMessage('Name can only contain letters and spaces.');
       setModalType('error');
@@ -106,7 +142,7 @@ const ProfileWL: React.FC = () => {
       return false;
     }
 
-    return true; 
+    return true;
   };
 
   const handleSaveChanges = async () => {
@@ -134,7 +170,7 @@ const ProfileWL: React.FC = () => {
           setModalType('success');
           setShowModal(true);
           setFormVisible(false);
-        
+
           setTimeout(() => {
             setShowModal(false);
             window.location.reload();
@@ -169,9 +205,10 @@ const ProfileWL: React.FC = () => {
           <div className="top-plans-content">
             <h1>{user.username}'s Profile</h1>
             <img
-              src={user.profilePicture || defaultProfilePicture}
+              src={user.image || defaultProfilePicture}
               alt={`${user.username}'s profile`}
               className="profile-picture"
+              onClick={() => setShowImageModal(true)} // Abrir el modal al hacer clic
             />
             <p>Welcome to your profile page</p>
           </div>
@@ -258,6 +295,21 @@ const ProfileWL: React.FC = () => {
             <div className="modal-content">
               <p>{modalMessage}</p>
               <button onClick={() => setShowModal(false)}>Close</button>
+            </div>
+          </div>
+        )}
+
+        {showImageModal && (
+          <div className="modal">
+            <div className="modal-content">
+              <h3>Upload Profile Image</h3>
+              <input type="file" accept="image/*" onChange={handleFileChange} />
+              <div className="button-group">
+                <button onClick={handleUploadImage} disabled={!selectedImage}>
+                  Upload
+                </button>
+                <button onClick={() => setShowImageModal(false)}>Cancel</button>
+              </div>
             </div>
           </div>
         )}

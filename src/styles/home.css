@@ -3,7 +3,8 @@
     width: 100%;
     max-width: 1400px;
     margin: 0 auto;
-    min-height: calc(100vh - 70px); /* Ensure it takes full height */
+    min-height: calc(100vh - 70px);
+    /* Ensure it takes full height */
     padding: 20px;
     overflow-y: auto;
     font-family: 'Arial', sans-serif;
@@ -234,25 +235,34 @@ button:hover {
 
 .stats-details {
     display: flex;
-    flex-direction: row; /* Change to row */
-    flex-wrap: wrap; /* Allow wrapping */
+    flex-direction: row;
+    /* Change to row */
+    flex-wrap: wrap;
+    /* Allow wrapping */
     gap: 20px;
-    justify-content: center; /* Center align items */
+    justify-content: center;
+    /* Center align items */
 }
 
 .stats-details p {
     display: flex;
     align-items: center;
-    gap: 5px; /* Reduce gap between icon and text */
+    gap: 5px;
+    /* Reduce gap between icon and text */
     margin: 0;
-    justify-content: center; /* Center text */
-    width: auto; /* Adjust width */
+    justify-content: center;
+    /* Center text */
+    width: auto;
+    /* Adjust width */
 }
 
 .icon {
-    min-width: 20px; /* Ensure icons have a consistent width */
-    text-align: center; /* Center align icons */
-    margin-right: 5px; /* Add space between icon and text */
+    min-width: 20px;
+    /* Ensure icons have a consistent width */
+    text-align: center;
+    /* Center align icons */
+    margin-right: 5px;
+    /* Add space between icon and text */
 }
 
 .stat-item {
@@ -265,13 +275,15 @@ button:hover {
 .stat-icon {
     font-size: 2rem;
     margin-bottom: 5px;
-    color: #ff6347; /* Tomato color */
+    color: #ff6347;
+    /* Tomato color */
 }
 
 .logout-btn {
     margin-top: 20px;
     padding: 10px 20px;
-    background-color: #ff6347; /* Tomato color */
+    background-color: #ff6347;
+    /* Tomato color */
     color: white;
     border: none;
     border-radius: 5px;
@@ -279,7 +291,8 @@ button:hover {
 }
 
 .logout-btn:hover {
-    background-color: #ff4500; /* Darker tomato color */
+    background-color: #ff4500;
+    /* Darker tomato color */
 }
 
 /* User Information Section */
@@ -309,7 +322,8 @@ button:hover {
 .profile-icon {
     font-size: 1.5rem;
     margin-right: 10px;
-    color: #ff6347; /* Tomato color */
+    color: #ff6347;
+    /* Tomato color */
 }
 
 .profile-item p {
@@ -337,13 +351,15 @@ button:hover {
 
 .button-group {
     display: flex;
-    justify-content: center; /* Center buttons */
+    justify-content: center;
+    /* Center buttons */
     gap: 10px;
     margin-top: 20px;
 }
 
 .refresh-btn {
-    background-color: #4CAF50; /* Green color */
+    background-color: #4CAF50;
+    /* Green color */
     color: white;
     padding: 10px 20px;
     font-weight: bold;
@@ -354,11 +370,13 @@ button:hover {
 }
 
 .refresh-btn:hover {
-    background-color: #45a049; /* Darker green color */
+    background-color: #45a049;
+    /* Darker green color */
 }
 
 .edit-profile-btn {
-    background-color: #a43d4e; /* Same color as logout button */
+    background-color: #a43d4e;
+    /* Same color as logout button */
     color: #fff;
     padding: 10px 20px;
     font-weight: bold;
@@ -369,7 +387,8 @@ button:hover {
 }
 
 .edit-profile-btn:hover {
-    background-color: #892e3e; /* Same hover effect as logout button */
+    background-color: #892e3e;
+    /* Same hover effect as logout button */
 }
 
 .top-plans-content {
@@ -381,13 +400,21 @@ button:hover {
 }
 
 .profile-picture {
-    width: 100px; /* Smaller size */
-    height: 100px; /* Smaller size */
+    width: 150px;
+    height: 150px;
     border-radius: 50%;
     object-fit: cover;
-    border: 3px solid #fff; /* Adjust border size */
+    border: 3px solid #fff;
+    /* Adjust border size */
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    margin: 10px 0; /* Add margin to separate from text */
+    margin: 10px 0;
+    /* Add margin to separate from text */
+}
+
+.profile-picture:hover {
+    transform: scale(1.05);
+    transform: translateY(-5px);
+    /* Zoom effect on hover */
 }
 
 /* Estilos para el modal */
@@ -408,18 +435,25 @@ button:hover {
     padding: 20px;
     border-radius: 10px;
     text-align: center;
-    width: 90%; /* Cambiado de 300px a 90% del ancho de la pantalla */
-    max-width: 400px; /* Tamaño máximo para pantallas grandes */
+    width: 90%;
+    /* Cambiado de 300px a 90% del ancho de la pantalla */
+    max-width: 400px;
+    /* Tamaño máximo para pantallas grandes */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    display: flex; /* Asegura que los botones se posicionen bien */
-    flex-direction: column; /* Alinear elementos en columna */
-    align-items: center; /* Centrar horizontalmente los elementos */
+    display: flex;
+    /* Asegura que los botones se posicionen bien */
+    flex-direction: column;
+    /* Alinear elementos en columna */
+    align-items: center;
+    /* Centrar horizontalmente los elementos */
 }
 
 /* Estilo para el mensaje en el modal */
 .modal-content p {
-    font-size: 20px; /* Aumenta el tamaño del texto */
-    font-weight: bold; /* Hace que el texto sea en negrita */
+    font-size: 20px;
+    /* Aumenta el tamaño del texto */
+    font-weight: bold;
+    /* Hace que el texto sea en negrita */
 }
 
 .modal-content input {
@@ -446,13 +480,15 @@ button:hover {
 
 /* Estilos para el modal de éxito */
 .modal-success .modal-content {
-    background-color: #4CAF50;  /* Verde para éxito */
+    background-color: #4CAF50;
+    /* Verde para éxito */
     color: white;
 }
 
 /* Estilos para el modal de error */
 .modal-error .modal-content {
-    background-color: #F44336;  /* Rojo para error */
+    background-color: #F44336;
+    /* Rojo para error */
     color: white;
 }
 
@@ -475,4 +511,3 @@ button:hover {
     max-width: 400px;
     width: 80%;
 }
-

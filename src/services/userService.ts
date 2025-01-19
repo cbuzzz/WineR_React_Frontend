@@ -293,7 +293,7 @@ const getUserExperiences = async () => {
                 'auth-token': token, // Usar 'auth-token' en lugar de 'Authorization'
             },
         });
-        console.log("Recibo estas experiencias:",response.data.experiences)
+        console.log("Recibo estas experiencias:", response.data.experiences)
 
         return response.data.experiences; // Devuelve las experiencias del usuario
     } catch (error) {
@@ -301,11 +301,23 @@ const getUserExperiences = async () => {
     }
 };
 
-
-
-
-
-
+const uploadProfileImage = async (userId: string, imageFormData: FormData): Promise<void> => {
+    try {
+        await axios.post(`http://localhost:3000/api/images/update-image/user/${userId}`, imageFormData, {
+            headers: {
+                'auth-token': localStorage.getItem('token') || '',
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+        console.log('Profile image uploaded successfully');
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            const errorMessage = error.response?.data?.message || 'Failed to upload profile image';
+            throw new Error(errorMessage);
+        }
+        throw new Error('An unexpected error occurred during profile image upload');
+    }
+};
 
 export default {
     login,
@@ -324,4 +336,5 @@ export default {
     updateUser,
     getUserExperiences,
     removeExperienceFromUser,
+    uploadProfileImage,
 };
