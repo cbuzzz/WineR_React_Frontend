@@ -1,0 +1,91 @@
+.quiz-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #892e3e; /* Granate */
+  color: white;
+  text-align: center;
+  padding: 20px;
+}
+
+.quiz-title {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.quiz-content {
+  background: white;
+  color: #333;
+  max-width: 600px;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.quiz-question {
+  font-size: 1.2rem;
+  margin-bottom: 15px;
+}
+
+.quiz-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.quiz-option {
+  padding: 10px 20px;
+  background-color: #892e3e;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.quiz-option:hover {
+  background-color: #892e3e;
+}
+
+/* Centrar el contenido de la página */
+.result-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; /* Asegura que ocupe toda la altura de la pantalla */
+  text-align: center; /* Alineación del texto al centro */
+  background-color: #892e3e; /* Color de fondo para mejorar la visibilidad */
+}
+
+/* Estilo del título */
+.result-title {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  color: white; /* Color del título */
+}
+
+/* Estilo del nombre del vino recomendado */
+.result-wine {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: white; /* Color del nombre del vino */
+}
+
+/* Estilo de la descripción del vino */
+.result-description {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+  color: white; /* Color de la descripción */
+}
+
+/* Estilo del temporizador */
+.result-timer {
+  font-size: 1rem;
+  color: white; /* Color del temporizador */
+}
+
