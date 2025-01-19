@@ -131,7 +131,7 @@ const Home: React.FC = () => {
                                 style={{ cursor: 'pointer' }}
                             >
                                 <img
-                                    src={expImg}
+                                    src={experience.image ? experience.image : expImg}
                                     alt={experience.title}
                                     className="experience-image"
                                 />
