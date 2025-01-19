@@ -3,24 +3,25 @@ import '../../styles/chat.css';
 import NavWineMaker from '../../components/NavWineMaker';
 import { useNavigate } from 'react-router-dom';
 import chatService from '../../services/chatService';
-import { useBadWords } from '../../utils/badWordsContext';  // Importa el hook para el contexto de malas palabras
+import { useBadWords } from '../../utils/badWordsContext'; // Importa el hook para el contexto de malas palabras
+import winerLogo from '../../assets/winerlogo.png'; // Asegúrate de que el logo esté en el directorio adecuado
 
 const Chats: React.FC = () => {
-    const [rooms, setRooms] = useState<{ name: string }[]>([]);
+    const [rooms, setRooms] = useState<{ name: string; participants: string[] }[]>([]);
     const username = localStorage.getItem('username');
     const navigate = useNavigate();
-    const { cleanText } = useBadWords();  // Accede a la función cleanText del contexto
+    const { cleanText } = useBadWords(); // Accede a la función cleanText del contexto
 
     useEffect(() => {
         const fetchRooms = async () => {
             try {
                 const userRooms = await chatService.getUserRooms(username || '');
                 // Limpiar los nombres de las salas
-                const cleanedRooms = userRooms.map((room) => ({
+                const cleanedRooms = userRooms.map((room: any) => ({
                     ...room,
-                    name: cleanText(room.name),  // Limpiar el nombre de la sala
+                    name: cleanText(room.name), // Limpiar el nombre de la sala
                 }));
-                setRooms(userRooms);
+                setRooms(cleanedRooms);
             } catch (err) {
                 console.error('Failed to fetch rooms:', err);
             }
@@ -37,7 +38,17 @@ const Chats: React.FC = () => {
     return (
         <NavWineMaker>
             <div className="chat-container">
-                <h1 className="chat-title">Your Conversations</h1>
+                {/* Contenedor que agrupa el logo y las salas */}
+                <div className="chat-header">
+                    <div className="logo-container">
+                        <div className="login-image">
+                            <img src={winerLogo} alt="WineR Logo" />
+                        </div>
+                    </div>
+                    <h1 className="chat-title">Your Conversations</h1>
+                </div>
+                
+                {/* Contenedor de las salas de chat */}
                 <div className="chat-rooms">
                     {rooms.map((room, index) => {
                         const roomName = room.name;
@@ -45,10 +56,13 @@ const Chats: React.FC = () => {
                         return (
                             <div
                                 key={index}
-                                className="chat-room-item"
+                                className="chat-room-card"
                                 onClick={() => handleRoomClick(roomName)}
                             >
-                                {displayName}
+                                <h2 className="chat-room-title">{displayName}</h2>
+                                <p className="chat-room-participants">
+                                    Participants: {room.participants.join(', ')}
+                                </p>
                             </div>
                         );
                     })}
