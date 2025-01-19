@@ -95,9 +95,9 @@ const CreateExperience: React.FC = () => {
                 // Llamar al servicio de subida de imágenes
                 await experienceService.uploadExperienceImage(createdExp._id, imageFormData);
             }
-
-
-
+            else {
+                setShowModal(true); // Mostrar el modal de éxito
+            }
             // Redirigir después de un corto periodo de tiempo (3 segundos)
             setTimeout(() => {
                 setShowModal(false); // Cerrar el modal
@@ -105,7 +105,7 @@ const CreateExperience: React.FC = () => {
             }, 3000); // 3 segundos de espera antes de la redirección
         } catch (err) {
             if (err instanceof Error) {
-                setError(err.message);
+                setError('Todos los campos menos la imagen son obligatorios');
             } else {
                 setError('An unexpected error occurred');
             }
@@ -116,7 +116,6 @@ const CreateExperience: React.FC = () => {
         <NavWineMaker>
             <div className="createexp-top-content">
                 <h1 className="createexp-title">Create Experience</h1>
-                <h2 className="createexp-subtitle">New Experience</h2>
             </div>
 
             {error && <div className="createexp-error-message">{error}</div>}

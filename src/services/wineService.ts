@@ -62,6 +62,29 @@ const getWineById = async (wineId: string): Promise<Wine> => {
     }
 };
 
+const updateWine = async (wineId: string, updatedWineData: Partial<Wine>): Promise<Wine> => {
+    try {
+        console.log("Llega al servicio de actualización de vino");
+        console.log(updatedWineData);
+
+        // Ajusta la URL para incluir el ID del vino
+        const response = await axios.put(
+            `${API_URL}/${wineId}`, // Ruta ajustada para actualizar el vino
+            updatedWineData, // Datos a actualizar
+            getHeaders() // Encabezados para autenticación
+        );
+
+        console.log('Vino actualizado:', response.data);
+        return response.data; // Retorna el vino actualizado
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            const errorMessage = error.response?.data?.message || 'Failed to update wine';
+            throw new Error(errorMessage);
+        }
+        throw new Error('An unexpected error occurred');
+    }
+};
+
 const uploadWineImage = async (wineId: string, imageFormData: FormData): Promise<void> => {
     try {
         await axios.post(`http://localhost:3000/api/images/update-image/wine/${wineId}`, imageFormData, {
@@ -88,4 +111,5 @@ export default {
     getWinesByOwner,
     uploadWineImage,
     getWineById,
+    updateWine,
 };

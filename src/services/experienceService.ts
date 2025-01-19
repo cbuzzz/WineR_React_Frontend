@@ -210,6 +210,25 @@ const updateExperience = async (id: string, updatedExperienceData: Partial<Exper
     }
 };
 
+const deleteExperience = async (id: string): Promise<void> => {
+    try {
+        console.log("Llega al servicio de eliminación de experiencia");
+
+        // Ajusta la URL para incluir el ID de la experiencia
+        await axios.delete(
+            `${API_URL}/${id}`, // Ruta ajustada para eliminar la experiencia
+            getHeaders() // Encabezados para autenticación
+        );
+
+        console.log('Experiencia eliminada exitosamente');
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            const errorMessage = error.response?.data?.message || 'Failed to delete experience';
+            throw new Error(errorMessage);
+        }
+        throw new Error('An unexpected error occurred');
+    }
+};
 
 const uploadExperienceImage = async (experienceId: string, imageFormData: FormData): Promise<void> => {
     try {
@@ -243,4 +262,5 @@ export default {
     removeUserFromExperience,
     removeCommentFromExperience,
     updateExperience,
+    deleteExperience
 };
