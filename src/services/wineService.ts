@@ -1,7 +1,11 @@
 import axios from 'axios';
 import { Wine } from '../models/wineModel';
 
-const API_URL = 'http://localhost:3000/api/wine';
+//const API_URL = 'http://localhost:3000/api/wine';
+
+const API_URL = 'http://147.83.7.158:5000/api/wine';
+
+//const API_URL = 'http://apiwiner.duckdns.org:5000/api/wine';
 
 // Helper para obtener headers con token (ahora con 'auth-token')
 const getHeaders = () => {
