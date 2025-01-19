@@ -7,20 +7,7 @@ import profileBackground from '../../assets/profilebackground.jpg';
 import { TimerContext } from '../../components/timercontext';
 import { FaUserFriends, FaWineGlassAlt, FaUser, FaEnvelope, FaUserTag, FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
 import defaultProfilePicture from '../../assets/defaultProfilePicture.png';
-
-interface User {
-  _id?: string;
-  username: string;
-  name: string;
-  mail: string;
-  password: string;
-  tipo: 'admin' | 'wineLover' | 'wineMaker';
-  habilitado: boolean;
-  experiences: string[];
-  amigos: string[];
-  solicitudes: string[];
-  image?: string;
-}
+import { User } from '../../models/userModel';
 
 const ProfileWL: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -88,13 +75,15 @@ const ProfileWL: React.FC = () => {
 
       try {
         await userService.uploadProfileImage(user._id!, formData);
+        const updatedUser = await userService.getUserById(user._id!);
+        setUser(updatedUser);
         setModalMessage('Profile image updated successfully!');
         setModalType('success');
         setShowModal(true);
 
         setTimeout(() => {
+          navigate('/loadingWL');
           setShowModal(false);
-          window.location.reload(); // Actualizar página para mostrar la nueva imagen
         }, 2000);
       } catch (err) {
         console.error('Error uploading profile image:', err);
@@ -170,10 +159,9 @@ const ProfileWL: React.FC = () => {
           setModalType('success');
           setShowModal(true);
           setFormVisible(false);
-
           setTimeout(() => {
+            navigate('/loadingWL');
             setShowModal(false);
-            window.location.reload();
           }, 2000);
         } else {
           setModalMessage('Error saving changes. Please try again.');
@@ -294,7 +282,6 @@ const ProfileWL: React.FC = () => {
           <div className={`modal ${modalType}`}>
             <div className="modal-content">
               <p>{modalMessage}</p>
-              <button onClick={() => setShowModal(false)}>Close</button>
             </div>
           </div>
         )}

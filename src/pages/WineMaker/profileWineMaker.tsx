@@ -7,21 +7,7 @@ import profileBackground from '../../assets/profilebackground.jpg';
 import { TimerContext } from '../../components/timercontext';
 import { FaUserFriends, FaWineGlassAlt, FaUser, FaEnvelope, FaUserTag, FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
 import defaultProfilePicture from '../../assets/defaultProfilePicture.png';
-
-// Define la interfaz del usuario
-interface User {
-  _id?: string;
-  username: string;
-  name: string;
-  mail: string;
-  password: string;
-  tipo: 'admin' | 'wineLover' | 'wineMaker';
-  habilitado: boolean;
-  experiences: string[];
-  amigos: string[];
-  solicitudes: string[];
-  image?: string;
-}
+import { User } from '../../models/userModel';
 
 const ProfileWM: React.FC = () => {
   const [user, setUser] = useState<User | null>(null); // Estado para almacenar los datos del usuario
@@ -108,7 +94,7 @@ const ProfileWM: React.FC = () => {
 
         setTimeout(() => {
           setShowModal(false);
-          window.location.reload(); // Actualizar página para mostrar la nueva imagen
+          navigate('/loadingWM');
         }, 2000);
       } catch (err) {
         console.error('Error uploading profile image:', err);
@@ -166,7 +152,7 @@ const ProfileWM: React.FC = () => {
         if (updatedUser) {
           setUser(updatedUser);
           setEditData(updatedUser);
-          localStorage.setItem('username', updatedUser.username);
+          localStorage.setItem('username', user.username);
           setModalMessage('Profile updated successfully!');
           setModalType('success');
           setShowModal(true);
@@ -174,7 +160,7 @@ const ProfileWM: React.FC = () => {
 
           setTimeout(() => {
             setShowModal(false);
-            window.location.reload();
+            navigate('/loadingWM');
           }, 2000);
         } else {
           setModalMessage('Error saving changes. Please try again.');
@@ -295,7 +281,6 @@ const ProfileWM: React.FC = () => {
           <div className={`modal ${modalType}`}>
             <div className="modal-content">
               <p>{modalMessage}</p>
-              <button onClick={() => setShowModal(false)}>Close</button>
             </div>
           </div>
         )}

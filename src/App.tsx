@@ -28,6 +28,8 @@ import ListWinesWM from './pages/WineMaker/listWines';
 import ManageExpWM from './pages/WineMaker/manageExperience';
 import QuizPage from './pages/quizPage';
 import ResultPage from './pages/resultPage';
+import LoadingWL from './pages/WineLover/loading';
+import LoadingWM from './pages/WineMaker/loading';
 import { TimerProvider } from './components/timercontext';
 import { BadWordsProvider } from './utils/badWordsContext'; // Importa el contexto
 
@@ -60,6 +62,7 @@ const App: React.FC = () => {
             <Route path="/chatWL/:roomName" element={<ChatWL />} />
             <Route path="/profile/:friendUsername" element={<FriendProfile />} />
             <Route path="/listWines" element={<ListWines />} />
+            <Route path="/loadingWL" element={<LoadingWL />} />
 
             {/* Rutas específicas para WineMaker */}
             <Route path="/homeWineMaker" element={<HomeWM />} />
@@ -71,6 +74,7 @@ const App: React.FC = () => {
             <Route path="/chatWM/:roomName" element={<ChatWM />} />
             <Route path="/listWinesWM" element={<ListWinesWM />} />
             <Route path="/manageExpWM/:id" element={<ManageExpWM />} />
+            <Route path="/loadingWM" element={<LoadingWM />} />
 
           </Routes>
         </TimerProvider>
