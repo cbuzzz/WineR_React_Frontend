@@ -89,6 +89,7 @@ const SignUp: React.FC = () => {
 
         try {
             await userService.signup({
+                image: '', // No se requiere imagen de perfil
                 name: formData.name,
                 username: formData.username,
                 mail: formData.email,

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../../styles/home.css'; // Usamos los mismos estilos que Home
-import NavWineMaker from '../../components/NavWineMaker'; // Asegúrate de que la ruta sea correcta
+import '../../styles/createwine.css';
+import NavWineMaker from '../../components/NavWineMaker';
 import experienceService from '../../services/experienceService';
 import createBackground from '../../assets/vinito.png';
 import { Service } from '../../models/serviceModel';
@@ -10,7 +10,7 @@ import { Experience } from '../../models/experienceModel';
 const servicesOptions: Service[] = [
     { icon: "🍷", label: "Wine tastings" },
     { icon: "🍴", label: "Restaurant" },
-    { icon: "🅿", label: "Parking" },
+    { icon: "🅿️", label: "Parking" },
     { icon: "🌿", label: "Vineyard tours" },
     { icon: "🏛", label: "Winery tours" },
     { icon: "🐾", label: "Pet friendly" },
@@ -30,8 +30,11 @@ const CreateExperience: React.FC = () => {
         averageRating: 0,
         reviews: [],
         services: [], // Aquí se almacenarán los servicios seleccionados
+        image: '', // Añadimos un campo para las imágenes
     });
 
+    const [selectedImage, setSelectedImage] = useState<File | null>(null);
+    const [previewImage, setPreviewImage] = useState<string | undefined>(createBackground);
     const [error, setError] = useState('');
     const [showModal, setShowModal] = useState(false); // Estado para el modal de éxito
     const navigate = useNavigate();
@@ -57,6 +60,16 @@ const CreateExperience: React.FC = () => {
         }));
     };
 
+    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0] || null;
+        setSelectedImage(file);
+        if (file) {
+            setPreviewImage(URL.createObjectURL(file));
+        } else {
+            setPreviewImage(createBackground);
+        }
+    };
+
     const handleServiceChange = (service: Service) => {
         setFormData((prev) => ({
             ...prev,
@@ -71,9 +84,18 @@ const CreateExperience: React.FC = () => {
         setShowModal(false); // Asegurarnos de que el modal esté oculto al inicio del envío
 
         try {
-            console.log(formData);
-            await experienceService.createExperience(formData); // Se envía la experiencia al backend
-            setShowModal(true); // Mostrar el modal de éxito
+            const createdExp = await experienceService.createExperience(formData);
+
+            // Subir imagen si se seleccionó
+            if (formData.title && createdExp._id && selectedImage) {
+                setShowModal(true); // Mostrar el modal de éxito
+                const imageFormData = new FormData();
+                imageFormData.append('image', selectedImage);
+                // Llamar al servicio de subida de imágenes
+                await experienceService.uploadExperienceImage(createdExp._id, imageFormData);
+            }
+
+
 
             // Redirigir después de un corto periodo de tiempo (3 segundos)
             setTimeout(() => {
@@ -90,121 +112,130 @@ const CreateExperience: React.FC = () => {
     };
 
     return (
-        <NavWineMaker> {/* El contenido de la página está dentro de NavWineMaker */}
-            <div className="home-container">
-                <div
-                    className="top-plans"
-                    style={{ backgroundImage: `url(${createBackground})` }}
-                >
-                    <div className="top-plans-content">
-                        <h1>Create</h1>
-                        <h2>WineMaker Experience</h2>
-                        <p>Design your unique experience</p>
-                    </div>
-                </div>
+        <NavWineMaker>
+            <div className="createexp-top-content">
+                <h1 className="createexp-title">Create Experience</h1>
+                <h2 className="createexp-subtitle">New Experience</h2>
+            </div>
 
-                {error && <div className="error-message">{error}</div>} {/* Muestra el mensaje de error si ocurre */}
-
-                <div className="form-create-experience">
-                    {/* Campos del formulario */}
-                    <label style={{ fontWeight: 'bold', color: 'white' }} htmlFor="title">Title</label>
+            {error && <div className="createexp-error-message">{error}</div>}
+            <div className="createexp-two-column-layout">
+                <div className="createexp-left-column">
+                    <img
+                        src={previewImage || createBackground}
+                        alt="Experience"
+                        className="createexp-image-preview"
+                    />
                     <input
-                        type="text"
-                        id="title"
-                        name="title"
-                        placeholder="Enter experience title"
-                        value={formData.title}
-                        onChange={handleChange}
+                        type="file"
+                        accept="image/*"
+                        onChange={handleImageChange}
+                        className="createexp-image-input"
                     />
 
-                    <label style={{ fontWeight: 'bold', color: 'white' }} htmlFor="description">Description</label>
-                    <textarea
-                        style={{ resize: 'none', width: 1330 }}
-                        id="description"
-                        name="description"
-                        placeholder="Enter the experience description"
-                        rows={4}
-                        value={formData.description}
-                        onChange={handleChange}
-                    />
-
-                    <label style={{ fontWeight: 'bold', color: 'white' }} htmlFor="price">Price (€)</label>
-                    <input
-                        type="number"
-                        id="price"
-                        name="price"
-                        placeholder="Enter price"
-                        value={formData.price}
-                        onChange={handleChange}
-                    />
-
-                    <label style={{ fontWeight: 'bold', color: 'white' }} htmlFor="location">Location</label>
-                    <input
-                        type="text"
-                        id="location"
-                        name="location"
-                        placeholder="Enter the experience location"
-                        value={formData.location}
-                        onChange={handleChange}
-                    />
-
-                    <label style={{ fontWeight: 'bold', color: 'white' }} htmlFor="contactnumber">Contact Number</label>
-                    <input
-                        type="tel"
-                        id="contactnumber"
-                        name="contactnumber"
-                        placeholder="Enter the contact number"
-                        value={formData.contactnumber}
-                        onChange={handleChange}
-                    />
-
-                    <label style={{ fontWeight: 'bold', color: 'white' }} htmlFor="contactmail">Contact Email</label>
-                    <input
-                        type="email"
-                        id="contactmail"
-                        name="contactmail"
-                        placeholder="Enter the contact email"
-                        value={formData.contactmail}
-                        onChange={handleChange}
-                    />
-
-                    <label style={{ fontWeight: 'bold', color: 'white' }} htmlFor="date">Date</label>
-                    <input
-                        type="date"
-                        id="date"
-                        name="date"
-                        value={formData.date}
-                        onChange={handleChange}
-                    />
-
-                    <label style={{ fontWeight: 'bold', color: 'white' }} className="label-create">Services</label>
-                    <div className="services-container-create">
-                        {servicesOptions.map((service, index) => (
-                            <div key={service.label} className="service-checkbox-create">
-                                <label className="service-label-create">
+                    <label style={{ fontWeight: 'bold', color: 'white' }} className="createexp-label">Services</label>
+                    <div className="createexp-services-container">
+                        {servicesOptions.map((service) => (
+                            <div key={service.label} className="notes-checkbox-create"> {/* Cambia la clase aquí */}
+                                <label className="notes-label-create"> {/* Cambia la clase aquí */}
                                     <input
                                         type="checkbox"
                                         checked={formData.services.some((s) => s.label === service.label)}
                                         onChange={() => handleServiceChange(service)}
                                     />
-                                    <span className="service-icon-create">{service.icon}</span>
+                                    <span className="notes-icon-create">{service.icon}</span> {/* Cambia la clase aquí */}
                                     {service.label}
                                 </label>
                             </div>
                         ))}
                     </div>
+                </div>
+                <div className="createexp-right-column">
+                    <div className="form-create-wine">
+                        <label style={{ fontWeight: 'bold', color: 'white' }} htmlFor="title" className="createexp-label">Title</label>
+                        <input
+                            type="text"
+                            id="title"
+                            name="title"
+                            placeholder="Enter experience title"
+                            value={formData.title}
+                            onChange={handleChange}
+                            className="createexp-input"
+                        />
 
-                    <button className="create-btn" onClick={handleSubmit}>
+                        <label style={{ fontWeight: 'bold', color: 'white' }} htmlFor="description" className="createexp-label">Description</label>
+                        <textarea
+                            id="description"
+                            name="description"
+                            placeholder="Enter description"
+                            rows={4}
+                            value={formData.description}
+                            onChange={handleChange}
+                            className="createexp-textarea"
+                        />
+
+                        <label style={{ fontWeight: 'bold', color: 'white' }} htmlFor="price" className="createexp-label">Price (€)</label>
+                        <input
+                            type="number"
+                            id="price"
+                            name="price"
+                            placeholder="Enter price"
+                            value={formData.price}
+                            onChange={handleChange}
+                            className="createexp-input"
+                        />
+
+                        <label style={{ fontWeight: 'bold', color: 'white' }} htmlFor="contactnumber">Contact Number</label>
+                        <input
+                            type="tel"
+                            id="contactnumber"
+                            name="contactnumber"
+                            placeholder="Enter the contact number"
+                            value={formData.contactnumber}
+                            onChange={handleChange}
+                        />
+
+                        <label style={{ fontWeight: 'bold', color: 'white' }} htmlFor="contactmail">Contact Email</label>
+                        <input
+                            type="email"
+                            id="contactmail"
+                            name="contactmail"
+                            placeholder="Enter the contact email"
+                            value={formData.contactmail}
+                            onChange={handleChange}
+                        />
+
+                        <label style={{ fontWeight: 'bold', color: 'white' }} htmlFor="location" className="createexp-label">Location</label>
+                        <input
+                            type="text"
+                            id="location"
+                            name="location"
+                            placeholder="Enter location"
+                            value={formData.location}
+                            onChange={handleChange}
+                            className="createexp-input"
+                        />
+
+                        <label style={{ fontWeight: 'bold', color: 'white' }} htmlFor="date" className="createexp-label">Date</label>
+                        <input
+                            type="date"
+                            id="date"
+                            name="date"
+                            value={formData.date}
+                            onChange={handleChange}
+                            className="createexp-input"
+                        />
+                    </div>
+                    <button className="createexp-btn" onClick={handleSubmit}>
                         Create Experience
                     </button>
                 </div>
             </div>
 
-            {/* Modal de éxito */}
             {showModal && (
-                <div className="modal">
-                    <div className="modal-content">
-                        <h3>Experiencia creándose. Redirigiendo al menú principal...</h3>
+                <div className="createexp-modal">
+                    <div className="createexp-modal-content">
+                        <h3>Experience is being created. Redirecting...</h3>
                     </div>
                 </div>
             )}

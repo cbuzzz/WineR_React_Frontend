@@ -156,6 +156,24 @@ const addWineToExperience = async (experienceId: string, wineId: string): Promis
     }
 };
 
+const uploadExperienceImage = async (experienceId: string, imageFormData: FormData): Promise<void> => {
+    try {
+        await axios.post(`http://localhost:3000/api/images/update-image/experience/${experienceId}`, imageFormData, {
+            headers: {
+                'auth-token': localStorage.getItem('token') || '',
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+        console.log('Experience image uploaded successfully');
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            const errorMessage = error.response?.data?.message || 'Failed to upload experience image';
+            throw new Error(errorMessage);
+        }
+        throw new Error('An unexpected error occurred during image upload');
+    }
+};
+
 
 export default {
     getAllExperiences,
@@ -166,4 +184,5 @@ export default {
     añadirValoracion,
     getExperienceRatings,
     addWineToExperience,
+    uploadExperienceImage,
 };

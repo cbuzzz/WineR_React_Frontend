@@ -1,5 +1,6 @@
 /* Contenedor principal */
-.two-column-layout {
+.two-column-layout,
+.createexp-two-column-layout {
     display: flex;
     gap: 20px;
     width: 100%;
@@ -13,7 +14,8 @@
 }
 
 /* Columna izquierda */
-.left-column {
+.left-column,
+.createexp-left-column {
     width: 40%;
     display: flex;
     flex-direction: column;
@@ -25,8 +27,9 @@
     gap: 15px;
 }
 
-/* Imagen del vino */
-.wine-image {
+/* Imagen del vino / experiencia */
+.wine-image,
+.createexp-image-preview {
     width: 200px;
     height: 200px;
     object-fit: cover;
@@ -36,12 +39,14 @@
     transition: transform 0.3s ease;
 }
 
-.wine-image:hover {
+.wine-image:hover,
+.createexp-image-preview:hover {
     transform: scale(1.05);
 }
 
 /* Botón para seleccionar la imagen */
-.image-input {
+.image-input,
+.createexp-image-input {
     font-size: 0.9rem;
     color: white;
     background-color: #a43d4e;
@@ -52,19 +57,24 @@
     transition: background-color 0.3s ease;
 }
 
-.image-input:hover {
+.image-input:hover,
+.createexp-image-input:hover {
     background-color: #892e3e;
 }
 
-/* Contenedor de notas */
-.notes-container-create {
+/* Contenedor de notas / servicios */
+.notes-container-create,
+.createexp-services-container {
     display: flex;
     flex-direction: column;
     gap: 10px;
     width: 100%;
+    align-items: flex-start;
+    /* Alineación correcta */
 }
 
-.notes-checkbox-create {
+.notes-checkbox-create,
+.createexp-service-checkbox {
     display: flex;
     align-items: center;
     gap: 10px;
@@ -72,26 +82,34 @@
     background-color: #a43d4e;
     border-radius: 8px;
     transition: background-color 0.3s ease;
+    width: 100%;
+    /* Se asegura de que ocupen todo el ancho disponible */
+    box-sizing: border-box;
+    /* Incluye padding en el ancho total */
 }
 
-.notes-checkbox-create:hover {
+.notes-checkbox-create:hover,
+.createexp-service-checkbox:hover {
     background-color: #892e3e;
 }
 
-.notes-label-create {
+.notes-label-create,
+.createexp-service-label {
     display: flex;
     align-items: center;
     gap: 8px;
-    font-size: 1rem;
+    font-size: 1.0rem;
     color: white;
 }
 
-.notes-icon-create {
+.notes-icon-create,
+.createexp-service-icon {
     font-size: 1.5rem;
 }
 
 /* Columna derecha */
-.right-column {
+.right-column,
+.createexp-right-column {
     width: 60%;
     display: flex;
     flex-direction: column;
@@ -99,7 +117,8 @@
 }
 
 /* Botón de creación */
-.create-btn {
+.create-btn,
+.createexp-btn {
     background-color: #892e3e;
     color: white;
     padding: 12px 20px;
@@ -110,14 +129,16 @@
     transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
-.create-btn:hover {
+.create-btn:hover,
+.createexp-btn:hover {
     background-color: #44121b;
     transform: translateY(-5px);
 }
 
 /* Input general */
 input[type="text"],
-input[type="number"] {
+input[type="number"],
+.createexp-input {
     width: 95%;
     padding: 10px;
     font-size: 1rem;
@@ -127,9 +148,79 @@ input[type="number"] {
 }
 
 input[type="text"]:focus,
-input[type="number"]:focus {
+input[type="number"]:focus,
+.createexp-input:focus {
     border-color: #a43d4e;
     outline: none;
+}
+
+/* Textarea */
+textarea,
+.createexp-textarea {
+    width: 95%;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    background-color: #ffffff;
+}
+
+textarea:focus,
+.createexp-textarea:focus {
+    border-color: #a43d4e;
+    outline: none;
+}
+
+/* Errores */
+.createexp-error-message {
+    color: #f44336;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+/* Modal */
+.createexp-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    /* Fondo semitransparente */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.createexp-modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 300px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* Sombra suave */
+    color: #a43d4e;
+}
+
+/* Títulos */
+.createexp-title,
+.createexp-subtitle {
+    color: white;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.createexp-title {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.createexp-subtitle {
+    font-size: 1.5rem;
+    font-weight: normal;
 }
 
 /* Dropdown select */
@@ -144,27 +235,10 @@ input[type="number"]:focus {
 }
 
 .Select__menu {
-    z-index: 9999;
-}
-
-/* Espaciado adicional entre los selects */
-.Select__wrapper {
-    margin-bottom: 20px;
-    /* Aumenta el espacio entre los selects */
-}
-
-/* Colores del interior de los Selects */
-.Select__menu {
     background-color: #a43d4e;
-    /* Fondo del menú desplegable */
     color: white;
-    /* Color del texto */
     border-radius: 5px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.Select__menu-list {
-    padding: 10px 0;
 }
 
 .Select__option {
@@ -175,36 +249,19 @@ input[type="number"]:focus {
 
 .Select__option--is-focused {
     background-color: #892e3e;
-    /* Color al pasar el mouse */
 }
 
 .Select__option--is-selected {
     background-color: #6f2733;
-    /* Color al seleccionar */
     font-weight: bold;
 }
 
 .Select__placeholder {
     color: #f4dcdc;
-    /* Color del texto del placeholder */
-}
-
-.Select__control {
-    border: 1px solid #a43d4e !important;
-    /* Borde del Select */
-    border-radius: 5px !important;
-    font-size: 1rem !important;
-    background-color: #ffffff !important;
-    /* Fondo del control */
-}
-
-.Select__control:hover {
-    border-color: #892e3e !important;
 }
 
 .Select__single-value {
     color: #892e3e;
-    /* Color del texto seleccionado */
 }
 
 /* Imágenes color de vino */
@@ -227,15 +284,11 @@ input[type="number"]:focus {
     height: auto;
     border-radius: 10px;
     opacity: 0.7;
-    /* Imagen no seleccionada */
 }
 
 .right-column-wines.highlighted img,
 .left-column-wines.highlighted img {
     opacity: 1;
-    /* Imagen seleccionada */
     transform: scale(1.1);
-    /* Resaltar con escala */
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
-    /* Sombra para la imagen seleccionada */
 }

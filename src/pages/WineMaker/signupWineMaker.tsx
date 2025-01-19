@@ -88,6 +88,7 @@ const SignUp: React.FC = () => {
 
         try {
             await userService.signup({
+                image: '', // Imagen por defecto
                 name: formData.name,
                 username: formData.username,
                 mail: formData.email,

@@ -35,9 +35,11 @@ const CreateWine: React.FC = () => {
         year: 2018,
         notes: [],
         experience: '',
+        image: '',
     });
 
-    const [selectedImage, setSelectedImage] = useState<string | null>(null);
+    const [selectedImage, setSelectedImage] = useState<File | null>(null);
+    const [previewImage, setPreviewImage] = useState<string | undefined>(defaultWineImage);
     const [experiences, setExperiences] = useState<Experience[]>([]);
     const [grapeTypes, setGrapeTypes] = useState<{ value: string; label: string }[]>([]);
     const [error, setError] = useState('');
@@ -87,14 +89,13 @@ const CreateWine: React.FC = () => {
         }));
     };
 
-    const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0];
+    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0] || null;
+        setSelectedImage(file);
         if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setSelectedImage(reader.result as string); // Carga la imagen seleccionada
-            };
-            reader.readAsDataURL(file);
+            setPreviewImage(URL.createObjectURL(file));
+        } else {
+            setPreviewImage(defaultWineImage);
         }
     };
 
@@ -136,10 +137,18 @@ const CreateWine: React.FC = () => {
             }
             setShowModal(true); // Mostrar el modal de éxito
 
+            // Subir la imagen si se seleccionó
+            if (formData.experience && createdWine._id && selectedImage) {
+                const imageFormData = new FormData();
+                imageFormData.append('image', selectedImage);
+
+                await wineService.uploadWineImage(createdWine._id, imageFormData); // No changes needed in `uploadWineImage`.
+            }
+
             // Redirigir después de 3 segundos
             setTimeout(() => {
                 setShowModal(false);
-                navigate('/homeWineMaker'); // Redirigir al menú principal
+                navigate('/listWinesWM'); // Redirigir al menú principal
             }, 3000);
         } catch (err) {
             if (err instanceof Error) {
@@ -162,7 +171,7 @@ const CreateWine: React.FC = () => {
             <div className="two-column-layout">
                 <div className="left-column">
                     <img
-                        src={selectedImage || defaultWineImage}
+                        src={previewImage || defaultWineImage}
                         alt="Wine"
                         className="wine-image"
                     />
