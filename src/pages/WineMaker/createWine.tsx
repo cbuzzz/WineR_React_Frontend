@@ -164,7 +164,6 @@ const CreateWine: React.FC = () => {
 
             <div className="top-plans-content">
                 <h1>Add your wine to WineR</h1>
-                <h2>New Wine</h2>
             </div>
 
             {error && <div className="error-message">{error}</div>}

@@ -7,10 +7,10 @@ import starIcon from '../../assets/star.png';
 import wineIcon from '../../assets/wine.png';
 import ubiIcon from '../../assets/ubi.png';
 import dateIcon from '../../assets/date.png';
-import experienceService from '../../services/experienceService';
 import { Experience } from '../../models/experienceModel';
 import NavWineMaker from '../../components/NavWineMaker';
 import userService from '../../services/userService';
+import wineRLogo from '../../assets/winerlogo.png';
 import Calendar from 'react-calendar'; // Asegúrate de instalar react-calendar
 
 const Home: React.FC = () => {
@@ -19,6 +19,7 @@ const Home: React.FC = () => {
     const [selectedDateExperiences, setSelectedDateExperiences] = useState<Experience[]>([]);
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(true);
+    const [modalVisible, setModalVisible] = useState(false);
 
     const id = localStorage.getItem('id');
 
@@ -51,6 +52,14 @@ const Home: React.FC = () => {
         navigate(`/experienceWM/${id}`);
     };
 
+    const handleSeeMoreClick = () => {
+        setModalVisible(true); // Mostrar el modal
+    };
+
+    const handleCloseModal = () => {
+        setModalVisible(false); // Cerrar el modal
+    };
+
     const getExperienceDates = () => {
         return experiences.map((experience) => new Date(experience.date));
     };
@@ -78,7 +87,9 @@ const Home: React.FC = () => {
                         <h1>Welcome</h1>
                         <h2>WineMaker</h2>
                         <p>Create Unique Experiences</p>
-                        <button className="see-more-btn">See more</button>
+                        <button className="see-more-btn" onClick={handleSeeMoreClick}>
+                            See more
+                        </button>
                     </div>
                 </div>
 
@@ -178,6 +189,19 @@ const Home: React.FC = () => {
                                 </div>
                             </div>
                         ))}
+                    </div>
+
+                )}
+                {modalVisible && (
+                    <div className="see-more-modal-overlay">
+                        <div className="see-more-modal-content">
+                            <button className="see-more-close-modal-btn" onClick={handleCloseModal}>×</button>
+                            <h2>About Our Application</h2>
+                            <p>We provide unique experiences in the world of wine. Explore the best tours, tastings, and more!</p>
+                            <p>Our platform connects wine lovers with wineries offering exclusive experiences.</p>
+                            <p>Browse and book your next adventure with ease.</p>
+                            <img src={wineRLogo} alt="WineR Logo" className="wine-logo" />
+                        </div>
                     </div>
                 )}
             </div>
