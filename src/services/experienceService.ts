@@ -1,9 +1,11 @@
 import axios from 'axios';
 import { Experience } from '../models/experienceModel';
 
-const API_URL = 'http://localhost:3000/api/experiencias'; // Actualiza esta URL base si es necesario
+//const API_URL = 'http://localhost:3000/api/experiencias'; // Actualiza esta URL base si es necesario
 
 // const API_URL = 'http://147.83.7.158:5000/api/experiencias';
+
+const API_URL = 'http://apiwiner.duckdns.org:5000/api/experiencias'; // Actualiza con la URL de tu API
 
 // Helper para obtener headers con token (ahora con 'auth-token')
 const getHeaders = () => {
@@ -232,7 +234,7 @@ const deleteExperience = async (id: string): Promise<void> => {
 
 const uploadExperienceImage = async (experienceId: string, imageFormData: FormData): Promise<void> => {
     try {
-        await axios.post(`http://localhost:3000/api/images/update-image/experience/${experienceId}`, imageFormData, {
+        await axios.post(`http://apiwiner.duckdns.org:5000/api/images/update-image/experience/${experienceId}`, imageFormData, {
             headers: {
                 'auth-token': localStorage.getItem('token') || '',
                 'Content-Type': 'multipart/form-data',
