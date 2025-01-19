@@ -20,22 +20,24 @@ interface User {
   experiences: string[];
   amigos: string[];
   solicitudes: string[];
-  profilePicture?: string;
+  image?: string;
 }
 
 const ProfileWM: React.FC = () => {
   const [user, setUser] = useState<User | null>(null); // Estado para almacenar los datos del usuario
   const [error, setError] = useState<string>(''); // Estado para manejar errores
-  const [showEditModal, setShowEditModal] = useState<boolean>(false); 
-  const [editData, setEditData] = useState<Partial<User>>({}); 
-  const [newPassword, setNewPassword] = useState<string>(''); 
-  const [confirmPassword, setConfirmPassword] = useState<string>(''); 
-  const [modalMessage, setModalMessage] = useState<string>(''); 
-  const [modalType, setModalType] = useState<'success' | 'error'>('success'); 
-  const [showModal, setShowModal] = useState<boolean>(false); 
-  const [formVisible, setFormVisible] = useState<boolean>(true); 
+  const [showEditModal, setShowEditModal] = useState<boolean>(false);
+  const [editData, setEditData] = useState<Partial<User>>({});
+  const [newPassword, setNewPassword] = useState<string>('');
+  const [confirmPassword, setConfirmPassword] = useState<string>('');
+  const [modalMessage, setModalMessage] = useState<string>('');
+  const [modalType, setModalType] = useState<'success' | 'error'>('success');
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [formVisible, setFormVisible] = useState<boolean>(true);
   const navigate = useNavigate();
   const timerContext = useContext(TimerContext);
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [showImageModal, setShowImageModal] = useState(false);
 
   // Hook para obtener el ID del usuario desde el localStorage y hacer la solicitud GET al backend
   useEffect(() => {
@@ -66,7 +68,7 @@ const ProfileWM: React.FC = () => {
   };
 
   const handleEditProfile = () => {
-    setShowEditModal(true); 
+    setShowEditModal(true);
   };
 
   const handleInputChange = (field: keyof User, value: string) => {
@@ -87,6 +89,37 @@ const ProfileWM: React.FC = () => {
     return true;
   };
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setSelectedImage(e.target.files[0]);
+    }
+  };
+
+  const handleUploadImage = async () => {
+    if (user && selectedImage) {
+      const formData = new FormData();
+      formData.append('image', selectedImage);
+
+      try {
+        await userService.uploadProfileImage(user._id!, formData);
+        setModalMessage('Profile image updated successfully!');
+        setModalType('success');
+        setShowModal(true);
+
+        setTimeout(() => {
+          setShowModal(false);
+          window.location.reload(); // Actualizar página para mostrar la nueva imagen
+        }, 2000);
+      } catch (err) {
+        console.error('Error uploading profile image:', err);
+        setModalMessage('Failed to upload profile image.');
+        setModalType('error');
+        setShowModal(true);
+      }
+    }
+    setShowImageModal(false);
+  };
+
   const validateForm = (): boolean => {
     const { name, mail } = editData;
 
@@ -102,7 +135,7 @@ const ProfileWM: React.FC = () => {
       return false;
     }
 
-    const nameRegex = /^[a-zA-Z\s]+$/; 
+    const nameRegex = /^[a-zA-Z\s]+$/;
     if (name && !nameRegex.test(name)) {
       setModalMessage('Name can only contain letters and spaces.');
       setModalType('error');
@@ -110,7 +143,7 @@ const ProfileWM: React.FC = () => {
       return false;
     }
 
-    return true; 
+    return true;
   };
 
   const handleSaveChanges = async () => {
@@ -138,7 +171,7 @@ const ProfileWM: React.FC = () => {
           setModalType('success');
           setShowModal(true);
           setFormVisible(false);
-        
+
           setTimeout(() => {
             setShowModal(false);
             window.location.reload();
@@ -173,9 +206,10 @@ const ProfileWM: React.FC = () => {
           <div className="top-plans-content">
             <h1>{user.username}'s Profile</h1>
             <img
-              src={user.profilePicture || defaultProfilePicture}
+              src={user.image || defaultProfilePicture}
               alt={`${user.username}'s profile`}
               className="profile-picture"
+              onClick={() => setShowImageModal(true)} // Abrir el modal al hacer clic
             />
             <p>Welcome to your profile page</p>
           </div>
@@ -262,6 +296,20 @@ const ProfileWM: React.FC = () => {
             <div className="modal-content">
               <p>{modalMessage}</p>
               <button onClick={() => setShowModal(false)}>Close</button>
+            </div>
+          </div>
+        )}
+        {showImageModal && (
+          <div className="modal">
+            <div className="modal-content">
+              <h3>Upload Profile Image</h3>
+              <input type="file" accept="image/*" onChange={handleFileChange} />
+              <div className="button-group">
+                <button onClick={handleUploadImage} disabled={!selectedImage}>
+                  Upload
+                </button>
+                <button onClick={() => setShowImageModal(false)}>Cancel</button>
+              </div>
             </div>
           </div>
         )}
