@@ -1,9 +1,9 @@
 import axios from 'axios';
 import { Wine } from '../models/wineModel';
 
-//const API_URL = 'http://localhost:3000/api/wine';´
+const API_URL = 'http://localhost:3000/api/wine';
 
-const API_URL = 'http://apiwiner.duckdns.org:5000/api/wine'; // Actualiza con la URL de tu backend
+// const API_URL = 'http://apiwiner.duckdns.org:5000/api/wine';
 
 // Helper para obtener headers con token (ahora con 'auth-token')
 const getHeaders = () => {
@@ -89,7 +89,7 @@ const updateWine = async (wineId: string, updatedWineData: Partial<Wine>): Promi
 
 const uploadWineImage = async (wineId: string, imageFormData: FormData): Promise<void> => {
     try {
-        await axios.post(`http://apiwiner.duckdns.org:5000/api/images/update-image/wine/${wineId}`, imageFormData, {
+        await axios.post(`http://localhost:3000/api/images/update-image/wine/${wineId}`, imageFormData, {
             headers: {
                 'auth-token': localStorage.getItem('token') || '',
                 'Content-Type': 'multipart/form-data',

@@ -123,6 +123,10 @@ const CreateExperience: React.FC = () => {
         }));
     };
 
+    const handleViewProfile = (participant: string) => {
+        navigate(`/profileP/${participant}`); // Redirigir a la página del perfil del amigo
+    };
+
     const handleSubmit = async () => {
         setError('');
         setShowModal(false); // Asegurarnos de que el modal esté oculto al inicio del envío
@@ -316,6 +320,12 @@ const CreateExperience: React.FC = () => {
                                         onClick={() => handleParticipantRemove(participant)}
                                     >
                                         Remove
+                                    </button>
+                                    <button
+                                        className="createexp-remove-participant-btn"
+                                        onClick={() => handleViewProfile(participant)}
+                                    >
+                                        Profile
                                     </button>
                                 </li>
                             ))}

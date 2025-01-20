@@ -23,6 +23,7 @@ import ChatsWM from './pages/WineMaker/chats';
 import ChatWL from './pages/WineLover/chat';
 import ChatWM from './pages/WineMaker/chat';
 import FriendProfile from './pages/WineLover/friendProfile';
+import ParticipantProfile from './pages/WineMaker/participantsProfile';
 import ListWines from './pages/WineLover/listWines';
 import ListWinesWM from './pages/WineMaker/listWines';
 import ManageExpWM from './pages/WineMaker/manageExperience';
@@ -75,6 +76,7 @@ const App: React.FC = () => {
             <Route path="/listWinesWM" element={<ListWinesWM />} />
             <Route path="/manageExpWM/:id" element={<ManageExpWM />} />
             <Route path="/loadingWM" element={<LoadingWM />} />
+            <Route path="/profileP/:participantUsername" element={<ParticipantProfile />} />
 
           </Routes>
         </TimerProvider>

@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-//const API_URL = 'http://localhost:3000/api/chat'; // Actualiza con la URL de tu backend
-const API_URL = 'http://apiwiner.duckdns.org:5000/api/chat';
+const API_URL = 'http://localhost:3000/api/chat'; // Actualiza con la URL de tu backend
+// const API_URL = 'http://apiwiner.duckdns.org:5000/api/chat';
 
 // Helper para obtener el token del localStorage
 const getToken = (): string | null => {

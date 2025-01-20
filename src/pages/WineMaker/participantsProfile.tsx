@@ -2,63 +2,57 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import userService from '../../services/userService';
 import '../../styles/friendProfile.css';
-import NavWineLover from '../../components/NavWineLover';
+import NavWineMaker from '../../components/NavWineMaker';
 import defaultProfileImage from '../../assets/winelover.png';
 import { User } from '../../models/userModel';
 
-const FriendProfile: React.FC = () => {
-    const { friendUsername } = useParams<{ friendUsername: string }>();
+const ParticipantProfile: React.FC = () => {
+    const { participantUsername } = useParams<{ participantUsername: string }>();
     const navigate = useNavigate();
     const [profile, setProfile] = useState<any>(null);
     const [error, setError] = useState<string | null>(null);
-    const [friend, setFriend] = useState<User>();
+    const [participant, setParticipant] = useState<User>();
 
     useEffect(() => {
         const fetchProfile = async () => {
             try {
-                const friendProfile = await userService.getUserProfile(friendUsername || '');
-                setFriend(friendProfile);
-                setProfile(friendProfile);
+                const participantProfile = await userService.getUserProfile(participantUsername || '');
+                setParticipant(participant);
+                setProfile(participantProfile);
             } catch (err) {
                 setError('Failed to fetch profile');
             }
         };
 
         fetchProfile();
-    }, [friendUsername]);
-
-    const handleBackToFriends = () => {
-        navigate('/friends'); // Redirige a la página de amigos
-    };
+    }, [participantUsername]);
 
     if (error) {
         return (
-            <NavWineLover>
+            <NavWineMaker>
                 <div className="profile-container">
                     <p className="error-message-profile">{error}</p>
                 </div>
-            </NavWineLover>
+            </NavWineMaker>
         );
     }
 
     if (!profile) {
         return (
-            <NavWineLover>
+            <NavWineMaker>
                 <div className="profile-container">
                     <p>Loading profile...</p>
                 </div>
-            </NavWineLover>
+            </NavWineMaker>
         );
     }
 
     return (
-        <NavWineLover>
+        <NavWineMaker>
             <div className="profile-container">
-                <button className="back-button" onClick={handleBackToFriends}>
-                    ← Back to Friends
-                </button>
+                <button className="back-button" onClick={() => navigate(-1)}>← Back</button>
                 <img
-                    src={friend?.image || defaultProfileImage}
+                    src={participant?.image || defaultProfileImage}
                     className="profile-picture"
                 />
                 <h1 className="profile-title">{profile.username}'s Profile</h1>
@@ -66,8 +60,8 @@ const FriendProfile: React.FC = () => {
                 <p className="profile-info">Tipo: {profile.tipo}</p>
                 <p className="profile-info">Number of Friends: {profile.amigos?.length || 0}</p>
             </div>
-        </NavWineLover>
+        </NavWineMaker>
     );
 };
 
-export default FriendProfile;
+export default ParticipantProfile;

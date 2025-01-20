@@ -15,7 +15,8 @@ const Chat: React.FC = () => {
     const { cleanText } = useBadWords();  // Accede a la función cleanText del contexto
 
     useEffect(() => {
-        const newSocket = io('http://apiwiner.duckdns.org:5000');
+        // const newSocket = io('http://apiwiner.duckdns.org:5000');
+        const newSocket = io('http://localhost:3000');
         setSocket(newSocket);
 
         newSocket.on('message-receive', (newMessage: any) => {
@@ -27,7 +28,7 @@ const Chat: React.FC = () => {
         return () => {
             newSocket.disconnect();
         };
-    },  [cleanText]); // Asegúrate de que useBadWords se esté llamando correctamente
+    }, [cleanText]); // Asegúrate de que useBadWords se esté llamando correctamente
 
     useEffect(() => {
         if (roomName) {

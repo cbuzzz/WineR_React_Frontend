@@ -3,11 +3,11 @@ import { User } from '../models/userModel';
 import { Experience } from '../models/experienceModel';
 import { idText } from 'typescript';
 
-//const API_URL = 'http://localhost:3000/api/user'; // Update with your backend URL
+const API_URL = 'http://localhost:3000/api/user'; // Update with your backend URL
 
 //const API_URL = 'http://147.83.7.158:5000/api/user';´
 
-const API_URL = 'http://apiwiner.duckdns.org:5000/api/user';
+// const API_URL = 'http://apiwiner.duckdns.org:5000/api/user';
 
 // Helper para obtener el token del localStorage
 const getToken = (): string | null => {
@@ -305,7 +305,7 @@ const getUserExperiences = async () => {
 
 const uploadProfileImage = async (userId: string, imageFormData: FormData): Promise<void> => {
     try {
-        await axios.post(`http://apiwiner.duckdns.org:5000/api/images/update-image/user/${userId}`, imageFormData, {
+        await axios.post(`http://localhost:3000/api/images/update-image/user/${userId}`, imageFormData, {
             headers: {
                 'auth-token': localStorage.getItem('token') || '',
                 'Content-Type': 'multipart/form-data',
