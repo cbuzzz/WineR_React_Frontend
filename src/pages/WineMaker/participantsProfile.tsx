@@ -17,7 +17,7 @@ const ParticipantProfile: React.FC = () => {
         const fetchProfile = async () => {
             try {
                 const participantProfile = await userService.getUserProfile(participantUsername || '');
-                setParticipant(participant);
+                setParticipant(participantProfile);
                 setProfile(participantProfile);
             } catch (err) {
                 setError('Failed to fetch profile');

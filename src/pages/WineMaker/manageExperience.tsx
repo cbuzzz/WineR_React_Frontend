@@ -46,6 +46,7 @@ const CreateExperience: React.FC = () => {
     const [showModal, setShowModal] = useState(false); // Estado para el modal de éxito
     const [deleteModal, setDeleteModal] = useState(false);
     const [usernames, setUsernames] = useState<{ [key: string]: string }>({}); // Almacena los usernames
+    const [participantUsername, setParticipantUsername] = useState<string>('');
     const navigate = useNavigate();
 
     // Hook para obtener el ID del propietario desde el localStorage
@@ -104,6 +105,21 @@ const CreateExperience: React.FC = () => {
         }
     };
 
+    const handleViewProfile = async (participant: string) => {
+        if (participant) {
+            try {
+                const participantUsername = await userService.getUserById(participant);
+                navigate(`/profileP/${participantUsername.username}`);
+            }
+            catch (err) {
+                setError('Participant not found');
+            }
+        }
+        else {
+            setError('Participant not found');
+        }
+    };
+
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0] || null;
         setSelectedImage(file);
@@ -121,10 +137,6 @@ const CreateExperience: React.FC = () => {
                 ? prev.services.filter((s) => s.label !== service.label)
                 : [...prev.services, service],
         }));
-    };
-
-    const handleViewProfile = (participant: string) => {
-        navigate(`/profileP/${participant}`); // Redirigir a la página del perfil del amigo
     };
 
     const handleSubmit = async () => {
